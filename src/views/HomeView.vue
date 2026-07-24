@@ -1,0 +1,19 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useHero } from '../composables/usePages'
+import { useSeo } from '../composables/useSeo'
+import DiffusionHero from '../components/hero/DiffusionHero.vue'
+
+const hero = useHero()
+
+useSeo({
+  title: computed(() => `${hero.value.name} — ${hero.value.role}`),
+  description: computed(() => hero.value.subheadline),
+})
+</script>
+
+<template>
+  <main>
+    <DiffusionHero />
+  </main>
+</template>

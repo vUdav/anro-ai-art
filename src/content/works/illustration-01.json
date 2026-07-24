@@ -1,0 +1,13 @@
+{
+  "slug": "illustration-01",
+  "type": "image",
+  "category": "illustrations",
+  "media": "/media/works/illustration-01.svg",
+  "poster": "",
+  "externalUrl": "",
+  "featured": false,
+  "order": 4,
+  "ru": { "title": "Иллюстрация", "alt": "Атмосферная иллюстрация", "description": "Художественная иллюстрация с мистической атмосферой." },
+  "en": { "title": "Illustration", "alt": "Atmospheric illustration", "description": "An artistic illustration with a mystical mood." },
+  "be": { "title": "Ілюстрацыя", "alt": "Атмасферная ілюстрацыя", "description": "Мастацкая ілюстрацыя з містычнай атмасферай." }
+}

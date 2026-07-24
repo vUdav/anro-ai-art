@@ -1,0 +1,13 @@
+{
+  "slug": "photoshoot-01",
+  "type": "image",
+  "category": "photoshoots",
+  "media": "/media/works/photoshoot-01.svg",
+  "poster": "",
+  "externalUrl": "",
+  "featured": true,
+  "order": 3,
+  "ru": { "title": "Нейро-фотосессия", "alt": "Портрет из нейро-фотосессии", "description": "Стилизованный портрет, созданный нейросетью." },
+  "en": { "title": "AI Photoshoot", "alt": "Portrait from an AI photoshoot", "description": "A stylized portrait generated with a neural network." },
+  "be": { "title": "Нейра-фотасесія", "alt": "Партрэт з нейра-фотасесіі", "description": "Стылізаваны партрэт, створаны нейрасеткай." }
+}

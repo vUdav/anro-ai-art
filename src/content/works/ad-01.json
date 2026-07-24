@@ -1,0 +1,13 @@
+{
+  "slug": "ad-01",
+  "type": "image",
+  "category": "ads",
+  "media": "/media/works/ad-01.svg",
+  "poster": "",
+  "externalUrl": "",
+  "featured": false,
+  "order": 5,
+  "ru": { "title": "Рекламный визуал", "alt": "Рекламный визуал для бренда", "description": "Ключевой визуал для рекламной кампании." },
+  "en": { "title": "Ad Visual", "alt": "Advertising visual for a brand", "description": "Key visual for an advertising campaign." },
+  "be": { "title": "Рэкламны візуал", "alt": "Рэкламны візуал для брэнда", "description": "Ключавы візуал для рэкламнай кампаніі." }
+}

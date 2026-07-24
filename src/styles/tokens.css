@@ -1,0 +1,42 @@
+:root {
+  /* --- Палитра: тёмный фон + насыщенный неон --- */
+  --bg-900: #05060f;
+  --bg-800: #0a0b16;
+  --bg-700: #10121f;
+
+  --text-100: #f4f6ff;
+  --text-200: #c7cbe6;
+  --text-300: #8f95bd;
+  --text-500: #5b608a;
+
+  /* Неон-акценты */
+  --neon-cyan: #22d3ee;
+  --neon-blue: #4d7cff;
+  --neon-violet: #8b5cf6;
+  --neon-pink: #ec4899;
+
+  --grad-primary: linear-gradient(110deg, var(--neon-cyan), var(--neon-violet) 55%, var(--neon-pink));
+
+  /* Свечение */
+  --glow-cyan: 0 0 40px rgba(34, 211, 238, 0.5);
+  --glow-pink: 0 0 40px rgba(236, 72, 153, 0.45);
+
+  /* Типографика */
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  /* Раскладка */
+  --maxw: 1200px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

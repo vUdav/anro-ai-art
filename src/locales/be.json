@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "about": "Пра мяне",
+    "portfolio": "Працы",
+    "services": "Паслугі",
+    "testimonials": "Водгукі",
+    "contacts": "Кантакты"
+  },
+  "actions": {
+    "order": "Замовіць",
+    "viewWorks": "Глядзець працы",
+    "writeMe": "Напісаць мне",
+    "openTelegram": "Адкрыць Telegram",
+    "playVideo": "Глядзець відэа"
+  },
+  "hero": {
+    "scrollHint": "Гартайце ўніз"
+  },
+  "portfolio": {
+    "title": "Працы",
+    "eyebrow": "Партфоліа",
+    "empty": "У гэтай катэгорыі пакуль няма прац"
+  },
+  "categories": {
+    "all": "Усе",
+    "covers": "Вокладкі",
+    "mockups": "Мокапы",
+    "photoshoots": "Фотасесіі",
+    "sketches": "Эскізы",
+    "ads": "Рэклама",
+    "illustrations": "Ілюстрацыі"
+  },
+  "services": {
+    "title": "Паслугі",
+    "eyebrow": "Чым я займаюся"
+  },
+  "testimonials": {
+    "title": "Водгукі",
+    "eyebrow": "Кліенты пра мяне"
+  },
+  "about": {
+    "eyebrow": "Пра мяне"
+  },
+  "contacts": {
+    "eyebrow": "Звязацца"
+  },
+  "footer": {
+    "rights": "Усе правы абаронены",
+    "madeWith": "Створана з дапамогай нейрасетак і любові"
+  },
+  "a11y": {
+    "toggleMenu": "Адкрыць меню",
+    "switchLanguage": "Змяніць мову",
+    "telegram": "Напісаць у Telegram",
+    "instagram": "Адкрыць Instagram",
+    "closeLightbox": "Закрыць прагляд"
+  }
+}

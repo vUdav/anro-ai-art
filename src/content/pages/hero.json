@@ -1,0 +1,30 @@
+{
+  "portrait": "/media/portrait.svg",
+  "halos": [
+    "/media/works/photoshoot-01.svg",
+    "/media/works/illustration-01.svg",
+    "/media/works/neon-cover-01.svg",
+    "/media/works/reel-01.svg"
+  ],
+  "ru": {
+    "name": "Anro",
+    "role": "AI Creator",
+    "headline": "Создаю изображения и видео с помощью нейросетей",
+    "subheadline": "Превращаю идеи в визуал: обложки, мокапы, нейро-фотосессии, анимация и реклама. Там, где креатив встречается с искусственным интеллектом.",
+    "cta": "Заказать работу"
+  },
+  "en": {
+    "name": "Anro",
+    "role": "AI Creator",
+    "headline": "I craft images and videos with neural networks",
+    "subheadline": "Turning ideas into visuals: covers, mockups, AI photoshoots, animation and ads. Where creativity meets artificial intelligence.",
+    "cta": "Order a project"
+  },
+  "be": {
+    "name": "Anro",
+    "role": "AI Creator",
+    "headline": "Ствараю выявы і відэа з дапамогай нейрасетак",
+    "subheadline": "Ператвараю ідэі ў візуал: вокладкі, мокапы, нейра-фотасесіі, анімацыю і рэкламу. Там, дзе крэатыў сустракаецца са штучным інтэлектам.",
+    "cta": "Замовіць працу"
+  }
+}

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1150" viewBox="0 0 900 1150">
+  <defs>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4efe9"/>
+      <stop offset="0.5" stop-color="#e8b8d0"/>
+      <stop offset="1" stop-color="#a98fc9"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="38%" r="55%">
+      <stop offset="0" stop-color="#e8d6f2" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#e8d6f2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="fadeMask">
+      <rect width="900" height="1150" fill="url(#fade)"/>
+    </mask>
+  </defs>
+
+  <!-- мягкое свечение за головой -->
+  <circle cx="450" cy="420" r="360" fill="url(#halo)"/>
+
+  <g mask="url(#fadeMask)">
+    <!-- плечи -->
+    <path d="M170 1150 Q170 820 450 800 Q730 820 730 1150 Z" fill="url(#skin)" opacity="0.92"/>
+    <!-- шея -->
+    <rect x="390" y="560" width="120" height="260" rx="56" fill="url(#skin)"/>
+    <!-- голова -->
+    <ellipse cx="450" cy="420" rx="185" ry="225" fill="url(#skin)"/>
+    <!-- волосы-намёк -->
+    <path d="M255 400 Q250 180 450 175 Q650 180 645 400 Q650 250 450 240 Q250 250 255 400 Z" fill="#8f77b0" opacity="0.55"/>
+    <!-- мягкий блик -->
+    <ellipse cx="390" cy="360" rx="70" ry="95" fill="#ffffff" opacity="0.18"/>
+  </g>
+</svg>

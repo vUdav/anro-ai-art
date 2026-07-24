@@ -1,0 +1,30 @@
+{
+  "photo": "/media/about.svg",
+  "ru": {
+    "title": "Привет, я Anro",
+    "bio": "Я AI-креатор и художник новой волны. Соединяю режиссёрское мышление, эстетику и нейросети, чтобы создавать визуал, который цепляет. Работаю с брендами и людьми: от атмосферных обложек до кинематографичных видеороликов.",
+    "credentials": [
+      "Выпускница HUGA Academy",
+      "Победитель 3-го сезона нейротурнира SYNTX & WORKSHOP",
+      "Работаю с Midjourney, Nano Banana, Kling, Runway и другими инструментами"
+    ]
+  },
+  "en": {
+    "title": "Hi, I'm Anro",
+    "bio": "I'm an AI creator and new-wave artist. I blend directorial thinking, aesthetics and neural networks to make visuals that resonate. I work with brands and people — from atmospheric covers to cinematic video.",
+    "credentials": [
+      "HUGA Academy graduate",
+      "Winner of the 3rd SYNTX & WORKSHOP neuro-tournament",
+      "Working with Midjourney, Nano Banana, Kling, Runway and more"
+    ]
+  },
+  "be": {
+    "title": "Прывітанне, я Anro",
+    "bio": "Я AI-крэатар і мастак новай хвалі. Спалучаю рэжысёрскае мысленне, эстэтыку і нейрасеткі, каб ствараць візуал, які чапляе. Працую з брэндамі і людзьмі: ад атмасферных вокладак да кінематаграфічных відэаролікаў.",
+    "credentials": [
+      "Выпускніца HUGA Academy",
+      "Пераможца 3-га сезона нейратурніру SYNTX & WORKSHOP",
+      "Працую з Midjourney, Nano Banana, Kling, Runway і іншымі інструментамі"
+    ]
+  }
+}

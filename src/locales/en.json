@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "about": "About",
+    "portfolio": "Works",
+    "services": "Services",
+    "testimonials": "Testimonials",
+    "contacts": "Contacts"
+  },
+  "actions": {
+    "order": "Order now",
+    "viewWorks": "View works",
+    "writeMe": "Message me",
+    "openTelegram": "Open Telegram",
+    "playVideo": "Play video"
+  },
+  "hero": {
+    "scrollHint": "Scroll down"
+  },
+  "portfolio": {
+    "title": "Works",
+    "eyebrow": "Portfolio",
+    "empty": "No works in this category yet"
+  },
+  "categories": {
+    "all": "All",
+    "covers": "Covers",
+    "mockups": "Mockups",
+    "photoshoots": "Photoshoots",
+    "sketches": "Sketches",
+    "ads": "Ads",
+    "illustrations": "Illustrations"
+  },
+  "services": {
+    "title": "Services",
+    "eyebrow": "What I do"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "eyebrow": "Clients about me"
+  },
+  "about": {
+    "eyebrow": "About me"
+  },
+  "contacts": {
+    "eyebrow": "Get in touch"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "madeWith": "Made with neural networks and love"
+  },
+  "a11y": {
+    "toggleMenu": "Open menu",
+    "switchLanguage": "Switch language",
+    "telegram": "Message on Telegram",
+    "instagram": "Open Instagram",
+    "closeLightbox": "Close viewer"
+  }
+}

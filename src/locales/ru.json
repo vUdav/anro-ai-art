@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "about": "Обо мне",
+    "portfolio": "Работы",
+    "services": "Услуги",
+    "testimonials": "Отзывы",
+    "contacts": "Контакты"
+  },
+  "actions": {
+    "order": "Заказать",
+    "viewWorks": "Смотреть работы",
+    "writeMe": "Написать мне",
+    "openTelegram": "Открыть Telegram",
+    "playVideo": "Смотреть видео"
+  },
+  "hero": {
+    "scrollHint": "Листайте вниз"
+  },
+  "portfolio": {
+    "title": "Работы",
+    "eyebrow": "Портфолио",
+    "empty": "В этой категории пока нет работ"
+  },
+  "categories": {
+    "all": "Все",
+    "covers": "Обложки",
+    "mockups": "Мокапы",
+    "photoshoots": "Фотосессии",
+    "sketches": "Эскизы",
+    "ads": "Реклама",
+    "illustrations": "Иллюстрации"
+  },
+  "services": {
+    "title": "Услуги",
+    "eyebrow": "Что я делаю"
+  },
+  "testimonials": {
+    "title": "Отзывы",
+    "eyebrow": "Клиенты обо мне"
+  },
+  "about": {
+    "eyebrow": "Обо мне"
+  },
+  "contacts": {
+    "eyebrow": "Связаться"
+  },
+  "footer": {
+    "rights": "Все права защищены",
+    "madeWith": "Создано с помощью нейросетей и любви"
+  },
+  "a11y": {
+    "toggleMenu": "Открыть меню",
+    "switchLanguage": "Сменить язык",
+    "telegram": "Написать в Telegram",
+    "instagram": "Открыть Instagram",
+    "closeLightbox": "Закрыть просмотр"
+  }
+}

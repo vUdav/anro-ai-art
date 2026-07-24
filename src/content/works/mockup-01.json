@@ -1,0 +1,13 @@
+{
+  "slug": "mockup-01",
+  "type": "image",
+  "category": "mockups",
+  "media": "/media/works/mockup-01.svg",
+  "poster": "",
+  "externalUrl": "",
+  "featured": false,
+  "order": 2,
+  "ru": { "title": "Мокап продукта", "alt": "Рекламный мокап продукта", "description": "Презентационный мокап для бренда." },
+  "en": { "title": "Product Mockup", "alt": "Product advertising mockup", "description": "Presentation mockup for a brand." },
+  "be": { "title": "Мокап прадукту", "alt": "Рэкламны мокап прадукту", "description": "Прэзентацыйны мокап для брэнда." }
+}

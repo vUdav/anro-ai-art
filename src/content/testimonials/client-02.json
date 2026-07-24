@@ -1,0 +1,9 @@
+{
+  "slug": "client-02",
+  "author": "Дмитрий В.",
+  "avatar": "",
+  "order": 2,
+  "ru": { "role": "Музыкант", "text": "Заказывал видеоролик — получилось атмосферно и кинематографично. Работа с нейросетями на высшем уровне." },
+  "en": { "role": "Musician", "text": "I ordered a video reel — it turned out atmospheric and cinematic. Top-level work with neural networks." },
+  "be": { "role": "Музыкант", "text": "Замаўляў відэаролік — атрымалася атмасферна і кінематаграфічна. Праца з нейрасеткамі на вышэйшым узроўні." }
+}

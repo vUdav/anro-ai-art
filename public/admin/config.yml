@@ -1,0 +1,140 @@
+# Конфигурация Sveltia CMS (совместима с Decap CMS)
+# Документация: https://github.com/sveltia/sveltia-cms
+
+backend:
+  name: github
+  repo: OWNER/anro-ai-art # ← замените OWNER на ваш GitHub-логин/организацию
+  branch: main
+  # OAuth-брокер: Cloudflare Worker sveltia-cms-auth (см. CONTENT_GUIDE.md).
+  # Раскомментируйте и укажите адрес вашего воркера:
+  # base_url: https://anro-cms-auth.<subdomain>.workers.dev
+
+# Куда CMS кладёт загруженные файлы в репозитории и как путь выглядит на сайте
+media_folder: "public/media"
+public_folder: "/media"
+
+# Три языка в одном файле: вкладки RU / EN / BE в форме редактирования
+i18n:
+  structure: single_file
+  locales: [ru, en, be]
+  default_locale: ru
+
+collections:
+  # ─── Работы (портфолио) ───
+  - name: works
+    label: "Работы"
+    label_singular: "Работа"
+    folder: "src/content/works"
+    create: true
+    delete: true
+    slug: "{{fields.slug}}"
+    extension: json
+    format: json
+    i18n: true
+    summary: "{{fields.slug}} · {{fields.category}}"
+    fields:
+      - { name: slug, label: "ID (латиницей, напр. neon-cover-02)", widget: string, i18n: false }
+      - { name: type, label: "Тип", widget: select, options: [image, video], default: image, i18n: false }
+      - name: category
+        label: "Категория"
+        widget: select
+        i18n: false
+        default: covers
+        options:
+          - { label: "Обложки", value: covers }
+          - { label: "Мокапы", value: mockups }
+          - { label: "Фотосессии", value: photoshoots }
+          - { label: "Эскизы", value: sketches }
+          - { label: "Реклама", value: ads }
+          - { label: "Иллюстрации", value: illustrations }
+      - { name: media, label: "Файл (изображение или видео)", widget: file, i18n: false }
+      - { name: poster, label: "Постер для видео (изображение)", widget: image, required: false, i18n: false }
+      - { name: externalUrl, label: "Внешняя ссылка на видео (необязательно)", widget: string, required: false, i18n: false }
+      - { name: featured, label: "Избранное", widget: boolean, default: false, i18n: false }
+      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
+      - { name: title, label: "Название", widget: string, i18n: true }
+      - { name: alt, label: "Alt-текст (для доступности)", widget: string, i18n: true }
+      - { name: description, label: "Описание", widget: text, required: false, i18n: true }
+
+  # ─── Отзывы ───
+  - name: testimonials
+    label: "Отзывы"
+    label_singular: "Отзыв"
+    folder: "src/content/testimonials"
+    create: true
+    delete: true
+    slug: "{{fields.slug}}"
+    extension: json
+    format: json
+    i18n: true
+    summary: "{{fields.author}}"
+    fields:
+      - { name: slug, label: "ID (латиницей)", widget: string, i18n: false }
+      - { name: author, label: "Автор", widget: string, i18n: false }
+      - { name: avatar, label: "Аватар (необязательно)", widget: image, required: false, i18n: false }
+      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
+      - { name: role, label: "Роль / должность", widget: string, required: false, i18n: true }
+      - { name: text, label: "Текст отзыва", widget: text, i18n: true }
+
+  # ─── Услуги ───
+  - name: services
+    label: "Услуги"
+    label_singular: "Услуга"
+    folder: "src/content/services"
+    create: true
+    delete: true
+    slug: "{{fields.slug}}"
+    extension: json
+    format: json
+    i18n: true
+    summary: "{{fields.slug}}"
+    fields:
+      - { name: slug, label: "ID (латиницей)", widget: string, i18n: false }
+      - { name: icon, label: "Иконка", widget: select, options: [image, video], default: image, i18n: false }
+      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
+      - { name: title, label: "Название", widget: string, i18n: true }
+      - { name: description, label: "Описание", widget: text, i18n: true }
+      - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+
+  # ─── Тексты разделов (синглтоны) ───
+  - name: pages
+    label: "Тексты разделов"
+    editor: { preview: false }
+    i18n: true
+    files:
+      - name: hero
+        label: "Первый экран (Hero)"
+        file: "src/content/pages/hero.json"
+        format: json
+        i18n: true
+        fields:
+          - { name: portrait, label: "Портрет (cut-out с прозрачным фоном)", widget: image, i18n: false }
+          - { name: halos, label: "Плавающие портреты вокруг", widget: list, field: { name: image, label: "Изображение", widget: image }, i18n: false }
+          - { name: name, label: "Имя / бренд", widget: string, i18n: true }
+          - { name: role, label: "Роль", widget: string, i18n: true }
+          - { name: headline, label: "Заголовок (2 предложения = 2 строки)", widget: string, i18n: true }
+          - { name: subheadline, label: "Подзаголовок", widget: text, i18n: true }
+          - { name: cta, label: "Текст кнопки", widget: string, i18n: true }
+
+      - name: about
+        label: "Обо мне"
+        file: "src/content/pages/about.json"
+        format: json
+        i18n: true
+        fields:
+          - { name: photo, label: "Фото", widget: image, i18n: false }
+          - { name: title, label: "Заголовок", widget: string, i18n: true }
+          - { name: bio, label: "Биография", widget: text, i18n: true }
+          - { name: credentials, label: "Регалии / достижения", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+
+      - name: contacts
+        label: "Контакты"
+        file: "src/content/pages/contacts.json"
+        format: json
+        i18n: true
+        fields:
+          - { name: telegram, label: "Ссылка на Telegram", widget: string, i18n: false }
+          - { name: instagram, label: "Ссылка на Instagram", widget: string, i18n: false }
+          - { name: email, label: "Email (необязательно)", widget: string, required: false, i18n: false }
+          - { name: title, label: "Заголовок", widget: string, i18n: true }
+          - { name: text, label: "Текст", widget: text, i18n: true }

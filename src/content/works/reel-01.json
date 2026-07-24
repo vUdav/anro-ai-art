@@ -1,0 +1,13 @@
+{
+  "slug": "reel-01",
+  "type": "video",
+  "category": "ads",
+  "media": "/media/videos/reel-01.mp4",
+  "poster": "/media/works/reel-01.svg",
+  "externalUrl": "",
+  "featured": true,
+  "order": 6,
+  "ru": { "title": "Атмосферный ролик", "alt": "Кадр из атмосферного видеоролика", "description": "Короткий кинематографичный ролик с анимацией и цветокоррекцией." },
+  "en": { "title": "Atmospheric Reel", "alt": "Frame from an atmospheric video reel", "description": "A short cinematic reel with animation and color grading." },
+  "be": { "title": "Атмасферны ролік", "alt": "Кадр з атмасфернага відэароліка", "description": "Кароткі кінематаграфічны ролік з анімацыяй і колеракарэкцыяй." }
+}

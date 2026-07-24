@@ -1,0 +1,17 @@
+{
+  "telegram": "https://t.me/anro_aiart",
+  "instagram": "https://www.instagram.com/anro_aiart/",
+  "email": "",
+  "ru": {
+    "title": "Давайте создадим что-то вместе",
+    "text": "Есть идея или проект? Напишите мне в Telegram — обсудим задачу, сроки и стиль."
+  },
+  "en": {
+    "title": "Let's create something together",
+    "text": "Have an idea or a project? Message me on Telegram — we'll discuss the task, timing and style."
+  },
+  "be": {
+    "title": "Давайце створым нешта разам",
+    "text": "Ёсць ідэя ці праект? Напішыце мне ў Telegram — абмяркуем задачу, тэрміны і стыль."
+  }
+}

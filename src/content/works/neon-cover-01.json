@@ -1,0 +1,13 @@
+{
+  "slug": "neon-cover-01",
+  "type": "image",
+  "category": "covers",
+  "media": "/media/works/neon-cover-01.svg",
+  "poster": "",
+  "externalUrl": "",
+  "featured": true,
+  "order": 1,
+  "ru": { "title": "Неоновая обложка", "alt": "Обложка альбома в неоновой эстетике", "description": "Обложка для музыкального релиза в тёмной неоновой стилистике." },
+  "en": { "title": "Neon Cover", "alt": "Album cover in neon aesthetics", "description": "Cover art for a music release in a dark neon style." },
+  "be": { "title": "Неонавая вокладка", "alt": "Вокладка альбома ў неонавай эстэтыцы", "description": "Вокладка для музычнага рэлізу ў цёмнай неонавай стылістыцы." }
+}

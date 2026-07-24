@@ -1,0 +1,20 @@
+{
+  "slug": "video-creating",
+  "icon": "video",
+  "order": 2,
+  "ru": {
+    "title": "Video Creating",
+    "description": "Оживляю визуал: анимация, атмосферные ролики и видеопоздравления.",
+    "items": ["Анимация изображений", "Атмосферные видеоролики", "Рекламный видеоконтент", "Видеопоздравления", "Монтаж и цветокоррекция"]
+  },
+  "en": {
+    "title": "Video Creating",
+    "description": "Bringing visuals to life: animation, atmospheric reels and video greetings.",
+    "items": ["Image animation", "Atmospheric reels", "Ad video content", "Video greetings", "Editing & color grading"]
+  },
+  "be": {
+    "title": "Video Creating",
+    "description": "Ажыўляю візуал: анімацыя, атмасферныя ролікі і відэавіншаванні.",
+    "items": ["Анімацыя выяў", "Атмасферныя ролікі", "Рэкламны відэакантэнт", "Відэавіншаванні", "Мантаж і колеракарэкцыя"]
+  }
+}
