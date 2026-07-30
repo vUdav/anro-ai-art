@@ -123,6 +123,7 @@ collections:
         i18n: true
         fields:
           - { name: photo, label: "Фото", widget: image, i18n: false }
+          - { name: fullName, label: "Полное имя (крупный текст)", widget: string, i18n: true }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
           - { name: bio, label: "Биография", widget: text, i18n: true }
           - { name: credentials, label: "Регалии / достижения", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
