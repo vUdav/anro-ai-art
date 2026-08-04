@@ -3,10 +3,11 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAbout } from '../../composables/usePages'
 import { useMotionPreset } from '../../composables/useMotionPreset'
+import DiffusionPortrait from './DiffusionPortrait.vue'
 
 const { t } = useI18n()
 const about = useAbout()
-const { fadeUp, scaleIn } = useMotionPreset()
+const { fadeUp } = useMotionPreset()
 
 // Полное имя в две строки: первое слово / остаток
 const nameLines = computed(() => {
@@ -28,14 +29,7 @@ const nameLines = computed(() => {
 
       <div class="about__glow" aria-hidden="true"></div>
 
-      <img
-        class="about__portrait"
-        :src="about.photo"
-        :alt="about.fullName"
-        loading="lazy"
-        decoding="async"
-        v-motion="scaleIn(200)"
-      />
+      <DiffusionPortrait class="about__portrait" :src="about.photo" :alt="about.fullName" />
 
       <div class="about__card" v-motion="fadeUp(120)">
         <h2 class="about__title">{{ about.title }}</h2>
@@ -208,8 +202,8 @@ $bp-2xl: 1600px; // большие экраны
     align-self: center;
     width: min(88%, 360px);
     height: auto;
+    aspect-ratio: 1 / 1;
     margin-top: -4.5rem;
-    object-fit: contain;
     -webkit-mask-image: linear-gradient(180deg, #000 84%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 84%, transparent 100%);
 
