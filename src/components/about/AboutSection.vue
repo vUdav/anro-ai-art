@@ -69,7 +69,7 @@ $bp-2xl: 1600px; // большие экраны
 %surface {
   border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 16px;
+  border-radius: 18px;
 }
 
 %glass {
@@ -84,7 +84,8 @@ $bp-2xl: 1600px; // большие экраны
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 3.5rem 1.25rem;
+  /* верхний паддинг учитывает фиксированную шапку, чтобы eyebrow не уходил под неё */
+  padding: 5rem 1.25rem 3.5rem;
   background: linear-gradient(180deg, #05060f 0%, #080a18 50%, #05060f 100%);
 
   @include up($bp-md) {
@@ -244,13 +245,12 @@ $bp-2xl: 1600px; // большие экраны
     z-index: 3;
     width: 100%;
     padding: 1.5rem;
-    border-radius: 20px;
+    border-radius: 24px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
 
     @include up($bp-md) {
       align-self: center;
       padding: 2rem;
-      border-radius: 24px;
     }
     @include up($bp-lg) {
       position: absolute;
