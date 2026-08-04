@@ -214,24 +214,29 @@ $bp-xl: 1280px;
     position: absolute;
     inset: 0;
     z-index: 0;
+    /* стартовое «зашумлённое» состояние — уходит при проявлении.
+       Стаггер-задержка живёт ЗДЕСЬ, на контейнере, и касается только денойза */
+    filter: blur(14px) saturate(0.45) brightness(0.68);
+    transform: scale(1.12);
+    transition:
+      filter 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 55ms);
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      /* стартовое «зашумлённое» состояние — уходит при проявлении */
-      filter: blur(14px) saturate(0.45) brightness(0.68);
-      transform: scale(1.12);
+      /* ховер-зум — быстрый и без стаггер-задержки, одинаково на всех карточках */
       transition:
-        filter 0.9s var(--ease-out),
-        transform 0.9s var(--ease-out);
-      transition-delay: calc(var(--i, 0) * 55ms);
+        transform 0.4s var(--ease-out),
+        filter 0.4s var(--ease-out);
     }
   }
 
   /* денойз при попадании в кадр */
-  &.is-in &__media img {
+  &.is-in &__media {
     filter: none;
     transform: scale(1);
   }
@@ -417,6 +422,7 @@ $bp-xl: 1280px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .tile__media,
   .tile__media img {
     filter: none !important;
     transform: none !important;
