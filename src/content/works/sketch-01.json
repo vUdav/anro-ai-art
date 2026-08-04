@@ -1,0 +1,28 @@
+{
+  "slug": "sketch-01",
+  "type": "video",
+  "category": "sketches",
+  "media": "/media/videos/sketch-01.mp4",
+  "poster": "/media/works/sketch-01-poster.webp",
+  "externalUrl": "",
+  "featured": false,
+  "order": 7,
+  "ru": {
+    "title": "Концепт-скетч",
+    "alt": "Концептуальный скетч персонажа",
+    "description": "Быстрый концепт-скетч на старте проекта: поиск образа, силуэта и настроения до финального рендера. Основа, из которой вырастает готовый визуал.",
+    "tags": ["Скетч", "Концепт", "Персонаж", "Идея"]
+  },
+  "en": {
+    "title": "Concept Sketch",
+    "alt": "Conceptual character sketch",
+    "description": "A quick concept sketch at the start of a project: exploring the look, silhouette and mood before the final render. The base a finished visual grows from.",
+    "tags": ["Sketch", "Concept", "Character", "Idea"]
+  },
+  "be": {
+    "title": "Канцэпт-скетч",
+    "alt": "Канцэптуальны скетч персанажа",
+    "description": "Хуткі канцэпт-скетч на старце праекта: пошук вобраза, сілуэта і настрою да фінальнага рэндэру. Аснова, з якой вырастае гатовы візуал.",
+    "tags": ["Скетч", "Канцэпт", "Персанаж", "Ідэя"]
+  }
+}

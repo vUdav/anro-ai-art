@@ -1,13 +1,13 @@
 {
   "slug": "ad-01",
-  "type": "image",
+  "type": "video",
   "category": "ads",
-  "media": "/media/works/ad-01.svg",
-  "poster": "",
+  "media": "/media/videos/ad-01.mp4",
+  "poster": "/media/works/ad-01-poster.webp",
   "externalUrl": "",
   "featured": false,
   "order": 5,
-  "ru": { "title": "Рекламный визуал", "alt": "Рекламный визуал для бренда", "description": "Ключевой визуал для рекламной кампании." },
-  "en": { "title": "Ad Visual", "alt": "Advertising visual for a brand", "description": "Key visual for an advertising campaign." },
-  "be": { "title": "Рэкламны візуал", "alt": "Рэкламны візуал для брэнда", "description": "Ключавы візуал для рэкламнай кампаніі." }
+  "ru": { "title": "Рекламный визуал", "alt": "Рекламный визуал для бренда", "description": "Ключевой визуал для рекламной кампании: сильная идея, чистая композиция и акцент на продукте. Адаптируется под баннеры, сторис и наружную рекламу.", "tags": ["Реклама", "Кампания", "Бренд", "Key Visual"] },
+  "en": { "title": "Ad Visual", "alt": "Advertising visual for a brand", "description": "Key visual for an advertising campaign: a strong idea, clean composition and focus on the product. Adapts to banners, stories and outdoor.", "tags": ["Ads", "Campaign", "Brand", "Key Visual"] },
+  "be": { "title": "Рэкламны візуал", "alt": "Рэкламны візуал для брэнда", "description": "Ключавы візуал для рэкламнай кампаніі: моцная ідэя, чыстая кампазіцыя і акцэнт на прадукце. Адаптуецца пад банеры, сторыс і вонкавую рэкламу.", "tags": ["Рэклама", "Кампанія", "Брэнд", "Key Visual"] }
 }

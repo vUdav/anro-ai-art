@@ -1,13 +1,13 @@
 {
   "slug": "illustration-01",
-  "type": "image",
+  "type": "video",
   "category": "illustrations",
-  "media": "/media/works/illustration-01.svg",
-  "poster": "",
+  "media": "/media/videos/illustration-01.mp4",
+  "poster": "/media/works/illustration-01-poster.webp",
   "externalUrl": "",
   "featured": false,
   "order": 4,
-  "ru": { "title": "Иллюстрация", "alt": "Атмосферная иллюстрация", "description": "Художественная иллюстрация с мистической атмосферой." },
-  "en": { "title": "Illustration", "alt": "Atmospheric illustration", "description": "An artistic illustration with a mystical mood." },
-  "be": { "title": "Ілюстрацыя", "alt": "Атмасферная ілюстрацыя", "description": "Мастацкая ілюстрацыя з містычнай атмасферай." }
+  "ru": { "title": "Иллюстрация", "alt": "Атмосферная иллюстрация", "description": "Художественная иллюстрация с мистической атмосферой: глубина, туман и мягкое свечение. Подходит для обложек, постеров и редакционных материалов.", "tags": ["Иллюстрация", "Фэнтези", "Атмосфера", "Арт"] },
+  "en": { "title": "Illustration", "alt": "Atmospheric illustration", "description": "An artistic illustration with a mystical mood: depth, haze and a soft glow. Great for covers, posters and editorial pieces.", "tags": ["Illustration", "Fantasy", "Mood", "Art"] },
+  "be": { "title": "Ілюстрацыя", "alt": "Атмасферная ілюстрацыя", "description": "Мастацкая ілюстрацыя з містычнай атмасферай: глыбіня, туман і мяккае ззянне. Пасуе для вокладак, постараў і рэдакцыйных матэрыялаў.", "tags": ["Ілюстрацыя", "Фэнтэзі", "Атмасфера", "Арт"] }
 }

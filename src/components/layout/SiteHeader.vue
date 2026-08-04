@@ -15,7 +15,7 @@ const HEADER_H = 64
 // остальные показываем неактивными до появления соответствующих блоков.
 const items: { key: string; id: string; enabled: boolean }[] = [
   { key: 'about', id: 'about', enabled: true },
-  { key: 'portfolio', id: 'portfolio', enabled: false },
+  { key: 'portfolio', id: 'works', enabled: true },
   { key: 'services', id: 'services', enabled: false },
   { key: 'testimonials', id: 'testimonials', enabled: false },
   { key: 'contacts', id: 'contacts', enabled: false },

@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-04T16:33:25Z",
+  "title": "Design System: Anro — AI Creator",
+  "extensions": {
+    "colorMeta": {
+      "neon-cyan": {
+        "role": "primary",
+        "displayName": "Electric Cyan",
+        "canonical": "#22d3ee",
+        "tonalRamp": ["#04222a", "#073d4a", "#0a5e72", "#0e8299", "#16a6c2", "#22d3ee", "#68e3f4", "#b6f2fa"]
+      },
+      "neon-blue": {
+        "role": "primary",
+        "displayName": "Neon Ultramarine",
+        "canonical": "#4d7cff",
+        "tonalRamp": ["#0a1330", "#122152", "#1c357f", "#2a4fb0", "#3a63d6", "#4d7cff", "#89a8ff", "#c4d4ff"]
+      },
+      "neon-violet": {
+        "role": "primary",
+        "displayName": "Electroviolet",
+        "canonical": "#8b5cf6",
+        "tonalRamp": ["#1b1140", "#2a1a63", "#3d2790", "#5236bf", "#6d47e0", "#8b5cf6", "#b295fa", "#d8cbfd"]
+      },
+      "neon-pink": {
+        "role": "primary",
+        "displayName": "Neon Fuchsia",
+        "canonical": "#ec4899",
+        "tonalRamp": ["#360f24", "#5a1839", "#852455", "#b12f72", "#d43d8a", "#ec4899", "#f37bb5", "#f9b6d6"]
+      },
+      "bg-900": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "#05060f",
+        "tonalRamp": ["#05060f", "#0a0b16", "#10121f", "#191c2c", "#2a2e42", "#40465f", "#5b608a", "#8f95bd"]
+      },
+      "text-100": {
+        "role": "neutral",
+        "displayName": "Starlight",
+        "canonical": "#f4f6ff",
+        "tonalRamp": ["#2a2e42", "#40465f", "#5b608a", "#8f95bd", "#c7cbe6", "#e0e3f2", "#f4f6ff", "#ffffff"]
+      },
+      "text-200": {
+        "role": "neutral",
+        "displayName": "Haze",
+        "canonical": "#c7cbe6",
+        "tonalRamp": ["#2a2e42", "#3a4059", "#5b608a", "#7a80a8", "#8f95bd", "#c7cbe6", "#e0e3f2", "#f4f6ff"]
+      },
+      "surface-glass": {
+        "role": "neutral",
+        "displayName": "Surface Glass",
+        "canonical": "rgba(255,255,255,0.05)",
+        "tonalRamp": ["rgba(255,255,255,0.02)", "rgba(255,255,255,0.03)", "rgba(255,255,255,0.04)", "rgba(255,255,255,0.05)", "rgba(255,255,255,0.07)", "rgba(255,255,255,0.09)", "rgba(255,255,255,0.12)", "rgba(255,255,255,0.16)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero/name wordmark and the huge editorial name in About; often outlined on the second line." },
+      "headline": { "displayName": "Headline", "purpose": "Section titles." },
+      "title": { "displayName": "Title", "purpose": "Work, modal and card titles." },
+      "body": { "displayName": "Body", "purpose": "Descriptions and bios; the only relaxed line-height." },
+      "label": { "displayName": "Label / Eyebrow", "purpose": "Uppercase 0.42em section kickers, clipped to the neon gradient." }
+    },
+    "shadows": [
+      { "name": "ambient-card", "value": "0 24px 70px rgba(0,0,0,0.5)", "purpose": "Diffuse depth under floating glass cards (About card, raised panels)." },
+      { "name": "ambient-modal", "value": "0 40px 120px rgba(0,0,0,0.6)", "purpose": "The work modal floating over the blurred page." },
+      { "name": "card-hover-lift", "value": "0 20px 50px rgba(0,0,0,0.45)", "purpose": "Appears only on hover/focus of interactive cards." },
+      { "name": "glow-cyan", "value": "0 0 40px rgba(34,211,238,0.5)", "purpose": "Neon glow on accent marks / cyan-side emphasis." },
+      { "name": "glow-pink", "value": "0 0 40px rgba(236,72,153,0.45)", "purpose": "Neon glow on pink-side emphasis." },
+      { "name": "glow-order-hover", "value": "0 8px 28px rgba(139,92,246,0.35)", "purpose": "Violet ambient glow that rises under the order button on hover." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The single easing for every state transition and reveal (--ease-out)." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "480px" },
+      { "name": "md", "value": "768px" },
+      { "name": "nav", "value": "860px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1600px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Order Button",
+      "kind": "button",
+      "refersTo": "button-order",
+      "description": "Primary CTA: transparent pill with a 1px neon-gradient ring and a cursor-tracking violet glow on hover.",
+      "html": "<button class=\"ds-btn-order\"><span>Заказать</span></button>",
+      "css": ".ds-btn-order{position:relative;display:inline-flex;align-items:center;padding:.6rem 1.35rem;border:0;border-radius:999px;background:transparent;font-family:Sora,system-ui,sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.02em;color:var(--text-100,#f4f6ff);cursor:pointer;overflow:hidden;isolation:isolate;transition:box-shadow .35s cubic-bezier(.22,1,.36,1)}.ds-btn-order::before{content:'';position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1.5px;background:linear-gradient(120deg,#22d3ee,#4d7cff 35%,#8b5cf6 65%,#ec4899);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}.ds-btn-order::after{content:'';position:absolute;inset:0;z-index:0;border-radius:inherit;background:radial-gradient(120px circle at 50% 50%,rgba(139,92,246,.5),rgba(34,211,238,.2) 45%,transparent 70%);opacity:0;transition:opacity .3s}.ds-btn-order span{position:relative;z-index:3}.ds-btn-order:hover{box-shadow:0 8px 28px rgba(139,92,246,.35)}.ds-btn-order:hover::after{opacity:1}"
+    },
+    {
+      "name": "Section Eyebrow",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The recurring uppercase, wide-tracked section kicker clipped to the neon gradient.",
+      "html": "<p class=\"ds-eyebrow\">Обо мне</p>",
+      "css": ".ds-eyebrow{margin:0;font-family:Sora,system-ui,sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.42em;text-transform:uppercase;background:linear-gradient(110deg,#22d3ee,#8b5cf6 55%,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Top-bar navigation link; Haze at rest, Starlight on hover. Disabled destinations sit in Deep Slate.",
+      "html": "<nav style=\"display:flex;gap:2rem;align-items:center\"><a class=\"ds-nav-link\" href=\"#\">Обо мне</a><a class=\"ds-nav-link\" href=\"#\">Работы</a><span class=\"ds-nav-link is-disabled\">Услуги</span></nav>",
+      "css": ".ds-nav-link{font-family:Manrope,system-ui,sans-serif;font-weight:500;font-size:.95rem;letter-spacing:.01em;color:var(--text-200,#c7cbe6);text-decoration:none;cursor:pointer;transition:color .25s cubic-bezier(.22,1,.36,1)}.ds-nav-link:hover{color:var(--text-100,#f4f6ff)}.ds-nav-link.is-disabled{color:var(--text-500,#5b608a);cursor:default}"
+    },
+    {
+      "name": "Language Switch",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Three-locale pill switch (RU/EN/BE); the active locale gets a faint white veil.",
+      "html": "<div class=\"ds-lang\"><button class=\"is-active\">RU</button><button>EN</button><button>BE</button></div>",
+      "css": ".ds-lang{display:inline-flex;gap:.15rem}.ds-lang button{padding:.3rem .5rem;border:0;background:transparent;font-family:Sora,system-ui,sans-serif;font-weight:600;font-size:.82rem;letter-spacing:.06em;color:var(--text-500,#5b608a);border-radius:8px;cursor:pointer;transition:color .25s cubic-bezier(.22,1,.36,1)}.ds-lang button:hover{color:var(--text-200,#c7cbe6)}.ds-lang button.is-active{color:var(--text-100,#f4f6ff);background:rgba(255,255,255,.06)}"
+    },
+    {
+      "name": "Tag Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Static descriptive tag on works and the About card.",
+      "html": "<span class=\"ds-chip\">Midjourney</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;padding:.35rem .8rem;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.05);font-family:Manrope,system-ui,sans-serif;font-size:.8rem;font-weight:500;color:var(--text-200,#c7cbe6);white-space:nowrap}"
+    },
+    {
+      "name": "Work Card",
+      "kind": "card",
+      "refersTo": "work-card",
+      "description": "Portfolio grid card: fixed 4:5 cropped media, caption row, and a neon ring that lights on hover.",
+      "html": "<button class=\"ds-work-card\"><span class=\"media\"></span><span class=\"cap\"><span class=\"name\">Neon Cover</span><span class=\"tag\">Midjourney</span></span></button>",
+      "css": ".ds-work-card{position:relative;display:flex;flex-direction:column;width:220px;padding:0;text-align:left;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);border-radius:18px;overflow:hidden;isolation:isolate;cursor:pointer;color:inherit;transition:box-shadow .35s cubic-bezier(.22,1,.36,1)}.ds-work-card::before{content:'';position:absolute;inset:0;z-index:4;border-radius:inherit;padding:1px;background:linear-gradient(110deg,#22d3ee,#8b5cf6 55%,#ec4899);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s;pointer-events:none}.ds-work-card:hover{box-shadow:0 20px 50px rgba(0,0,0,.45)}.ds-work-card:hover::before{opacity:1}.ds-work-card .media{position:relative;width:100%;height:0;padding-top:125%;background:radial-gradient(circle at 50% 38%,#8b5cf6,#4d7cff 40%,#0a0c1c 78%)}.ds-work-card .cap{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.85rem 1rem}.ds-work-card .name{font-family:Sora,system-ui,sans-serif;font-weight:600;font-size:.98rem;color:var(--text-100,#f4f6ff)}.ds-work-card .tag{font-family:Sora,system-ui,sans-serif;font-size:.72rem;font-weight:500;color:var(--text-300,#8f95bd);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "glass-card",
+      "description": "Floating translucent panel used for the About bio and as the modal panel surface.",
+      "html": "<div class=\"ds-glass-card\"><h3>Привет, я Anro</h3><p>AI-креатор и художник новой волны — соединяю режиссёрское мышление, эстетику и нейросети.</p><div style=\"display:flex;gap:.5rem;flex-wrap:wrap\"><span class=\"ds-chip\">Midjourney</span><span class=\"ds-chip\">Runway</span></div></div>",
+      "css": ".ds-glass-card{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);backdrop-filter:blur(20px) saturate(120%);-webkit-backdrop-filter:blur(20px) saturate(120%);border-radius:24px;box-shadow:0 24px 70px rgba(0,0,0,.5);padding:2rem;max-width:420px}.ds-glass-card h3{margin:0 0 1rem;font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:1.6rem;line-height:1.1;color:var(--text-100,#f4f6ff)}.ds-glass-card p{margin:0 0 1.25rem;font-family:Manrope,system-ui,sans-serif;font-size:1rem;line-height:1.7;color:var(--text-200,#c7cbe6)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Diffusion Studio",
+    "overview": "The whole interface behaves like a diffusion model mid-reveal: it starts as dark, near-black noise and resolves into sharp, neon-lit work. The hero literally performs this — a field of particles denoises into the word ANRO — and every other surface inherits that logic. Deep space (#05060f) is the default state of everything; light, color, and definition are earned, appearing where attention should land and nowhere else. The result is cinematic, electric, and unmistakably about neural-network image-making, without ever announcing \"AI\" with clip-art robots or circuit motifs.\n\nDensity is generous and gallery-like: large fluid type, big media, wide breathing room on a 1200px stage. The mood is dark and futuristic but never cold — warm neon (cyan → violet → pink) keeps it alive, and glass panels give it depth without weight. This is an Experience-led portfolio first: the artifact leads, the interface recedes to thin borders, translucent glass, and quiet labels.",
+    "keyCharacteristics": [
+      "Near-black canvas as the resting state; light and color are earned, not ambient.",
+      "A single neon gradient (cyan → violet → pink) is the one voice of accent across the whole system.",
+      "Glassmorphism for depth: translucent panels + backdrop-blur, not drop shadows.",
+      "Huge Sora display type against small, wide-tracked Sora labels; Manrope for calm reading.",
+      "Neon reacts to state (hover, focus, reveal); it does not sit on large static areas."
+    ],
+    "rules": [
+      { "name": "The One Gradient Rule", "body": "There is exactly one accent voice — linear-gradient(110deg, cyan, violet 55%, pink). Accents are drawn from it (as text clip, 1px border, dot, or glow); never introduce a second unrelated accent hue.", "section": "colors" },
+      { "name": "The Earned-Light Rule", "body": "Neon never fills a large static area. It appears as a hairline, a small mark, a glow, or clipped text — reacting to hierarchy or state. If a neon region is bigger than a control or a line of text, it's wrong.", "section": "colors" },
+      { "name": "The Gradient Eyebrow Rule", "body": "Every section opens with an uppercase, wide-tracked (0.42em) Sora label clipped to the neon gradient (.text-gradient). It is the recurring signature that ties sections together.", "section": "typography" },
+      { "name": "The Outline-Name Rule", "body": "When a name breaks to two display lines, the second line is set as a translucent outline (color: transparent; -webkit-text-stroke), so scale reads without doubling the visual weight.", "section": "typography" },
+      { "name": "The One Stage Rule", "body": "Content lives on a 1200px centered stage; full-bleed is reserved for the fixed header's glass and section backgrounds, never for reading content.", "section": "layout" },
+      { "name": "The Equal-Gap Rule", "body": "Grid rows and columns share one gap value, and cards are forced to equal height/width (fixed-ratio media crop) so the grid reads as a true lattice, never a masonry.", "section": "layout" },
+      { "name": "The Glass-Not-Shadow Rule", "body": "Convey depth with translucency + blur + a hairline edge first; reach for a shadow only for genuinely floating glass (modal, primary card). Never use a shadow to fake a raised button.", "section": "elevation" },
+      { "name": "The Glow-On-State Rule", "body": "Neon glow is a response, not a resting decoration — it turns on with hover/focus/reveal and turns off otherwise.", "section": "elevation" },
+      { "name": "The Radius-By-Scale Rule", "body": "Bigger container → bigger radius (chip 14 → card 18 → panel 24). Never mix a large panel with a tight chip radius.", "section": "shapes" },
+      { "name": "The Hairline-to-Neon Rule", "body": "Borders rest as a 1px translucent white hairline and escalate to a 1px neon-gradient ring on hover/focus — the border is where interactivity is expressed.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do keep the resting state near-black (#05060f) and let light/color be earned by hierarchy or interaction.",
+      "Do draw every accent from the one gradient linear-gradient(110deg, #22d3ee, #8b5cf6 55%, #ec4899) — as clipped text, a 1px ring, a dot, or a glow.",
+      "Do open each section with the uppercase 0.42em gradient eyebrow (.text-gradient).",
+      "Do build depth from translucent glass + backdrop-filter + a 1px surface-line; add a soft ambient shadow only for genuinely floating glass.",
+      "Do honor prefers-reduced-motion — the canvas, reveals, and modal transitions must degrade to static.",
+      "Do crop media to a fixed ratio so grids stay an even lattice with one shared gap."
+    ],
+    "donts": [
+      "Don't ship a light/white \"SaaS\" surface or corporate-clean look — this world is dark.",
+      "Don't paint neon across large static areas or stack multiple rainbow hues; accent is small and singular.",
+      "Don't use skeuomorphism, glossy chrome, or heavy drop-shadows to fake raised buttons.",
+      "Don't introduce blurred \"AI-slop\" gradient blobs or generic stock imagery; the real work and the diffusion motif are the imagery.",
+      "Don't let a border sit as a hard 0-radius or thick line — edges are a 1px hairline that escalates to a 1px neon ring on state."
+    ]
+  }
+}

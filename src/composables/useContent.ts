@@ -33,6 +33,7 @@ function normalizeWork(w: WorkRaw, locale: AppLocale): Work {
     title: l.title,
     alt: l.alt || l.title,
     description: l.description ?? '',
+    tags: l.tags ?? [],
   }
 }
 

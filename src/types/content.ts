@@ -15,6 +15,7 @@ export interface LocalizedText {
   title: string
   alt?: string
   description?: string
+  tags?: string[]
 }
 
 /** Работа в том виде, в каком она лежит в JSON (пишет CMS) */
@@ -46,6 +47,7 @@ export interface Work {
   title: string
   alt: string
   description: string
+  tags: string[]
 }
 
 export interface TestimonialRaw {

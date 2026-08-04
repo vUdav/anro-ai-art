@@ -1,0 +1,28 @@
+{
+  "slug": "dreamscape-01",
+  "type": "video",
+  "category": "illustrations",
+  "media": "/media/videos/dreamscape-01.mp4",
+  "poster": "/media/works/dreamscape-01-poster.webp",
+  "externalUrl": "",
+  "featured": false,
+  "order": 8,
+  "ru": {
+    "title": "Дримскейп",
+    "alt": "Сюрреалистический пейзаж-мечта",
+    "description": "Сюрреалистический пейзаж на грани сна и реальности: плавные формы, градиенты и глубина. Визуал для обложек, музыки и атмосферных проектов.",
+    "tags": ["Иллюстрация", "Сюрреализм", "Пейзаж", "Dreamscape"]
+  },
+  "en": {
+    "title": "Dreamscape",
+    "alt": "Surreal dreamlike landscape",
+    "description": "A surreal landscape on the edge of dream and reality: flowing shapes, gradients and depth. A visual for covers, music and atmospheric projects.",
+    "tags": ["Illustration", "Surreal", "Landscape", "Dreamscape"]
+  },
+  "be": {
+    "title": "Дрымскейп",
+    "alt": "Сюррэалістычны пейзаж-мара",
+    "description": "Сюррэалістычны пейзаж на мяжы сну і рэальнасці: плаўныя формы, градыенты і глыбіня. Візуал для вокладак, музыкі і атмасферных праектаў.",
+    "tags": ["Ілюстрацыя", "Сюррэалізм", "Пейзаж", "Dreamscape"]
+  }
+}

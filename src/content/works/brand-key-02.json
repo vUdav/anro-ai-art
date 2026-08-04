@@ -1,0 +1,28 @@
+{
+  "slug": "brand-key-02",
+  "type": "video",
+  "category": "covers",
+  "media": "/media/videos/brand-key-02.mp4",
+  "poster": "/media/works/brand-key-02-poster.webp",
+  "externalUrl": "",
+  "featured": false,
+  "order": 9,
+  "ru": {
+    "title": "Ключевой визуал бренда",
+    "alt": "Ключевой визуал для айдентики бренда",
+    "description": "Ключевой визуал для айдентики бренда: единый стиль, узнаваемый цвет и характер. Собран как система — легко разворачивается на все носители.",
+    "tags": ["Брендинг", "Айдентика", "Key Visual", "Стиль"]
+  },
+  "en": {
+    "title": "Brand Key Visual",
+    "alt": "Key visual for a brand identity",
+    "description": "A key visual for a brand identity: a single style, recognizable color and character. Built as a system — easy to roll out across every touchpoint.",
+    "tags": ["Branding", "Identity", "Key Visual", "Style"]
+  },
+  "be": {
+    "title": "Ключавы візуал брэнда",
+    "alt": "Ключавы візуал для айдэнтыкі брэнда",
+    "description": "Ключавы візуал для айдэнтыкі брэнда: адзіны стыль, пазнавальны колер і характар. Сабраны як сістэма — лёгка разгортваецца на ўсе носьбіты.",
+    "tags": ["Брэндынг", "Айдэнтыка", "Key Visual", "Стыль"]
+  }
+}

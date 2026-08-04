@@ -4,6 +4,7 @@ import { useHero } from '../composables/usePages'
 import { useSeo } from '../composables/useSeo'
 import DiffusionHero from '../components/hero/DiffusionHero.vue'
 import AboutSection from '../components/about/AboutSection.vue'
+import WorksSection from '../components/works/WorksSection.vue'
 
 const hero = useHero()
 
@@ -17,5 +18,6 @@ useSeo({
   <main>
     <DiffusionHero />
     <AboutSection />
+    <WorksSection />
   </main>
 </template>

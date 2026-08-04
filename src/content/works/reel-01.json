@@ -1,13 +1,13 @@
 {
   "slug": "reel-01",
-  "type": "video",
+  "type": "image",
   "category": "ads",
-  "media": "/media/videos/reel-01.mp4",
-  "poster": "/media/works/reel-01.svg",
+  "media": "/media/works/reel-01.webp",
+  "poster": "",
   "externalUrl": "",
-  "featured": true,
+  "featured": false,
   "order": 6,
-  "ru": { "title": "Атмосферный ролик", "alt": "Кадр из атмосферного видеоролика", "description": "Короткий кинематографичный ролик с анимацией и цветокоррекцией." },
-  "en": { "title": "Atmospheric Reel", "alt": "Frame from an atmospheric video reel", "description": "A short cinematic reel with animation and color grading." },
-  "be": { "title": "Атмасферны ролік", "alt": "Кадр з атмасфернага відэароліка", "description": "Кароткі кінематаграфічны ролік з анімацыяй і колеракарэкцыяй." }
+  "ru": { "title": "Атмосферный ролик", "alt": "Кадр из атмосферного видеоролика", "description": "Короткий кинематографичный ролик с анимацией и цветокоррекцией. Динамичный монтаж под музыку — формат для reels, анонсов и шоурилов.", "tags": ["Видео", "Runway", "Монтаж", "Kling"] },
+  "en": { "title": "Atmospheric Reel", "alt": "Frame from an atmospheric video reel", "description": "A short cinematic reel with animation and color grading. A dynamic music-driven edit — a format for reels, teasers and showreels.", "tags": ["Video", "Runway", "Editing", "Kling"] },
+  "be": { "title": "Атмасферны ролік", "alt": "Кадр з атмасфернага відэароліка", "description": "Кароткі кінематаграфічны ролік з анімацыяй і колеракарэкцыяй. Дынамічны мантаж пад музыку — фармат для reels, анонсаў і шоурылаў.", "tags": ["Відэа", "Runway", "Мантаж", "Kling"] }
 }

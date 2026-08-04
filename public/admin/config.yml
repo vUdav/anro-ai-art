@@ -55,6 +55,12 @@ collections:
       - { name: title, label: "Название", widget: string, i18n: true }
       - { name: alt, label: "Alt-текст (для доступности)", widget: string, i18n: true }
       - { name: description, label: "Описание", widget: text, required: false, i18n: true }
+      - name: tags
+        label: "Теги"
+        widget: list
+        required: false
+        i18n: true
+        field: { name: tag, label: "Тег", widget: string }
 
   # ─── Отзывы ───
   - name: testimonials

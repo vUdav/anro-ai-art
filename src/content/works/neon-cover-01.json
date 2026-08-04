@@ -1,13 +1,43 @@
 {
   "slug": "neon-cover-01",
-  "type": "image",
+  "type": "video",
   "category": "covers",
-  "media": "/media/works/neon-cover-01.svg",
-  "poster": "",
+  "media": "/media/videos/neon-cover-01.mp4",
+  "poster": "/media/works/neon-cover-01-poster.webp",
   "externalUrl": "",
   "featured": true,
   "order": 1,
-  "ru": { "title": "Неоновая обложка", "alt": "Обложка альбома в неоновой эстетике", "description": "Обложка для музыкального релиза в тёмной неоновой стилистике." },
-  "en": { "title": "Neon Cover", "alt": "Album cover in neon aesthetics", "description": "Cover art for a music release in a dark neon style." },
-  "be": { "title": "Неонавая вокладка", "alt": "Вокладка альбома ў неонавай эстэтыцы", "description": "Вокладка для музычнага рэлізу ў цёмнай неонавай стылістыцы." }
+  "ru": {
+    "title": "Неоновая обложка",
+    "alt": "Обложка альбома в неоновой эстетике",
+    "description": "Обложка для музыкального релиза в тёмной неоновой стилистике. Работа над атмосферой, светом и типографикой — визуал, который считывается с первого взгляда и держит настроение всего альбома. ",
+    "tags": [
+      "Midjourney",
+      "Обложка",
+      "Неон",
+      "Музыка"
+    ]
+  },
+  "en": {
+    "title": "Neon Cover",
+    "alt": "Album cover in neon aesthetics",
+    "description": "Cover art for a music release in a dark neon style. A focus on mood, light and typography — a visual that reads instantly and carries the tone of the whole album.",
+    "tags": [
+      "Midjourney",
+      "Cover",
+      "Neon",
+      "Music"
+    ]
+  },
+  "be": {
+    "title": "Неонавая вокладка",
+    "alt": "Вокладка альбома ў неонавай эстэтыцы",
+    "description": "Вокладка для музычнага рэлізу ў цёмнай неонавай стылістыцы. Праца над атмасферай, святлом і тыпаграфікай — візуал, які счытваецца з першага погляду.",
+    "tags": [
+      "Midjourney",
+      "Вокладка",
+      "Неон",
+      "Музыка"
+    ]
+  }
 }
