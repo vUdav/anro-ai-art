@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useWorks } from '../../composables/useContent'
 import { useMotionPreset } from '../../composables/useMotionPreset'
@@ -28,8 +28,45 @@ function ratioFor(j: number) {
 }
 
 const active = ref<Work | null>(null)
+// Морф карточка ↔ модалка через View Transitions: общее имя носит медиа
+// той работы, что сейчас «перетекает» (в остальное время — undefined)
+const morph = ref<string | null>(null)
+
+function supportsVT() {
+  return typeof document !== 'undefined' && 'startViewTransition' in document && !reduced.value
+}
+
 function open(w: Work) {
-  active.value = w
+  if (!supportsVT()) {
+    active.value = w
+    return
+  }
+  morph.value = w.slug // помечаем медиа кликнутой карточки
+  nextTick(() => {
+    ;(document as unknown as { startViewTransition: (cb: () => unknown) => void }).startViewTransition(
+      () => {
+        active.value = w
+        morph.value = null // в новом кадре общее имя несёт только модалка
+        return nextTick()
+      },
+    )
+  })
+}
+
+function closeModal() {
+  const slug = active.value?.slug
+  if (!supportsVT() || !slug) {
+    active.value = null
+    return
+  }
+  const t = (
+    document as unknown as { startViewTransition: (cb: () => unknown) => { finished: Promise<void> } }
+  ).startViewTransition(() => {
+    active.value = null
+    morph.value = slug // имя возвращается карточке → обратный морф
+    return nextTick()
+  })
+  t.finished.finally(() => (morph.value = null))
 }
 
 // ── Denoise-проявление: плитки «резко проявляются из шума» при входе в кадр ──
@@ -83,7 +120,10 @@ onBeforeUnmount(() => io?.disconnect())
         :aria-label="featured.title"
         @click="open(featured)"
       >
-        <span class="tile__media">
+        <span
+          class="tile__media"
+          :style="morph === featured.slug ? { viewTransitionName: 'work-media' } : undefined"
+        >
           <img :src="thumb(featured)" :alt="featured.alt" loading="lazy" />
         </span>
         <span v-if="featured.type === 'video'" class="badge" aria-hidden="true">
@@ -109,7 +149,10 @@ onBeforeUnmount(() => io?.disconnect())
           :aria-label="w.title"
           @click="open(w)"
         >
-          <span class="tile__media">
+          <span
+            class="tile__media"
+            :style="morph === w.slug ? { viewTransitionName: 'work-media' } : undefined"
+          >
             <img :src="thumb(w)" :alt="w.alt" loading="lazy" />
           </span>
           <span v-if="w.type === 'video'" class="badge" aria-hidden="true">
@@ -123,7 +166,7 @@ onBeforeUnmount(() => io?.disconnect())
       </div>
     </div>
 
-    <WorkModal v-if="active" :work="active" @close="active = null" />
+    <WorkModal v-if="active" :work="active" @close="closeModal" />
   </section>
 </template>
 

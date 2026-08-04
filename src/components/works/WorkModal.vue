@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useScrollLock } from '@vueuse/core'
 import type { Work } from '../../types/content'
@@ -9,35 +9,51 @@ const emit = defineEmits<{ close: [] }>()
 
 const { t } = useI18n()
 
-const show = ref(false)
 const closeBtn = ref<HTMLButtonElement | null>(null)
 const videoEl = ref<HTMLVideoElement | null>(null)
 const panel = ref<HTMLElement | null>(null)
+const mediaEl = ref<HTMLElement | null>(null)
 let prevFocus: HTMLElement | null = null
 
 const reduce =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// Источник видео: реальный файл в репозитории или внешняя ссылка
+// При поддержке View Transitions вход/выход анимирует сам морф (родитель),
+// поэтому CSS-появление нужно только как фолбэк
+const vtSupported = typeof document !== 'undefined' && 'startViewTransition' in document
+const animateIn = !reduce && !vtSupported
+
 const videoSrc = computed(() => {
   if (props.work.type !== 'video') return ''
   if (props.work.externalUrl) return props.work.externalUrl
   return /\.(mp4|webm|ogg|mov)$/i.test(props.work.media) ? props.work.media : ''
 })
-// Изображение для показа (для image — media, для video без файла — постер)
 const imageSrc = computed(() => props.work.poster || props.work.media)
 
-// Блокировка прокрутки body, пока открыта модалка
+// Parallax-tilt медиа по курсору (работа будто парит)
+const tilt = reactive({ rx: 0, ry: 0 })
+const mediaStyle = computed(() => ({
+  transform: `perspective(1100px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+}))
+function onMediaMove(e: PointerEvent) {
+  if (reduce || !mediaEl.value) return
+  const r = mediaEl.value.getBoundingClientRect()
+  const px = (e.clientX - r.left) / r.width - 0.5
+  const py = (e.clientY - r.top) / r.height - 0.5
+  tilt.rx = -py * 5
+  tilt.ry = px * 7
+}
+function onMediaLeave() {
+  tilt.rx = 0
+  tilt.ry = 0
+}
+
 const bodyLock = useScrollLock(typeof document !== 'undefined' ? document.body : null)
+let playTimer = 0
 
 function close() {
-  show.value = false
-  if (reduce) {
-    emit('close')
-    return
-  }
-  window.setTimeout(() => emit('close'), 220)
+  emit('close') // морф/размонтирование делает родитель
 }
 
 function onKey(e: KeyboardEvent) {
@@ -45,7 +61,6 @@ function onKey(e: KeyboardEvent) {
     close()
     return
   }
-  // Ловушка фокуса: Tab не выходит за пределы модалки
   if (e.key === 'Tab' && panel.value) {
     const focusables = Array.from(
       panel.value.querySelectorAll<HTMLElement>(
@@ -69,17 +84,25 @@ function onKey(e: KeyboardEvent) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   prevFocus = document.activeElement as HTMLElement | null
   bodyLock.value = true
   window.addEventListener('keydown', onKey)
-  await nextTick()
-  show.value = true
   closeBtn.value?.focus()
+
+  // Видео стартует с задержкой: сперва виден постер (совпадает с превью),
+  // морф завершается, и только потом запускается воспроизведение
+  if (videoSrc.value) {
+    playTimer = window.setTimeout(
+      () => videoEl.value?.play?.().catch(() => {}),
+      vtSupported && !reduce ? 500 : 180,
+    )
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
+  window.clearTimeout(playTimer)
   bodyLock.value = false
   videoEl.value?.pause()
   prevFocus?.focus?.()
@@ -88,16 +111,10 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <div class="wm" :class="{ 'is-visible': show }">
+    <div class="wm" :class="{ 'wm--in': animateIn }">
       <div class="wm__overlay" @click="close"></div>
 
-      <div
-        ref="panel"
-        class="wm__panel"
-        role="dialog"
-        aria-modal="true"
-        :aria-label="work.title"
-      >
+      <div ref="panel" class="wm__panel" role="dialog" aria-modal="true" :aria-label="work.title">
         <button
           ref="closeBtn"
           class="wm__close"
@@ -116,24 +133,28 @@ onBeforeUnmount(() => {
           </svg>
         </button>
 
-        <!-- Медиа -->
-        <div class="wm__media">
+        <!-- Медиа: общий view-transition-name → морф из карточки; + tilt по курсору -->
+        <div
+          ref="mediaEl"
+          class="wm__media"
+          @pointermove="onMediaMove"
+          @pointerleave="onMediaLeave"
+        >
           <video
             v-if="videoSrc"
             ref="videoEl"
             class="wm__video"
             :src="videoSrc"
             :poster="work.poster || undefined"
-            autoplay
+            :style="mediaStyle"
             muted
             loop
             controls
             playsinline
           ></video>
-          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" />
+          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" :style="mediaStyle" />
         </div>
 
-        <!-- Текст -->
         <div class="wm__info">
           <h3 class="wm__title">{{ work.title }}</h3>
           <ul v-if="work.tags.length" class="wm__tags">
@@ -171,8 +192,6 @@ $bp-lg: 1024px;
     background: rgba(3, 4, 12, 0.72);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    opacity: 0;
-    transition: opacity 0.25s var(--ease-out);
   }
 
   &__panel {
@@ -190,11 +209,6 @@ $bp-lg: 1024px;
     backdrop-filter: blur(24px) saturate(120%);
     -webkit-backdrop-filter: blur(24px) saturate(120%);
     box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-    transition:
-      opacity 0.28s var(--ease-out),
-      transform 0.28s var(--ease-out);
 
     @include up($bp-lg) {
       flex-direction: row;
@@ -202,17 +216,16 @@ $bp-lg: 1024px;
     }
   }
 
-  &.is-visible {
+  /* Появление — только фолбэк (без View Transitions) */
+  &--in {
     .wm__overlay {
-      opacity: 1;
+      animation: wmOverlay 0.3s var(--ease-out) both;
     }
     .wm__panel {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+      animation: wmPanel 0.34s var(--ease-out) both;
     }
   }
 
-  /* Кнопка закрытия */
   &__close {
     position: absolute;
     z-index: 3;
@@ -238,7 +251,7 @@ $bp-lg: 1024px;
     }
   }
 
-  /* Медиа — работу показываем целиком (contain), а не кропаем */
+  /* Медиа — целиком (contain), несёт общий view-transition-name */
   &__media {
     position: relative;
     flex: none;
@@ -247,7 +260,7 @@ $bp-lg: 1024px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
+    view-transition-name: work-media;
 
     @include up($bp-lg) {
       width: 58%;
@@ -263,6 +276,8 @@ $bp-lg: 1024px;
     max-height: 56vh;
     object-fit: contain;
     display: block;
+    transition: transform 0.3s var(--ease-out);
+    will-change: transform;
 
     @include up($bp-lg) {
       height: 100%;
@@ -270,7 +285,6 @@ $bp-lg: 1024px;
     }
   }
 
-  /* Текст */
   &__info {
     flex: 1 1 auto;
     min-height: 0;
@@ -318,11 +332,46 @@ $bp-lg: 1024px;
   }
 }
 
+@keyframes wmOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes wmPanel {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .wm__overlay,
-  .wm__panel,
+  .wm__img,
+  .wm__video,
   .wm__close {
     transition: none;
   }
+  .wm--in .wm__overlay,
+  .wm--in .wm__panel {
+    animation: none;
+  }
+}
+</style>
+
+<!-- Глобально: тайминг морфа медиа карточка↔модалка (псевдоэлементы VT — на уровне документа) -->
+<style>
+::view-transition-group(work-media) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-image-pair(work-media) {
+  border-radius: 18px;
+  overflow: hidden;
 }
 </style>
