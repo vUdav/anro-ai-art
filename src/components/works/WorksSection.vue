@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useWorks } from '../../composables/useContent'
 import { useMotionPreset } from '../../composables/useMotionPreset'
@@ -8,30 +8,60 @@ import WorkModal from './WorkModal.vue'
 
 const { t } = useI18n()
 const { works } = useWorks()
-const { fadeUp, scaleIn } = useMotionPreset()
+const { fadeUp, reduced } = useMotionPreset()
 
-// Главная (полноширинная) работа = первая избранная, иначе первая по порядку
+// Доминанта = первая избранная работа, иначе первая по порядку
 const featured = computed<Work | null>(
   () => works.value.find((w) => w.featured) ?? works.value[0] ?? null,
 )
-// Сетка = остальные работы (до 8)
-const grid = computed<Work[]>(() =>
-  works.value.filter((w) => w !== featured.value).slice(0, 8),
-)
+// Остальные — в галерею (до 9, чтобы масонри заполнялось ровно 3×3)
+const rest = computed<Work[]>(() => works.value.filter((w) => w !== featured.value).slice(0, 9))
 
 // Превью: постер (для видео) или само изображение
 function thumb(w: Work) {
   return w.poster || w.media
+}
+// Вариант пропорции плитки — ломает ровную сетку (масонри)
+const ratios = ['is-a', 'is-b', 'is-c', 'is-b']
+function ratioFor(j: number) {
+  return ratios[j % ratios.length]
 }
 
 const active = ref<Work | null>(null)
 function open(w: Work) {
   active.value = w
 }
+
+// ── Denoise-проявление: плитки «резко проявляются из шума» при входе в кадр ──
+const root = ref<HTMLElement | null>(null)
+let io: IntersectionObserver | null = null
+
+onMounted(() => {
+  const tiles = root.value?.querySelectorAll<HTMLElement>('.tile')
+  if (!tiles?.length) return
+  if (reduced.value || !('IntersectionObserver' in window)) {
+    tiles.forEach((el) => el.classList.add('is-in'))
+    return
+  }
+  io = new IntersectionObserver(
+    (entries, obs) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in')
+          obs.unobserve(e.target)
+        }
+      }
+    },
+    { threshold: 0.18 },
+  )
+  tiles.forEach((el) => io!.observe(el))
+})
+
+onBeforeUnmount(() => io?.disconnect())
 </script>
 
 <template>
-  <section id="works" class="works" aria-labelledby="works-title">
+  <section id="works" ref="root" class="works" aria-labelledby="works-title">
     <div class="works__stage">
       <header class="works__head">
         <p class="works__eyebrow text-gradient" v-motion="fadeUp(0)">
@@ -44,46 +74,53 @@ function open(w: Work) {
 
       <p v-if="!works.length" class="works__empty">{{ t('portfolio.empty') }}</p>
 
-      <!-- Главная работа на всю ширину -->
+      <!-- Доминанта: кинематографичная ведущая работа -->
       <button
         v-if="featured"
-        class="feature"
+        class="tile lead"
         type="button"
-        v-motion="fadeUp(120)"
+        :style="{ '--i': 0 }"
+        :aria-label="featured.title"
         @click="open(featured)"
       >
-        <span class="feature__media">
-          <img class="feature__img" :src="thumb(featured)" :alt="featured.alt" loading="lazy" />
-          <span v-if="featured.type === 'video'" class="badge" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
-          </span>
+        <span class="tile__media">
+          <img :src="thumb(featured)" :alt="featured.alt" loading="lazy" />
         </span>
-        <span class="feature__info">
-          <span class="feature__name">{{ featured.title }}</span>
+        <span v-if="featured.type === 'video'" class="badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="15" height="15"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+        </span>
+        <span class="lead__cap">
+          <span class="lead__name">{{ featured.title }}</span>
           <span v-if="featured.tags.length" class="tags">
             <span v-for="(tag, i) in featured.tags" :key="i" class="tags__item">{{ tag }}</span>
           </span>
-          <span v-if="featured.description" class="feature__desc">{{ featured.description }}</span>
         </span>
       </button>
 
-      <!-- Сетка других работ -->
-      <ul class="grid">
-        <li v-for="(w, i) in grid" :key="w.slug" v-motion="scaleIn(60 + i * 40)">
-          <button class="card" type="button" @click="open(w)">
-            <span class="card__media">
-              <img class="card__img" :src="thumb(w)" :alt="w.alt" loading="lazy" />
-              <span v-if="w.type === 'video'" class="badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
-              </span>
-            </span>
-            <span class="card__caption">
-              <span class="card__name">{{ w.title }}</span>
-              <span v-if="w.tags.length" class="card__tag">{{ w.tags[0] }}</span>
-            </span>
-          </button>
-        </li>
-      </ul>
+      <!-- Denoise-галерея: смещённая масонри-сетка -->
+      <div class="masonry">
+        <button
+          v-for="(w, j) in rest"
+          :key="w.slug"
+          class="tile"
+          :class="ratioFor(j)"
+          type="button"
+          :style="{ '--i': j + 1 }"
+          :aria-label="w.title"
+          @click="open(w)"
+        >
+          <span class="tile__media">
+            <img :src="thumb(w)" :alt="w.alt" loading="lazy" />
+          </span>
+          <span v-if="w.type === 'video'" class="badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+          </span>
+          <span class="tile__cap">
+            <span class="tile__name">{{ w.title }}</span>
+            <span v-if="w.tags.length" class="tile__tag">{{ w.tags[0] }}</span>
+          </span>
+        </button>
+      </div>
     </div>
 
     <WorkModal v-if="active" :work="active" @close="active = null" />
@@ -96,62 +133,10 @@ $bp-sm: 480px;
 $bp-md: 768px;
 $bp-lg: 1024px;
 $bp-xl: 1280px;
-$bp-2xl: 1600px;
 
 @mixin up($bp) {
   @media (min-width: $bp) {
     @content;
-  }
-}
-
-/* ── Наследуемые поверхности ── */
-%surface {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 18px;
-}
-
-%glass {
-  @extend %surface;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%);
-}
-
-/* Значок видео */
-.badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(6, 8, 20, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: var(--text-100);
-  padding-left: 2px; /* оптическая центровка треугольника */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-/* Чипы-теги */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-
-  &__item {
-    padding: 0.3rem 0.7rem;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--text-200);
-    white-space: nowrap;
   }
 }
 
@@ -208,25 +193,57 @@ $bp-2xl: 1600px;
   }
 }
 
-/* ── Общий приём: неон-бордер + свечение за курсором ── */
-%interactive {
+/* ── Плитка (общий приём: денойз + неон-кромка на ховере) ── */
+.tile {
   position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
   isolation: isolate;
   cursor: pointer;
-  padding: 0;
+  background: #0a0c1c;
   text-align: left;
-  overflow: hidden;
   color: inherit;
   font: inherit;
-  transition: box-shadow 0.35s var(--ease-out);
+  transition: box-shadow 0.4s var(--ease-out);
 
-  &::before {
+  &__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      /* стартовое «зашумлённое» состояние — уходит при проявлении */
+      filter: blur(14px) saturate(0.45) brightness(0.68);
+      transform: scale(1.12);
+      transition:
+        filter 0.9s var(--ease-out),
+        transform 0.9s var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 55ms);
+    }
+  }
+
+  /* денойз при попадании в кадр */
+  &.is-in &__media img {
+    filter: none;
+    transform: scale(1);
+  }
+
+  /* неон-кромка (маска показывает только рамку) */
+  &::after {
     content: '';
     position: absolute;
     inset: 0;
-    z-index: 4;
+    z-index: 3;
     border-radius: inherit;
-    padding: 1px;
+    padding: 1.5px;
     background: var(--grad-primary);
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
@@ -234,172 +251,178 @@ $bp-2xl: 1600px;
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.35s var(--ease-out);
+    transition: opacity 0.4s var(--ease-out);
     pointer-events: none;
   }
 
   &:hover,
   &:focus-visible {
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
-    &::before {
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    &::after {
       opacity: 1;
     }
   }
+  &.is-in:hover &__media img,
+  &.is-in:focus-visible &__media img {
+    transform: scale(1.05);
+    filter: saturate(1.05);
+  }
 }
 
-/* ── Главная работа ── */
-.feature {
-  @extend %interactive;
-  @extend %glass;
+/* Значок видео */
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(6, 8, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-100);
+  padding-left: 2px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Чипы-теги */
+.tags {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  border-radius: 24px;
-  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  flex-wrap: wrap;
+  gap: 0.4rem;
 
-  @include up($bp-lg) {
-    flex-direction: row;
-    align-items: stretch;
+  &__item {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(6, 8, 20, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-100);
+    white-space: nowrap;
+  }
+}
+
+/* ── Доминанта ── */
+.lead {
+  aspect-ratio: 16 / 12;
+  margin-bottom: clamp(0.85rem, 1.6vw, 1.5rem);
+
+  @include up($bp-md) {
+    aspect-ratio: 16 / 8;
   }
 
-  &__media {
-    position: relative;
-    flex: none;
-    width: 100%;
-    aspect-ratio: 16 / 11;
-    overflow: hidden;
-
-    @include up($bp-lg) {
-      width: 56%;
-      aspect-ratio: auto;
-    }
+  /* нижний скрим, чтобы подпись читалась поверх медиа */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(0deg, rgba(3, 4, 12, 0.85) 0%, rgba(3, 4, 12, 0) 48%);
+    pointer-events: none;
   }
 
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s var(--ease-out);
-  }
-  &:hover &__img {
-    transform: scale(1.03);
-  }
-
-  &__info {
+  &__cap {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: clamp(1.5rem, 3vw, 2.75rem);
-
-    @include up($bp-lg) {
-      width: 44%;
-      justify-content: center;
-    }
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
   }
 
   &__name {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
-    line-height: 1.1;
+    font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+    line-height: 1.05;
     color: var(--text-100);
   }
+}
 
-  &__desc {
-    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-    line-height: 1.7;
-    color: var(--text-200);
+/* ── Масонри-галерея ── */
+.masonry {
+  columns: 2;
+  column-gap: clamp(0.85rem, 1.6vw, 1.5rem);
+
+  @include up($bp-md) {
+    columns: 3;
+  }
+
+  .tile {
+    width: 100%;
+    margin-bottom: clamp(0.85rem, 1.6vw, 1.5rem);
+    break-inside: avoid;
   }
 }
 
-/* ── Сетка ── */
-.grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-auto-rows: 1fr;
-  gap: clamp(0.85rem, 1.6vw, 1.25rem);
-
-  @include up($bp-sm) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  @include up($bp-lg) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  @include up($bp-xl) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+/* пропорции плиток — ломаный ритм */
+.tile.is-a {
+  aspect-ratio: 4 / 5;
+}
+.tile.is-b {
+  aspect-ratio: 3 / 4;
+}
+.tile.is-c {
+  aspect-ratio: 1 / 1;
 }
 
-.card {
-  @extend %interactive;
-  @extend %surface;
+/* подпись плитки — проявляется на ховере/фокусе */
+.tile__cap {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  border-radius: 18px;
-
-  &__media {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-top: 125%; /* 4:5 — жёстко фиксируем высоту превью от ширины (кроп) */
-    overflow: hidden;
-    flex: none;
-  }
-
-  &__img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s var(--ease-out);
-  }
-  &:hover &__img {
-    transform: scale(1.05);
-  }
-
-  &__caption {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.85rem 1rem;
-  }
-
-  &__name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.98rem;
-    color: var(--text-100);
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__tag {
-    flex: none;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--text-300);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(0deg, rgba(3, 4, 12, 0.82) 0%, rgba(3, 4, 12, 0) 100%);
+  transform: translateY(101%);
+  transition: transform 0.4s var(--ease-out);
+}
+.tile:hover .tile__cap,
+.tile:focus-visible .tile__cap {
+  transform: translateY(0);
+}
+.tile__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-100);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tile__tag {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-200);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .feature,
-  .feature__img,
-  .card,
-  .card__img {
+  .tile__media img {
+    filter: none !important;
+    transform: none !important;
+    transition: none;
+  }
+  .tile__cap {
     transition: none;
   }
 }

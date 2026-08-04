@@ -1,0 +1,28 @@
+{
+  "slug": "motion-01",
+  "type": "video",
+  "category": "ads",
+  "media": "/media/videos/motion-01.mp4",
+  "poster": "/media/works/motion-01-poster.webp",
+  "externalUrl": "",
+  "featured": false,
+  "order": 10,
+  "ru": {
+    "title": "Моушн-ролик",
+    "alt": "Кадр из моушн-ролика",
+    "description": "Короткий моушн-ролик: анимация, ритм и цветокоррекция под музыку. Вертикальный формат для reels, сторис и анонсов.",
+    "tags": ["Видео", "Моушн", "Kling", "Анимация"]
+  },
+  "en": {
+    "title": "Motion Reel",
+    "alt": "Frame from a motion reel",
+    "description": "A short motion reel: animation, rhythm and color grading set to music. Vertical format for reels, stories and teasers.",
+    "tags": ["Video", "Motion", "Kling", "Animation"]
+  },
+  "be": {
+    "title": "Моўшн-ролік",
+    "alt": "Кадр з моўшн-роліка",
+    "description": "Кароткі моўшн-ролік: анімацыя, рытм і колеракарэкцыя пад музыку. Вертыкальны фармат для reels, сторыс і анонсаў.",
+    "tags": ["Відэа", "Моўшн", "Kling", "Анімацыя"]
+  }
+}
