@@ -7,12 +7,21 @@ import type { Work } from '../../types/content'
 const props = defineProps<{ work: Work }>()
 const emit = defineEmits<{ close: [] }>()
 
-const { t } = useI18n()
+const { t, te } = useI18n()
 
 const closeBtn = ref<HTMLButtonElement | null>(null)
 const videoEl = ref<HTMLVideoElement | null>(null)
 const panel = ref<HTMLElement | null>(null)
+const mediaEl = ref<HTMLElement | null>(null)
 let prevFocus: HTMLElement | null = null
+
+// Высота панели = высота медиа (текст скроллится внутри), чтобы вокруг
+// горизонтального медиа не было пустых полос сверху/снизу
+const panelH = ref<string | undefined>(undefined)
+function measure() {
+  const h = mediaEl.value?.getBoundingClientRect().height ?? 0
+  if (h > 0) panelH.value = `${Math.round(h)}px`
+}
 
 const reduce =
   typeof window !== 'undefined' &&
@@ -29,6 +38,12 @@ const videoSrc = computed(() => {
   return /\.(mp4|webm|ogg|mov)$/i.test(props.work.media) ? props.work.media : ''
 })
 const imageSrc = computed(() => props.work.poster || props.work.media)
+
+// Локализованная категория работы для надзаголовка (если есть перевод)
+const categoryLabel = computed(() => {
+  const k = `categories.${props.work.category}`
+  return te(k) ? t(k) : ''
+})
 
 const bodyLock = useScrollLock(typeof document !== 'undefined' ? document.body : null)
 let playTimer = 0
@@ -69,6 +84,8 @@ onMounted(() => {
   prevFocus = document.activeElement as HTMLElement | null
   bodyLock.value = true
   window.addEventListener('keydown', onKey)
+  window.addEventListener('resize', measure)
+  requestAnimationFrame(measure)
   closeBtn.value?.focus()
 
   // Видео стартует с задержкой: сперва виден постер (совпадает с превью),
@@ -83,6 +100,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('resize', measure)
   window.clearTimeout(playTimer)
   bodyLock.value = false
   videoEl.value?.pause()
@@ -95,7 +113,14 @@ onBeforeUnmount(() => {
     <div class="wm" :class="{ 'wm--in': animateIn }">
       <div class="wm__overlay" @click="close"></div>
 
-      <div ref="panel" class="wm__panel" role="dialog" aria-modal="true" :aria-label="work.title">
+      <div
+        ref="panel"
+        class="wm__panel"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="work.title"
+        :style="{ '--panel-h': panelH }"
+      >
         <button
           ref="closeBtn"
           class="wm__close"
@@ -115,7 +140,7 @@ onBeforeUnmount(() => {
         </button>
 
         <!-- Медиа: общий view-transition-name → морф из карточки -->
-        <div class="wm__media">
+        <div ref="mediaEl" class="wm__media">
           <video
             v-if="videoSrc"
             ref="videoEl"
@@ -126,12 +151,16 @@ onBeforeUnmount(() => {
             loop
             controls
             playsinline
+            @loadedmetadata="measure"
+            @loadeddata="measure"
           ></video>
-          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" />
+          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" @load="measure" />
         </div>
 
         <div class="wm__info">
+          <p v-if="categoryLabel" class="wm__eyebrow text-gradient">{{ categoryLabel }}</p>
           <h3 class="wm__title">{{ work.title }}</h3>
+          <span class="wm__rule" aria-hidden="true"></span>
           <ul v-if="work.tags.length" class="wm__tags">
             <li v-for="(tag, i) in work.tags" :key="i" class="wm__tag">{{ tag }}</li>
           </ul>
@@ -189,6 +218,8 @@ $bp-lg: 1024px;
       flex-direction: row;
       width: auto; // ширина панели = медиа + текст, по контенту
       max-width: min(1280px, 95vw);
+      // высота панели = высоте медиа → нет пустых полос вокруг горизонтального медиа
+      height: var(--panel-h, auto);
       max-height: 88vh;
     }
   }
@@ -233,7 +264,6 @@ $bp-lg: 1024px;
     position: relative;
     flex: none;
     width: 100%;
-    max-height: 56vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -242,22 +272,22 @@ $bp-lg: 1024px;
     @include up($bp-lg) {
       flex: 0 1 auto;
       width: auto; // коробка = размер медиа (лимиты — на самом медиа)
-      max-height: none;
       align-self: center;
     }
   }
 
   &__img,
   &__video {
-    width: 100%;
-    height: auto;
-    max-height: 56vh;
-    object-fit: contain;
     display: block;
+    // размер по собственным пропорциям медиа → бокс = медиа, без пустых полей
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    margin-inline: auto;
 
     @include up($bp-lg) {
-      width: auto;
-      height: auto;
       max-width: min(64vw, 860px); // горизонтальные крупные, не сжаты в узкую колонку
       max-height: 86vh; // вертикальные высокие
     }
@@ -267,7 +297,7 @@ $bp-lg: 1024px;
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
-    padding: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(1.75rem, 3vw, 2.75rem);
 
     @include up($bp-lg) {
       width: clamp(300px, 30vw, 380px);
@@ -275,38 +305,70 @@ $bp-lg: 1024px;
     }
   }
 
-  &__title {
-    margin: 0 0 1rem;
+  /* Надзаголовок-категория (фирменный gradient-eyebrow) */
+  &__eyebrow {
+    margin: 0 0 0.85rem;
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    text-indent: 0.34em;
+    display: inline-block;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
     color: var(--text-100);
+    text-wrap: balance;
+  }
+
+  /* Тонкая линия-разделитель с неон-акцентом слева */
+  &__rule {
+    display: block;
+    height: 1px;
+    margin: clamp(1.1rem, 2vw, 1.6rem) 0;
+    background: linear-gradient(
+      90deg,
+      var(--neon-cyan),
+      var(--neon-violet) 22%,
+      rgba(255, 255, 255, 0.09) 55%,
+      rgba(255, 255, 255, 0.09)
+    );
   }
 
   &__tags {
     list-style: none;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1.6rem;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem 0.5rem;
   }
 
   &__tag {
-    padding: 0.35rem 0.8rem;
+    padding: 0.28rem 0.7rem;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    font-size: 0.8rem;
+    background: transparent;
+    font-size: 0.72rem;
     font-weight: 500;
-    color: var(--text-200);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-300);
     white-space: nowrap;
   }
 
   &__desc {
     margin: 0;
+    max-width: 46ch;
     font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-    line-height: 1.7;
+    line-height: 1.75;
     color: var(--text-200);
   }
 }
