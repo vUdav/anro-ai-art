@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useScrollLock } from '@vueuse/core'
 import type { Work } from '../../types/content'
@@ -12,7 +12,6 @@ const { t } = useI18n()
 const closeBtn = ref<HTMLButtonElement | null>(null)
 const videoEl = ref<HTMLVideoElement | null>(null)
 const panel = ref<HTMLElement | null>(null)
-const mediaEl = ref<HTMLElement | null>(null)
 let prevFocus: HTMLElement | null = null
 
 const reduce =
@@ -30,24 +29,6 @@ const videoSrc = computed(() => {
   return /\.(mp4|webm|ogg|mov)$/i.test(props.work.media) ? props.work.media : ''
 })
 const imageSrc = computed(() => props.work.poster || props.work.media)
-
-// Parallax-tilt медиа по курсору (работа будто парит)
-const tilt = reactive({ rx: 0, ry: 0 })
-const mediaStyle = computed(() => ({
-  transform: `perspective(1100px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
-}))
-function onMediaMove(e: PointerEvent) {
-  if (reduce || !mediaEl.value) return
-  const r = mediaEl.value.getBoundingClientRect()
-  const px = (e.clientX - r.left) / r.width - 0.5
-  const py = (e.clientY - r.top) / r.height - 0.5
-  tilt.rx = -py * 5
-  tilt.ry = px * 7
-}
-function onMediaLeave() {
-  tilt.rx = 0
-  tilt.ry = 0
-}
 
 const bodyLock = useScrollLock(typeof document !== 'undefined' ? document.body : null)
 let playTimer = 0
@@ -133,26 +114,20 @@ onBeforeUnmount(() => {
           </svg>
         </button>
 
-        <!-- Медиа: общий view-transition-name → морф из карточки; + tilt по курсору -->
-        <div
-          ref="mediaEl"
-          class="wm__media"
-          @pointermove="onMediaMove"
-          @pointerleave="onMediaLeave"
-        >
+        <!-- Медиа: общий view-transition-name → морф из карточки -->
+        <div class="wm__media">
           <video
             v-if="videoSrc"
             ref="videoEl"
             class="wm__video"
             :src="videoSrc"
             :poster="work.poster || undefined"
-            :style="mediaStyle"
             muted
             loop
             controls
             playsinline
           ></video>
-          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" :style="mediaStyle" />
+          <img v-else class="wm__img" :src="imageSrc" :alt="work.alt" />
         </div>
 
         <div class="wm__info">
@@ -212,7 +187,9 @@ $bp-lg: 1024px;
 
     @include up($bp-lg) {
       flex-direction: row;
-      max-height: 82vh;
+      width: auto; // ширина панели = медиа + текст, по контенту
+      max-width: min(1280px, 95vw);
+      max-height: 88vh;
     }
   }
 
@@ -263,9 +240,10 @@ $bp-lg: 1024px;
     view-transition-name: work-media;
 
     @include up($bp-lg) {
-      width: 58%;
+      flex: 0 1 auto;
+      width: auto; // коробка = размер медиа (лимиты — на самом медиа)
       max-height: none;
-      align-self: stretch;
+      align-self: center;
     }
   }
 
@@ -276,12 +254,12 @@ $bp-lg: 1024px;
     max-height: 56vh;
     object-fit: contain;
     display: block;
-    transition: transform 0.3s var(--ease-out);
-    will-change: transform;
 
     @include up($bp-lg) {
-      height: 100%;
-      max-height: none;
+      width: auto;
+      height: auto;
+      max-width: min(64vw, 860px); // горизонтальные крупные, не сжаты в узкую колонку
+      max-height: 86vh; // вертикальные высокие
     }
   }
 
@@ -292,7 +270,8 @@ $bp-lg: 1024px;
     padding: clamp(1.5rem, 3vw, 2.5rem);
 
     @include up($bp-lg) {
-      width: 42%;
+      width: clamp(300px, 30vw, 380px);
+      flex: 0 0 auto;
     }
   }
 
@@ -352,8 +331,6 @@ $bp-lg: 1024px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wm__img,
-  .wm__video,
   .wm__close {
     transition: none;
   }
