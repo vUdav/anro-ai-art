@@ -24,18 +24,14 @@ interface P {
 
 let raf = 0
 let cleanup: (() => void) | null = null
-let hovered = false
 let scanStart = 0 // 0 — нет скана; -1 — начать на след. кадре; >0 — timestamp
-let lastScanEnd = -100000
 
 defineExpose({
+  // Скан проигрывается один раз при наведении (не в момент активного скана)
   onEnter() {
-    hovered = true
     if (scanStart === 0) scanStart = -1
   },
-  onLeave() {
-    hovered = false
-  },
+  onLeave() {},
 })
 
 function colorFor(t: number, alpha = 0.85): string {
@@ -243,13 +239,10 @@ onMounted(() => {
       const st = (now - scanStart) / SCAN_MS
       if (st >= 1) {
         scanStart = 0
-        lastScanEnd = now
       } else {
         scanY = st * H
         scanA = Math.sin(st * Math.PI)
       }
-    } else if (hovered && now - lastScanEnd > 520) {
-      scanStart = -1
     }
 
     for (const p of particles) {
