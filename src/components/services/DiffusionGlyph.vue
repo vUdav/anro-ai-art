@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 
-// Живое диффузионное поле карточки услуги: глиф (кадр для image, ▶ для video)
-// собирается из шума в верхней зоне, вокруг — приглушённое поле-«шум» на всю
-// карточку. Курсор локально расталкивает частицы (они возвращаются — «раз/до-
-// проявление»); при наведении неон-скан-линия проходит сверху вниз.
+// Диффузионное поле карточки услуги: глиф (кадр для image, ▶ для video)
+// собирается из шума в верхней зоне, вокруг — приглушённое поле-«шум». Частицы
+// тихо «дышат» как слово в hero (дрейф + редкие искры). При наведении по полю
+// проходит неон-скан-линия (циклично), и частицы на её фронте реагируют —
+// вспыхивают и слегка расступаются рябью. Курсорного расталкивания нет.
 const props = defineProps<{ kind: 'image' | 'video' }>()
 
 const rootEl = ref<HTMLElement | null>(null)
@@ -16,34 +17,28 @@ interface P {
   ox: number // смещение (затухает к 0)
   oy: number
   seed: number
-  col: string
+  ci: number // индекс базового цвета в LUT
   alpha: number
   size: number
-  glyph: boolean
 }
 
 let raf = 0
 let cleanup: (() => void) | null = null
-
-// Наружу — императивный указатель/ховер (события ловит карточка-родитель)
-const mouse = { x: -9999, y: -9999, active: false }
+let hovered = false
 let scanStart = 0 // 0 — нет скана; -1 — начать на след. кадре; >0 — timestamp
+let lastScanEnd = -100000
+
 defineExpose({
-  onPointer(x: number, y: number) {
-    mouse.x = x
-    mouse.y = y
-    mouse.active = true
-  },
   onEnter() {
-    scanStart = -1 // одноразовый скан сверху вниз
+    hovered = true
+    if (scanStart === 0) scanStart = -1
   },
   onLeave() {
-    mouse.active = false
+    hovered = false
   },
 })
 
-// Неон-палитра (cyan → blue → violet → pink), как в герое
-function colorFor(t: number, alpha = 0.9): string {
+function colorFor(t: number, alpha = 0.85): string {
   const stops = [
     [34, 211, 238],
     [77, 124, 255],
@@ -69,12 +64,16 @@ onMounted(() => {
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const isMobile = window.innerWidth < 768
-  const GLYPH_BUDGET = isMobile ? 360 : 540
-  const AMBIENT = isMobile ? 42 : 72
-  const DECAY = 0.9 // затухание смещения к цели
+  const GLYPH_BUDGET = isMobile ? 620 : 1050 // плотнее глиф — меньше «дыр»
+  const AMBIENT = isMobile ? 54 : 84
+  const DECAY = 0.9
   const BLOOM = isMobile ? 3 : 5
-  const REPEL_R = 84
-  const SCAN_MS = 820
+  const SCAN_MS = 900
+  const BAND = 46 // ширина зоны реакции у скан-фронта
+
+  // LUT градиента — базовые цвета частиц (без аллокаций в кадре)
+  const LUT: string[] = []
+  for (let i = 0; i < 24; i++) LUT.push(colorFor(i / 23, 0.85))
 
   const buf = document.createElement('canvas')
   const bctx = buf.getContext('2d')!
@@ -119,7 +118,6 @@ onMounted(() => {
     o.lineWidth = lw
     roundRect(o, ox + lw / 2, oy + lw / 2, s - lw, s - lw, s * 0.16)
     o.stroke()
-
     if (props.kind === 'image') {
       o.beginPath()
       o.arc(ox + s * 0.34, oy + s * 0.32, s * 0.08, 0, Math.PI * 2)
@@ -143,8 +141,8 @@ onMounted(() => {
   }
 
   function glyphTargets(): { x: number; y: number }[] {
-    const s = Math.min(W * 0.46, 150)
-    const band = Math.min(H * 0.44, 190) // верхняя зона под глиф
+    const s = Math.min(W * 0.5, 168)
+    const band = Math.min(H * 0.44, 190)
     const gx = (W - s) / 2
     const gy = Math.max(14, (band - s) / 2 + 8)
     const off = document.createElement('canvas')
@@ -154,8 +152,9 @@ onMounted(() => {
     drawGlyph(o, s, gx, gy)
     const data = o.getImageData(0, 0, W, H).data
     const pts: { x: number; y: number }[] = []
-    for (let y = 0; y < H; y += 2) {
-      for (let x = 0; x < W; x += 2) {
+    // плотный сэмпл (шаг 1) — больше точек, чётче форма
+    for (let y = 0; y < H; y += 1) {
+      for (let x = 0; x < W; x += 1) {
         if (data[(y * W + x) * 4 + 3] > 128) pts.push({ x, y })
       }
     }
@@ -166,10 +165,13 @@ onMounted(() => {
     return pts.slice(0, GLYPH_BUDGET)
   }
 
+  function ciOf(x: number) {
+    return Math.max(0, Math.min(23, (x / W) * 24) | 0)
+  }
+
   function build() {
     const g = glyphTargets()
     particles = []
-    // Глиф — ярче, в верхней зоне
     for (const t of g) {
       particles.push({
         tx: t.x,
@@ -177,13 +179,13 @@ onMounted(() => {
         ox: Math.random() * W - t.x,
         oy: Math.random() * H - t.y,
         seed: Math.random() * Math.PI * 2,
-        col: colorFor(t.x / W, 0.85),
+        ci: ciOf(t.x),
         alpha: 0.85,
-        size: 1.5,
-        glyph: true,
+        size: 1.7,
       })
     }
-    // Приглушённое поле-шум на всю карточку (под текстом)
+    // Фоновое поле-шум: в покое НЕВИДИМО (alpha 0), вспыхивает только
+    // когда по нему проходит скан-линия
     for (let i = 0; i < AMBIENT; i++) {
       const hx = Math.random() * W
       const hy = Math.random() * H
@@ -193,15 +195,14 @@ onMounted(() => {
         ox: Math.random() * W - hx,
         oy: Math.random() * H - hy,
         seed: Math.random() * Math.PI * 2,
-        col: colorFor(hx / W, 0.16),
-        alpha: 0.16,
-        size: 1.2,
-        glyph: false,
+        ci: ciOf(hx),
+        alpha: 0,
+        size: 1.3,
       })
     }
   }
 
-  // Начать сборку: лёгкий выброс, затем стягивание к целям
+  // Сборка из шума: лёгкий выброс, затем стягивание к целям
   function startResolve() {
     mode = 'resolved'
     for (const p of particles) {
@@ -234,7 +235,7 @@ onMounted(() => {
     bctx.clearRect(0, 0, W, H)
     bctx.globalCompositeOperation = 'lighter'
 
-    // Скан-фронт (одноразовый при наведении)
+    // Скан-фронт: циклично, пока карточка под курсором
     let scanY = -1
     let scanA = 0
     if (scanStart === -1) scanStart = now
@@ -242,10 +243,13 @@ onMounted(() => {
       const st = (now - scanStart) / SCAN_MS
       if (st >= 1) {
         scanStart = 0
+        lastScanEnd = now
       } else {
         scanY = st * H
-        scanA = Math.sin(st * Math.PI) // плавно ярче к середине
+        scanA = Math.sin(st * Math.PI)
       }
+    } else if (hovered && now - lastScanEnd > 520) {
+      scanStart = -1
     }
 
     for (const p of particles) {
@@ -253,49 +257,47 @@ onMounted(() => {
         p.ox *= DECAY
         p.oy *= DECAY
       }
-      let x = p.tx + p.ox
-      let y = p.ty + p.oy
 
-      // Курсор локально расталкивает; частицы вернутся через затухание
-      if (mouse.active) {
-        const dx = x - mouse.x
-        const dy = y - mouse.y
-        const d2 = dx * dx + dy * dy
-        if (d2 < REPEL_R * REPEL_R) {
-          const d = Math.sqrt(d2) || 1
-          const f = (1 - d / REPEL_R) * 9
-          p.ox += (dx / d) * f
-          p.oy += (dy / d) * f
-        }
+      // Редкие «искры» — частица срывается и возвращается (как в hero)
+      if (started && Math.random() < 0.0004) {
+        p.ox += (Math.random() - 0.5) * 40
+        p.oy += (Math.random() - 0.5) * 40
       }
 
-      // Тихий дрейф — поле «дышит»
-      const drift = mode === 'noise' ? 3 : p.glyph ? 1.1 : 1.6
-      x += Math.sin(time * 0.7 + p.seed) * drift
-      y += Math.cos(time * 0.6 + p.seed * 1.2) * drift
+      const y0 = p.ty + p.oy
 
-      // Подсветка на проходе скан-фронта
-      let a = p.alpha
-      let sz = p.size
+      // Реакция на скан-линию: вспышка + рябь (частицы расступаются от фронта)
+      let aBoost = 0
+      let szBoost = 0
       if (scanY >= 0) {
-        const near = 1 - Math.min(1, Math.abs(y - scanY) / 46)
+        const near = 1 - Math.min(1, Math.abs(y0 - scanY) / BAND)
         if (near > 0) {
-          a = Math.min(1, a + near * scanA * 0.75)
-          sz = p.size + near * scanA * 1.1
+          aBoost = near * scanA * 0.7
+          szBoost = near * scanA * 1.1
+          p.oy += (y0 >= scanY ? 1 : -1) * near * scanA * 1.1
         }
       }
-      bctx.fillStyle = a === p.alpha ? p.col : colorFor(p.tx / W, a)
-      bctx.fillRect(x, y, sz, sz)
+
+      const x = p.tx + p.ox + Math.sin(time * 0.7 + p.seed) * 1.5
+      const y = p.ty + p.oy + Math.cos(time * 0.6 + p.seed * 1.2) * 1.5
+
+      // Фоновые частицы (alpha 0) видны только на фронте скана
+      const a = p.alpha + aBoost
+      if (a > 0.02) {
+        bctx.fillStyle = aBoost > 0 ? colorFor(p.tx / W, Math.min(1, a)) : LUT[p.ci]
+        const sz = p.size + szBoost
+        bctx.fillRect(x, y, sz, sz)
+      }
     }
 
-    // Видимая скан-линия: неон-градиент + мягкая полоса (bloom добавит свечение)
+    // Видимая скан-линия: мягкая полоса + неон-градиент (bloom добавит свечение)
     if (scanY >= 0) {
       bctx.fillStyle = `rgba(120,180,255,${0.05 * scanA})`
       bctx.fillRect(0, scanY - 13, W, 26)
       const grd = bctx.createLinearGradient(0, 0, W, 0)
-      grd.addColorStop(0, `rgba(34,211,238,${0.65 * scanA})`)
-      grd.addColorStop(0.55, `rgba(139,92,246,${0.65 * scanA})`)
-      grd.addColorStop(1, `rgba(236,72,153,${0.65 * scanA})`)
+      grd.addColorStop(0, `rgba(34,211,238,${0.7 * scanA})`)
+      grd.addColorStop(0.55, `rgba(139,92,246,${0.7 * scanA})`)
+      grd.addColorStop(1, `rgba(236,72,153,${0.7 * scanA})`)
       bctx.strokeStyle = grd
       bctx.lineWidth = 2
       bctx.beginPath()
@@ -312,7 +314,6 @@ onMounted(() => {
     if (visible) raf = requestAnimationFrame(frame)
     else raf = 0
   }
-
   function startLoop() {
     if (raf) return
     raf = requestAnimationFrame(frame)
@@ -322,7 +323,6 @@ onMounted(() => {
   build()
 
   if (reduce) {
-    // Статичное собранное поле — без анимации
     mode = 'resolved'
     for (const p of particles) {
       p.ox = 0
@@ -332,7 +332,7 @@ onMounted(() => {
     return
   }
 
-  render(0) // первый кадр — шум до попадания во вьюпорт
+  render(0)
 
   const io = new IntersectionObserver(
     (entries) => {
@@ -345,7 +345,7 @@ onMounted(() => {
         startLoop()
       }
     },
-    { threshold: 0.25 },
+    { threshold: 0.2 },
   )
   io.observe(root)
 

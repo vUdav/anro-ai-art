@@ -9,19 +9,14 @@ const { t } = useI18n()
 const { services } = useServices()
 const { fadeUp } = useMotionPreset()
 
-// Императивная передача указателя/ховера в диффузионное поле каждой карточки
+// Ховер карточки запускает неон-скан-линию в диффузионном поле
 interface FieldApi {
-  onPointer: (x: number, y: number) => void
   onEnter: () => void
   onLeave: () => void
 }
 const fields = ref<(FieldApi | null)[]>([])
 function setField(el: unknown, i: number) {
   fields.value[i] = (el as FieldApi) || null
-}
-function onMove(e: PointerEvent, i: number) {
-  const r = (e.currentTarget as HTMLElement).getBoundingClientRect()
-  fields.value[i]?.onPointer(e.clientX - r.left, e.clientY - r.top)
 }
 function onEnter(i: number) {
   fields.value[i]?.onEnter()
@@ -49,7 +44,6 @@ function onLeave(i: number) {
           :key="s.slug"
           class="services__card"
           v-motion="fadeUp(120 + i * 90)"
-          @pointermove="onMove($event, i)"
           @pointerenter="onEnter(i)"
           @pointerleave="onLeave(i)"
         >
