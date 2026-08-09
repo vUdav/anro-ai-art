@@ -27,6 +27,7 @@ export function useContacts() {
     const l = contactsRaw[locale.value as AppLocale] ?? contactsRaw.ru
     return {
       telegram: contactsRaw.telegram,
+      channel: contactsRaw.channel,
       instagram: contactsRaw.instagram,
       email: contactsRaw.email,
       orderLink: contactsRaw.orderLink,

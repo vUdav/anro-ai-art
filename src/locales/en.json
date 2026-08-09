@@ -47,7 +47,10 @@
     "eyebrow": "About me"
   },
   "contacts": {
-    "eyebrow": "Get in touch"
+    "eyebrow": "Get in touch",
+    "telegram": "Personal Telegram",
+    "channel": "Telegram channel",
+    "instagram": "Instagram"
   },
   "footer": {
     "rights": "All rights reserved",
@@ -57,6 +60,7 @@
     "toggleMenu": "Open menu",
     "switchLanguage": "Switch language",
     "telegram": "Message on Telegram",
+    "channel": "Open Telegram channel",
     "instagram": "Open Instagram",
     "closeLightbox": "Close viewer"
   }

@@ -18,7 +18,7 @@ const items: { key: string; id: string; enabled: boolean }[] = [
   { key: 'portfolio', id: 'works', enabled: true },
   { key: 'services', id: 'services', enabled: true },
   { key: 'testimonials', id: 'testimonials', enabled: false },
-  { key: 'contacts', id: 'contacts', enabled: false },
+  { key: 'contacts', id: 'contacts', enabled: true },
 ]
 
 const locales = SUPPORTED_LOCALES

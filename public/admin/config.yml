@@ -141,6 +141,7 @@ collections:
         i18n: true
         fields:
           - { name: telegram, label: "Ссылка на Telegram", widget: string, i18n: false }
+          - { name: channel, label: "Ссылка на Telegram-канал", widget: string, i18n: false }
           - { name: orderLink, label: "Ссылка кнопки «Заказать» (Telegram)", widget: string, i18n: false }
           - { name: instagram, label: "Ссылка на Instagram", widget: string, i18n: false }
           - { name: email, label: "Email (необязательно)", widget: string, required: false, i18n: false }

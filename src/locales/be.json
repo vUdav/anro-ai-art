@@ -47,7 +47,10 @@
     "eyebrow": "Пра мяне"
   },
   "contacts": {
-    "eyebrow": "Звязацца"
+    "eyebrow": "Звязацца",
+    "telegram": "Асабісты Telegram",
+    "channel": "Telegram-канал",
+    "instagram": "Instagram"
   },
   "footer": {
     "rights": "Усе правы абаронены",
@@ -57,6 +60,7 @@
     "toggleMenu": "Адкрыць меню",
     "switchLanguage": "Змяніць мову",
     "telegram": "Напісаць у Telegram",
+    "channel": "Адкрыць Telegram-канал",
     "instagram": "Адкрыць Instagram",
     "closeLightbox": "Закрыць прагляд"
   }

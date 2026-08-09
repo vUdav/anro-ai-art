@@ -47,7 +47,10 @@
     "eyebrow": "Обо мне"
   },
   "contacts": {
-    "eyebrow": "Связаться"
+    "eyebrow": "Связаться",
+    "telegram": "Личный Telegram",
+    "channel": "Telegram-канал",
+    "instagram": "Instagram"
   },
   "footer": {
     "rights": "Все права защищены",
@@ -57,6 +60,7 @@
     "toggleMenu": "Открыть меню",
     "switchLanguage": "Сменить язык",
     "telegram": "Написать в Telegram",
+    "channel": "Открыть Telegram-канал",
     "instagram": "Открыть Instagram",
     "closeLightbox": "Закрыть просмотр"
   }
