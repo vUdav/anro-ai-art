@@ -197,17 +197,22 @@ $bp-xl: 1280px;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.35rem 0;
+    padding: 0.4rem 0;
     font-family: var(--font-body);
     font-size: 0.95rem;
     color: var(--text-300);
     text-decoration: none;
     transition: color 0.25s var(--ease-out);
+
+    // Комфортный тач-таргет на сенсорных устройствах
+    @media (pointer: coarse) {
+      min-height: 44px;
+    }
   }
 
   &__ico {
     display: inline-flex;
-    color: var(--text-500);
+    color: var(--text-300);
     transition: color 0.25s var(--ease-out);
   }
 
