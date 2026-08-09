@@ -29,6 +29,7 @@ export function useContacts() {
       telegram: contactsRaw.telegram,
       instagram: contactsRaw.instagram,
       email: contactsRaw.email,
+      orderLink: contactsRaw.orderLink,
       ...l,
     }
   })

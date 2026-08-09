@@ -1,6 +1,15 @@
 <script setup lang="ts">
 // Кнопка «Заказать»: градиентный бордер + мягкая заливка + свечение за курсором.
 // Позиция свечения передаётся в CSS через --mx/--my (px от левого/верхнего края).
+// Если задан href — рендерится как <a> (внешняя ссылка), иначе как <button>.
+withDefaults(
+  defineProps<{
+    href?: string
+    size?: 'md' | 'lg'
+  }>(),
+  { href: undefined, size: 'md' },
+)
+
 function onMove(e: MouseEvent) {
   const el = e.currentTarget as HTMLElement
   const r = el.getBoundingClientRect()
@@ -11,7 +20,25 @@ function onMove(e: MouseEvent) {
 </script>
 
 <template>
-  <button class="order-btn" type="button" @mousemove="onMove">
+  <a
+    v-if="href"
+    class="order-btn"
+    :class="{ 'order-btn--lg': size === 'lg' }"
+    :href="href"
+    target="_blank"
+    rel="noopener noreferrer"
+    @mousemove="onMove"
+  >
+    <span class="order-btn__glow" aria-hidden="true"></span>
+    <span class="order-btn__label"><slot /></span>
+  </a>
+  <button
+    v-else
+    class="order-btn"
+    :class="{ 'order-btn--lg': size === 'lg' }"
+    type="button"
+    @mousemove="onMove"
+  >
     <span class="order-btn__glow" aria-hidden="true"></span>
     <span class="order-btn__label"><slot /></span>
   </button>
@@ -31,10 +58,25 @@ function onMove(e: MouseEvent) {
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-100);
+  text-decoration: none;
   cursor: pointer;
   overflow: hidden;
   isolation: isolate;
   transition: box-shadow 0.35s var(--ease-out);
+
+  // Крупный вариант — для блока «Заказать»: неон-заливка свайпом при наведении.
+  // Яркость сдержанная — светлый текст остаётся читаемым (earned-light).
+  &--lg {
+    padding: 0.9rem 2.1rem;
+    font-size: 1.05rem;
+
+    &::after {
+      transform: translateX(-101%);
+      transition:
+        transform 0.5s var(--ease-out),
+        opacity 0.35s var(--ease-out);
+    }
+  }
 
   // Градиентное кольцо-бордер (маска показывает только рамку)
   &::before {
@@ -110,6 +152,14 @@ function onMove(e: MouseEvent) {
       opacity: 1;
     }
   }
+}
+
+// Заливка крупной кнопки при наведении/фокусе — заезжает и держится сдержанной
+// (перебивает базовый hover-tint по порядку источника)
+.order-btn--lg:hover::after,
+.order-btn--lg:focus-visible::after {
+  opacity: 0.3;
+  transform: translateX(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

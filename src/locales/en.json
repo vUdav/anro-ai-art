@@ -34,6 +34,11 @@
     "title": "Services",
     "eyebrow": "What I do"
   },
+  "order": {
+    "eyebrow": "Ready to start?",
+    "title": "Let's bring your idea to life",
+    "subtitle": "Tell me about your project on Telegram — I'll suggest visuals, formats and timeline. I reply personally."
+  },
   "testimonials": {
     "title": "Testimonials",
     "eyebrow": "Clients about me"

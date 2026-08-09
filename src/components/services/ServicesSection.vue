@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useServices } from '../../composables/useContent'
 import { useMotionPreset } from '../../composables/useMotionPreset'
 import DiffusionGlyph from './DiffusionGlyph.vue'
+import OrderCta from './OrderCta.vue'
 
 const { t } = useI18n()
 const { services } = useServices()
@@ -70,6 +71,8 @@ function onLeave(i: number) {
           </div>
         </article>
       </div>
+
+      <OrderCta />
     </div>
   </section>
 </template>

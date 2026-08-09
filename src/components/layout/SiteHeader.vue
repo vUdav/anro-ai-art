@@ -86,7 +86,7 @@ function switchLocale(loc: AppLocale) {
 }
 
 function onOrder() {
-  // Блока «Заказать» пока нет — кнопка ничего не открывает.
+  scrollToId('order')
 }
 
 // ── Плавное раскрытие/скрытие мобильной панели (Web Animations API) ──
