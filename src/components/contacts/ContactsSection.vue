@@ -129,7 +129,7 @@ $bp-xl: 1280px;
 .contacts {
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.09);
-  background: var(--bg-800);
+  background: transparent; /* mesh-фон просвечивает */
   padding: clamp(2.25rem, 4vw, 3.25rem) 1.25rem clamp(1.75rem, 3vw, 2.25rem);
 
   @include up($bp-md) {

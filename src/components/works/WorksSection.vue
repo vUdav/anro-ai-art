@@ -188,7 +188,7 @@ $bp-xl: 1280px;
   width: 100%;
   overflow: hidden;
   padding: 3.5rem 1.25rem;
-  background: linear-gradient(180deg, #05060f 0%, #080a18 50%, #05060f 100%);
+  background: transparent; /* mesh-фон просвечивает и подсвечивает стекло */
 
   @include up($bp-md) {
     padding: 5rem 2rem;

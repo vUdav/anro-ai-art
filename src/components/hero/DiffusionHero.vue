@@ -703,6 +703,9 @@ onBeforeUnmount(() => {
   height: 100svh;
   overflow: hidden;
   background: radial-gradient(60% 60% at 50% 45%, #0b0d1c, #05060f 75%);
+  /* Низ героя растворяется в глобальном mesh-фоне — без резкого шва на стыке с «Обо мне» */
+  -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
   opacity: 0;
   transition: opacity 1.4s var(--ease-out);
 }

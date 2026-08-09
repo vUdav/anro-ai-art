@@ -80,7 +80,7 @@ $bp-2xl: 1600px; // большие экраны
   overflow: hidden;
   /* верхний паддинг учитывает фиксированную шапку, чтобы eyebrow не уходил под неё */
   padding: 5rem 1.25rem 3.5rem;
-  background: linear-gradient(180deg, #05060f 0%, #080a18 50%, #05060f 100%);
+  background: transparent; /* mesh-фон просвечивает и подсвечивает стекло */
 
   @include up($bp-md) {
     padding: 5rem 2rem;
