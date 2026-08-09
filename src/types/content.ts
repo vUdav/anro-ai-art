@@ -50,25 +50,6 @@ export interface Work {
   tags: string[]
 }
 
-export interface TestimonialRaw {
-  slug: string
-  author: string
-  avatar?: string
-  order?: number
-  ru: { role?: string; text: string }
-  en: { role?: string; text: string }
-  be: { role?: string; text: string }
-}
-
-export interface Testimonial {
-  slug: string
-  author: string
-  avatar: string
-  order: number
-  role: string
-  text: string
-}
-
 export interface ServiceRaw {
   slug: string
   icon?: string

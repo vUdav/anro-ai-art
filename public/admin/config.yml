@@ -62,26 +62,6 @@ collections:
         i18n: true
         field: { name: tag, label: "Тег", widget: string }
 
-  # ─── Отзывы ───
-  - name: testimonials
-    label: "Отзывы"
-    label_singular: "Отзыв"
-    folder: "src/content/testimonials"
-    create: true
-    delete: true
-    slug: "{{fields.slug}}"
-    extension: json
-    format: json
-    i18n: true
-    summary: "{{fields.author}}"
-    fields:
-      - { name: slug, label: "ID (латиницей)", widget: string, i18n: false }
-      - { name: author, label: "Автор", widget: string, i18n: false }
-      - { name: avatar, label: "Аватар (необязательно)", widget: image, required: false, i18n: false }
-      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
-      - { name: role, label: "Роль / должность", widget: string, required: false, i18n: true }
-      - { name: text, label: "Текст отзыва", widget: text, i18n: true }
-
   # ─── Услуги ───
   - name: services
     label: "Услуги"

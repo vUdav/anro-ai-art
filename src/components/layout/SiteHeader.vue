@@ -17,7 +17,6 @@ const items: { key: string; id: string; enabled: boolean }[] = [
   { key: 'about', id: 'about', enabled: true },
   { key: 'portfolio', id: 'works', enabled: true },
   { key: 'services', id: 'services', enabled: true },
-  { key: 'testimonials', id: 'testimonials', enabled: false },
   { key: 'contacts', id: 'contacts', enabled: true },
 ]
 

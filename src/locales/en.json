@@ -3,7 +3,6 @@
     "about": "About",
     "portfolio": "Works",
     "services": "Services",
-    "testimonials": "Testimonials",
     "contacts": "Contacts"
   },
   "actions": {
@@ -38,10 +37,6 @@
     "eyebrow": "Ready to start?",
     "title": "Let's bring your idea to life",
     "subtitle": "Tell me about your project on Telegram — I'll suggest visuals, formats and timeline. I reply personally."
-  },
-  "testimonials": {
-    "title": "Testimonials",
-    "eyebrow": "Clients about me"
   },
   "about": {
     "eyebrow": "About me"

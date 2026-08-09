@@ -1,22 +1,13 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { AppLocale } from '../i18n'
-import type {
-  Work,
-  WorkRaw,
-  Testimonial,
-  TestimonialRaw,
-  Service,
-  ServiceRaw,
-} from '../types/content'
+import type { Work, WorkRaw, Service, ServiceRaw } from '../types/content'
 
 // Контент импортируется на этапе сборки — коммит из CMS триггерит пересборку.
 const workModules = import.meta.glob<WorkRaw>('../content/works/*.json', { eager: true, import: 'default' })
-const testimonialModules = import.meta.glob<TestimonialRaw>('../content/testimonials/*.json', { eager: true, import: 'default' })
 const serviceModules = import.meta.glob<ServiceRaw>('../content/services/*.json', { eager: true, import: 'default' })
 
 const worksRaw = Object.values(workModules)
-const testimonialsRaw = Object.values(testimonialModules)
 const servicesRaw = Object.values(serviceModules)
 
 function normalizeWork(w: WorkRaw, locale: AppLocale): Work {
@@ -34,18 +25,6 @@ function normalizeWork(w: WorkRaw, locale: AppLocale): Work {
     alt: l.alt || l.title,
     description: l.description ?? '',
     tags: l.tags ?? [],
-  }
-}
-
-function normalizeTestimonial(t: TestimonialRaw, locale: AppLocale): Testimonial {
-  const l = t[locale] ?? t.ru
-  return {
-    slug: t.slug,
-    author: t.author,
-    avatar: t.avatar ?? '',
-    order: t.order ?? 0,
-    role: l.role ?? '',
-    text: l.text,
   }
 }
 
@@ -69,14 +48,6 @@ export function useWorks() {
     worksRaw.map((w) => normalizeWork(w, locale.value as AppLocale)).sort(byOrder),
   )
   return { works }
-}
-
-export function useTestimonials() {
-  const { locale } = useI18n()
-  const testimonials = computed(() =>
-    testimonialsRaw.map((t) => normalizeTestimonial(t, locale.value as AppLocale)).sort(byOrder),
-  )
-  return { testimonials }
 }
 
 export function useServices() {
