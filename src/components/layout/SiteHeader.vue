@@ -315,6 +315,8 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
   }
 
   &__lang-btn {
+    display: inline-flex;
+    align-items: center;
     padding: 0.3rem 0.5rem;
     border: 0;
     background: transparent;
@@ -322,13 +324,19 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.06em;
-    color: var(--text-500);
+    color: var(--text-300);
     cursor: pointer;
     border-radius: 8px;
     transition: color 0.25s var(--ease-out);
 
+    // Тач-таргет ≥ 44px на сенсорных устройствах (WCAG 2.5.8);
+    // на десктопе с мышью остаётся компактный вид.
+    @media (pointer: coarse) {
+      min-height: 44px;
+    }
+
     &:hover {
-      color: var(--text-200);
+      color: var(--text-100);
     }
     &.is-active {
       color: var(--text-100);
@@ -342,8 +350,8 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     padding: 0 9px;
     border: 0;
     background: transparent;
@@ -398,6 +406,9 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     .nav__link {
       font-family: var(--font-display);
       font-size: 1.15rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
     }
   }
 }

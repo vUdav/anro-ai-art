@@ -72,6 +72,7 @@ interface Particle {
 }
 
 let raf = 0
+let running = false // активен ли rAF-цикл (пауза вне вьюпорта / при document.hidden)
 let cleanup: (() => void) | null = null
 
 function colorFor(t: number, alpha = 0.9): string {
@@ -451,6 +452,7 @@ onMounted(async () => {
   }
 
   function frame(now: number) {
+    if (!running) return // цикл поставлен на паузу (вне вьюпорта / вкладка скрыта)
     const time = now * 0.001
     clearTrail()
 
@@ -592,8 +594,19 @@ onMounted(async () => {
     return
   }
 
+  // Запуск/пауза rAF-цикла. start() защищён от двойного планирования кадра.
+  function start() {
+    if (running) return
+    running = true
+    raf = requestAnimationFrame(frame)
+  }
+  function stop() {
+    running = false
+    cancelAnimationFrame(raf)
+  }
+
   t0 = performance.now()
-  raf = requestAnimationFrame(frame)
+  start()
   window.setTimeout(
     () => {
       ready.value = true
@@ -678,6 +691,30 @@ onMounted(async () => {
   window.addEventListener('touchstart', onTouch, { passive: true })
   window.addEventListener('resize', onResize)
 
+  // Пауза тяжёлого rAF-цикла, когда hero прокручен прочь или вкладка скрыта.
+  let sectionVisible = true
+  const heroEl = cv!.closest('.hero')
+  const io = new IntersectionObserver(
+    (entries) => {
+      const e = entries[0]
+      if (!e) return
+      sectionVisible = e.isIntersecting
+      if (sectionVisible) {
+        if (!document.hidden) start()
+      } else {
+        stop()
+      }
+    },
+    { threshold: 0 },
+  )
+  if (heroEl) io.observe(heroEl)
+
+  function onVisibility() {
+    if (document.hidden) stop()
+    else if (sectionVisible) start()
+  }
+  document.addEventListener('visibilitychange', onVisibility)
+
   cleanup = () => {
     window.removeEventListener('mousemove', onMove)
     window.removeEventListener('mousemove', onGlow)
@@ -685,6 +722,8 @@ onMounted(async () => {
     window.removeEventListener('pointerdown', onClick)
     window.removeEventListener('touchstart', onTouch)
     window.removeEventListener('resize', onResize)
+    document.removeEventListener('visibilitychange', onVisibility)
+    io.disconnect()
     window.clearTimeout(rt)
   }
 })

@@ -25,7 +25,6 @@
   content: '';
   position: absolute;
   inset: -25%;
-  will-change: transform;
 }
 
 .ambient::before {
