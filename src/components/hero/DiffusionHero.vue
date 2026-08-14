@@ -13,6 +13,8 @@ const counts = reactive([0, 0, 0, 0])
 const spins = reactive([0, 0, 0, 0]) // накопленный поворот крестика (полные обороты)
 const glow = reactive([0, 0, 0, 0]) // свечение по близости курсора (0..1)
 const eggReady = ref(false) // ввод доступен только когда собрано ANRO
+const isTouchDevice = ref(false) // на тач-экранах пасхалку не показываем
+const playing = ref(false) // сердце проигрывается → прячем цифры и подпись
 let heartFn: (() => void) | null = null // назначается внутри onMounted
 let idleTimer: number | undefined // сброс пароля при бездействии
 
@@ -125,6 +127,7 @@ onMounted(async () => {
   // Волна-рябь по клику (сила зависит от размера экрана; на тач-устройствах скромнее)
   const isTouch =
     window.matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints || 0) > 0
+  isTouchDevice.value = isTouch // пасхалка недоступна на тач-экранах
   const WAVE_SPEED = 950 // px/с — скорость расхождения кольца
   // На тач-устройствах ограничиваем «эффективную ширину», чтобы волна не росла слишком сильно
   const scaleW = isTouch ? Math.min(window.innerWidth, 480) : window.innerWidth
@@ -253,7 +256,7 @@ onMounted(async () => {
       const name = names[i]
       // Разброс размеров: часть названий крупные, часть мелкие
       let fs = (isMobile ? 15 : 30) + Math.random() * (isMobile ? 22 : 68)
-      o.font = `600 ${fs}px 'Sora', sans-serif`
+      o.font = `300 ${fs}px 'Sora', sans-serif`
       const maxW = cellW * 0.86
       while (o.measureText(name).width > maxW && fs > 12) {
         fs -= 2
@@ -339,19 +342,24 @@ onMounted(async () => {
     return out
   }
 
-  // Цели: сердце + надпись «Кахаю цябе»
+  // Цели: сердце + надпись «Кахаю цябе».
+  // Сердце и текст сэмплим РАЗДЕЛЬНО и делим частицы так, чтобы тексту досталась
+  // заметная доля — иначе тонкие штрихи букв остаются рыхлыми и нечитаемыми
+  // (у заливки-сердца площадь в разы больше, и при общем пуле оно «съедает» частицы).
   function buildHeartTargets() {
     const off = document.createElement('canvas')
     off.width = W
     off.height = H
     const o = off.getContext('2d')!
-    o.fillStyle = '#fff'
     const s = Math.min(W, H) * 0.34
     const k = s / 34
     const hx = W / 2
     const hy = H * 0.4
     heartCenter.x = hx
     heartCenter.y = hy
+
+    // — Сердце (заливка), шаг сэмпла 2 —
+    o.fillStyle = '#fff'
     o.beginPath()
     for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.02) {
       const px = 16 * Math.pow(Math.sin(a), 3)
@@ -363,19 +371,37 @@ onMounted(async () => {
     }
     o.closePath()
     o.fill()
+    const heartPtsRaw: { x: number; y: number }[] = []
+    let d = o.getImageData(0, 0, W, H).data
+    for (let y = 0; y < H; y += 2) {
+      for (let x = 0; x < W; x += 2) {
+        if (d[(y * W + x) * 4 + 3] > 128) heartPtsRaw.push({ x, y })
+      }
+    }
+
+    // — Текст: жирнее (500) и шаг сэмпла 1 → плотное, читаемое покрытие штрихов —
+    o.clearRect(0, 0, W, H)
+    o.fillStyle = '#fff'
     o.textAlign = 'center'
     o.textBaseline = 'middle'
     const fs = Math.min(W * 0.085, 58)
-    o.font = `600 ${fs}px 'Sora', sans-serif`
+    o.font = `300 ${fs}px 'Sora', sans-serif`
     o.fillText('Кахаю цябе', hx, hy + s * 0.62)
-    const data = o.getImageData(0, 0, W, H).data
-    const pts: { x: number; y: number }[] = []
-    for (let y = 0; y < H; y += 2) {
-      for (let x = 0; x < W; x += 2) {
-        if (data[(y * W + x) * 4 + 3] > 128) pts.push({ x, y })
+    const textPtsRaw: { x: number; y: number }[] = []
+    d = o.getImageData(0, 0, W, H).data
+    for (let y = 0; y < H; y += 1) {
+      for (let x = 0; x < W; x += 1) {
+        if (d[(y * W + x) * 4 + 3] > 128) textPtsRaw.push({ x, y })
       }
     }
-    return toExact(pts, particles.length)
+
+    // Тексту — гарантированная доля частиц (~32%), остальное сердцу
+    const total = particles.length
+    const textCount = Math.round(total * 0.32)
+    const heartCount = total - textCount
+    const out = toExact(heartPtsRaw, heartCount).concat(toExact(textPtsRaw, textCount))
+    shuffle(out) // перемешиваем, чтобы индексы частиц распределялись по обеим группам
+    return out
   }
 
   // Морфинг всех частиц к новому набору целей (с выбросом из центра, без пружины)
@@ -402,10 +428,12 @@ onMounted(async () => {
     if (heartMode) return
     if (!heartPts) heartPts = buildHeartTargets()
     heartMode = true
+    playing.value = true // прячем цифры крестиков и подпись «AI Creator»
     eggReady.value = false
     morphTo(heartPts, true, 150) // усиленный выброс = «всплеск-искры»
     window.setTimeout(() => {
       heartMode = false
+      playing.value = false
       morphTo(anroPtsStored, false, 70)
       for (let i = 0; i < 4; i++) {
         counts[i] = 0
@@ -627,6 +655,7 @@ onMounted(async () => {
       fit()
       build()
       heartMode = false
+      playing.value = false
       for (let i = 0; i < 4; i++) {
         counts[i] = 0
         spins[i] = 0
@@ -673,17 +702,17 @@ onBeforeUnmount(() => {
 
     <h1 class="sr-only">{{ hero.name }} — {{ hero.role }}</h1>
 
-    <div class="hero__overlay" :class="{ 'is-ready': ready }" aria-hidden="true">
+    <div class="hero__overlay" :class="{ 'is-ready': ready && !playing }" aria-hidden="true">
       <p class="hero__subtitle">{{ hero.role }}</p>
     </div>
 
-    <!-- Пасхалка: скрытые крестики-пароль по углам -->
+    <!-- Пасхалка: скрытые крестики-пароль по углам (недоступна на тач-экранах) -->
     <button
-      v-for="(pos, i) in ['tl', 'tr', 'bl', 'br']"
+      v-for="(pos, i) in isTouchDevice ? [] : ['tl', 'tr', 'bl', 'br']"
       :key="pos"
       class="egg"
       :class="`egg--${pos}`"
-      :style="{ opacity: Math.max(glow[i], counts[i] ? 0.95 : 0) }"
+      :style="{ opacity: playing ? 0 : Math.max(glow[i], counts[i] ? 0.95 : 0) }"
       type="button"
       tabindex="-1"
       aria-hidden="true"
