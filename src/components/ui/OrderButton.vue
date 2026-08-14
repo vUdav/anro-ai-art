@@ -162,6 +162,14 @@ function onMove(e: MouseEvent) {
   transform: translateX(0);
 }
 
+// На тач-экранах курсора нет: свечение «залипало» бы в последней точке тапа —
+// убираем его совсем (рамка и заливка остаются как тап-фидбек).
+@media (hover: none), (pointer: coarse) {
+  .order-btn__glow {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .order-btn,
   .order-btn::before,
