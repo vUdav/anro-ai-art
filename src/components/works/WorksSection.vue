@@ -8,7 +8,7 @@ import WorkModal from './WorkModal.vue'
 
 const { t } = useI18n()
 const { works } = useWorks()
-const { fadeUp, reduced } = useMotionPreset()
+const { fadeUp, diffuse, reduced } = useMotionPreset()
 
 // Доминанта = первая избранная работа, иначе первая по порядку
 const featured = computed<Work | null>(
@@ -104,7 +104,7 @@ onBeforeUnmount(() => io?.disconnect())
         <p class="works__eyebrow text-gradient" v-motion="fadeUp(0)">
           {{ t('portfolio.eyebrow') }}
         </p>
-        <h2 id="works-title" class="works__title" v-motion="fadeUp(80)">
+        <h2 id="works-title" class="works__title" v-motion="diffuse(100)">
           {{ t('portfolio.title') }}
         </h2>
       </header>

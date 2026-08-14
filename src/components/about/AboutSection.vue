@@ -7,7 +7,7 @@ import DiffusionPortrait from './DiffusionPortrait.vue'
 
 const { t } = useI18n()
 const about = useAbout()
-const { fadeUp } = useMotionPreset()
+const { fadeUp, diffuse } = useMotionPreset()
 
 // Полное имя в две строки: первое слово / остаток
 const nameLines = computed(() => {
@@ -22,7 +22,7 @@ const nameLines = computed(() => {
     <div class="about__stage">
       <p class="about__eyebrow text-gradient" v-motion="fadeUp(0)">{{ t('about.eyebrow') }}</p>
 
-      <div class="about__name" aria-hidden="true" v-motion="fadeUp(60)">
+      <div class="about__name" aria-hidden="true" v-motion="diffuse(100)">
         <span>{{ nameLines[0] }}</span>
         <span>{{ nameLines[1] }}</span>
       </div>

@@ -8,7 +8,7 @@ import OrderCta from './OrderCta.vue'
 
 const { t } = useI18n()
 const { services } = useServices()
-const { fadeUp } = useMotionPreset()
+const { fadeUp, diffuse } = useMotionPreset()
 
 // Ховер карточки запускает неон-скан-линию в диффузионном поле
 interface FieldApi {
@@ -34,7 +34,7 @@ function onLeave(i: number) {
         <p class="services__eyebrow text-gradient" v-motion="fadeUp(0)">
           {{ t('services.eyebrow') }}
         </p>
-        <h2 id="services-title" class="services__title" v-motion="fadeUp(80)">
+        <h2 id="services-title" class="services__title" v-motion="diffuse(100)">
           {{ t('services.title') }}
         </h2>
       </header>
