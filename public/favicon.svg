@@ -1,21 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Anro">
+  <title>Anro</title>
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#38f5ff"/>
-      <stop offset="0.55" stop-color="#a855f7"/>
-      <stop offset="1" stop-color="#ff4ecd"/>
+    <!-- палитра hero (cyan → blue → violet → pink), развёрнутая на ширину буквы A -->
+    <linearGradient id="anroA" x1="0" y1="0" x2="347.53" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.3333" stop-color="#4d7cff"/>
+      <stop offset="0.6667" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ec4899"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="16" fill="#05060f"/>
-  <circle cx="20" cy="24" r="5" fill="url(#g)"/>
-  <circle cx="44" cy="18" r="5" fill="url(#g)"/>
-  <circle cx="46" cy="44" r="5" fill="url(#g)"/>
-  <circle cx="22" cy="46" r="5" fill="url(#g)"/>
-  <circle cx="33" cy="32" r="6" fill="url(#g)"/>
-  <g stroke="url(#g)" stroke-width="2" stroke-opacity="0.7">
-    <line x1="20" y1="24" x2="33" y2="32"/>
-    <line x1="44" y1="18" x2="33" y2="32"/>
-    <line x1="46" y1="44" x2="33" y2="32"/>
-    <line x1="22" y1="46" x2="33" y2="32"/>
-  </g>
+  <!-- Буква «A» из anro-wordmark.svg, вписанная с отступами -->
+  <svg x="13" y="12" width="38" height="40" viewBox="0 9.89 347.53 335.8" preserveAspectRatio="xMidYMid meet">
+    <path transform="translate(-5.98 345.69)" d="M5.98 0.0 116.955 -335.8H238.85500000000002L353.51 0.0H275.65500000000003L182.62 -283.59000000000003L206.425 -273.93H147.315L171.81 -283.59000000000003L81.42 0.0Z M89.93 -83.375 113.045 -145.935H244.835L267.95 -83.375Z" fill="url(#anroA)" fill-rule="nonzero"/>
+  </svg>
 </svg>

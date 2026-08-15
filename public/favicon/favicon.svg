@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1141)"><rect width="1000" height="1000" fill="#05060f"></rect><g transform="matrix(14.0625,0,0,14.0625,50,50)"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Anro"><title>Anro</title><defs>
+    <!-- палитра hero (cyan → blue → violet → pink), развёрнутая на ширину буквы A -->
+    <linearGradient id="anroA" x1="0" y1="0" x2="347.53" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee"></stop>
+      <stop offset="0.3333" stop-color="#4d7cff"></stop>
+      <stop offset="0.6667" stop-color="#8b5cf6"></stop>
+      <stop offset="1" stop-color="#ec4899"></stop>
+    </linearGradient>
+  <clipPath id="SvgjsClipPath1141"><rect width="1000" height="1000" x="0" y="0" rx="250" ry="250"></rect></clipPath></defs><svg x="13" y="12" width="38" height="40" viewBox="0 9.89 347.53 335.8" preserveAspectRatio="xMidYMid meet">
+    <path transform="translate(-5.98 345.69)" d="M5.98 0.0 116.955 -335.8H238.85500000000002L353.51 0.0H275.65500000000003L182.62 -283.59000000000003L206.425 -273.93H147.315L171.81 -283.59000000000003L81.42 0.0Z M89.93 -83.375 113.045 -145.935H244.835L267.95 -83.375Z" fill="url(#anroA)" fill-rule="nonzero"></path>
+  </svg></svg></g></g></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1142)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(14.0625,0,0,14.0625,50,50)"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Anro"><title>Anro</title><defs>
+    <!-- палитра hero (cyan → blue → violet → pink), развёрнутая на ширину буквы A -->
+    <linearGradient id="anroA" x1="0" y1="0" x2="347.53" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee"></stop>
+      <stop offset="0.3333" stop-color="#4d7cff"></stop>
+      <stop offset="0.6667" stop-color="#8b5cf6"></stop>
+      <stop offset="1" stop-color="#ec4899"></stop>
+    </linearGradient>
+  <clipPath id="SvgjsClipPath1142"><rect width="1000" height="1000" x="0" y="0" rx="250" ry="250"></rect></clipPath></defs><svg x="13" y="12" width="38" height="40" viewBox="0 9.89 347.53 335.8" preserveAspectRatio="xMidYMid meet">
+    <path transform="translate(-5.98 345.69)" d="M5.98 0.0 116.955 -335.8H238.85500000000002L353.51 0.0H275.65500000000003L182.62 -283.59000000000003L206.425 -273.93H147.315L171.81 -283.59000000000003L81.42 0.0Z M89.93 -83.375 113.045 -145.935H244.835L267.95 -83.375Z" fill="url(#anroA)" fill-rule="nonzero"></path>
+  </svg></svg></g></g></svg></g></svg>
