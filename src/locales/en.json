@@ -57,6 +57,7 @@
     "telegram": "Message on Telegram",
     "channel": "Open Telegram channel",
     "instagram": "Open Instagram",
-    "closeLightbox": "Close viewer"
+    "closeLightbox": "Close viewer",
+    "scrollDown": "Scroll to the About section"
   }
 }

@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useHero } from '../../composables/usePages'
 
+const { t } = useI18n()
 const hero = useHero()
+
+// Клик по шеврону — плавный скролл к первому блоку «Обо мне» (с учётом шапки)
+function scrollToAbout() {
+  const el = document.getElementById('about')
+  if (!el) return
+  const y = el.getBoundingClientRect().top + window.scrollY - 64 // HEADER_H
+  window.scrollTo({ top: y, behavior: 'smooth' })
+}
 const canvas = ref<HTMLCanvasElement | null>(null)
 const ready = ref(false)
 const shown = ref(false) // мягкое появление всего экрана (opacity 0 → 1)
@@ -745,6 +755,30 @@ onBeforeUnmount(() => {
       <p class="hero__subtitle">{{ hero.role }}</p>
     </div>
 
+    <!-- Шеврон-подсказка «листайте вниз» — у нижней кромки экрана -->
+    <button
+      class="hero__scroll"
+      :class="{ 'is-ready': ready && !playing }"
+      type="button"
+      :aria-label="t('a11y.scrollDown')"
+      :tabindex="ready && !playing ? 0 : -1"
+      @click="scrollToAbout"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </button>
+
     <!-- Пасхалка: скрытые крестики-пароль по углам (недоступна на тач-экранах) -->
     <button
       v-for="(pos, i) in isTouchDevice ? [] : ['tl', 'tr', 'bl', 'br']"
@@ -804,6 +838,64 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: center;
   pointer-events: none;
+}
+
+/* Шеврон-подсказка «листайте вниз» — у нижней кромки, но выше mask-растворения
+   низа героя (нижние 10% гаснут), появляется вместе с подписью, того же цвета */
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 11%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-200);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 1.2s var(--ease-out),
+    color 0.25s var(--ease-out);
+  pointer-events: none; /* до появления не кликается */
+}
+
+.hero__scroll.is-ready {
+  opacity: 0.8;
+  pointer-events: auto;
+  animation: hero-chevron 2s var(--ease-out) infinite;
+}
+
+.hero__scroll:hover,
+.hero__scroll:focus-visible {
+  color: var(--text-100);
+  opacity: 1;
+}
+
+@keyframes hero-chevron {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll {
+    transition: none;
+  }
+  .hero__scroll.is-ready {
+    animation: none;
+    opacity: 0.8;
+    pointer-events: auto;
+  }
 }
 
 .hero__subtitle {
