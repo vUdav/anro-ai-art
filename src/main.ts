@@ -13,7 +13,10 @@ export const createApp = ViteSSG(
     routes,
     scrollBehavior(to, _from, savedPosition) {
       if (to.hash) {
-        return { el: to.hash, behavior: 'smooth', top: 80 }
+        // Первый заход по якорь-ссылке — мгновенный переход, без анимации скролла.
+        // Плавно скроллим только при навигации уже внутри сайта.
+        const isInitial = _from.matched.length === 0
+        return { el: to.hash, top: 80, behavior: isInitial ? 'auto' : 'smooth' }
       }
       if (savedPosition) return savedPosition
       // Смена языка (/, /en, /be) не должна прокручивать к началу

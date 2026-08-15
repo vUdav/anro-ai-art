@@ -75,6 +75,8 @@ function scrollToId(id: string) {
   if (!el) return
   const y = el.getBoundingClientRect().top + window.scrollY - HEADER_H
   window.scrollTo({ top: y, behavior: 'smooth' })
+  // Отражаем секцию в адресной строке (без нативного прыжка — скролл делаем плавно)
+  window.history.replaceState(null, '', `#${id}`)
   open.value = false
 }
 
@@ -156,7 +158,7 @@ function onPanelLeave(el: Element, done: () => void) {
           <a
             v-if="it.enabled"
             class="nav__link"
-            href="#"
+            :href="`#${it.id}`"
             @click.prevent="scrollToId(it.id)"
             >{{ t(`nav.${it.key}`) }}</a
           >
@@ -193,7 +195,7 @@ function onPanelLeave(el: Element, done: () => void) {
               <a
                 v-if="it.enabled"
                 class="nav__link"
-                href="#"
+                :href="`#${it.id}`"
                 @click.prevent="scrollToId(it.id)"
                 >{{ t(`nav.${it.key}`) }}</a
               >
