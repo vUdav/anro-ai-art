@@ -3,13 +3,12 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { SUPPORTED_LOCALES, LOCALE_NAMES, type AppLocale } from '../../i18n'
+import { HEADER_H } from '../../constants/layout'
 import OrderButton from '../ui/OrderButton.vue'
 
 const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
-
-const HEADER_H = 64
 
 // Пункты навигации по блокам лендинга. Пока существует только «about» —
 // остальные показываем неактивными до появления соответствующих блоков.
@@ -138,7 +137,7 @@ function onPanelLeave(el: Element, done: () => void) {
 
 <template>
   <header class="nav" :style="navStyle">
-    <div class="nav__inner">
+    <div class="nav__inner" :style="{ height: HEADER_H + 'px' }">
       <!-- Бургер (мобильные, слева) -->
       <button
         class="nav__burger"
@@ -250,7 +249,7 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    height: 64px;
+    /* высота задаётся инлайн из HEADER_H (единый источник правды) */
     max-width: var(--maxw);
     margin-inline: auto;
     padding-inline: clamp(1.25rem, 5vw, 4rem);

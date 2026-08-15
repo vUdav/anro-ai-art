@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type AppLocale } from '../i18n'
 
 const SITE_URL = 'https://anroai.art'
-// Для лучшего превью в соцсетях замените на реальный 1200×630 .jpg (см. CONTENT_GUIDE.md)
-const OG_IMAGE = `${SITE_URL}/og-default.svg`
+// OG-территории для og:locale (OpenGraph ждёт language_TERRITORY, не голый код)
+const OG_TERRITORY: Record<AppLocale, string> = { ru: 'ru_RU', en: 'en_US', be: 'be_BY' }
 
 function pathForLocale(locale: AppLocale): string {
   return locale === DEFAULT_LOCALE ? '/' : `/${locale}`
@@ -17,6 +17,9 @@ export function useSeo(options: { title: MaybeRef<string>; description: MaybeRef
   const title = computed(() => unref(options.title))
   const description = computed(() => unref(options.description))
   const canonical = computed(() => `${SITE_URL}${pathForLocale(locale.value as AppLocale)}`)
+  // Превью на языке ссылки: og-ru.jpg / og-en.jpg / og-be.jpg (1200×630)
+  const ogImage = computed(() => `${SITE_URL}/og-${locale.value}.jpg`)
+  const ogLocale = computed(() => OG_TERRITORY[locale.value as AppLocale] ?? OG_TERRITORY.ru)
 
   useHead({
     title,
@@ -28,12 +31,15 @@ export function useSeo(options: { title: MaybeRef<string>; description: MaybeRef
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:url', content: canonical },
-      { property: 'og:image', content: OG_IMAGE },
-      { property: 'og:locale', content: computed(() => locale.value) },
+      { property: 'og:image', content: ogImage },
+      { property: 'og:image:type', content: 'image/jpeg' },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:locale', content: ogLocale },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: OG_IMAGE },
+      { name: 'twitter:image', content: ogImage },
     ],
     link: [
       { rel: 'canonical', href: canonical },

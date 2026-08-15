@@ -2,6 +2,7 @@
 import { onMounted, onBeforeUnmount, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useHero } from '../../composables/usePages'
+import { HEADER_H } from '../../constants/layout'
 
 const { t } = useI18n()
 const hero = useHero()
@@ -10,7 +11,7 @@ const hero = useHero()
 function scrollToAbout() {
   const el = document.getElementById('about')
   if (!el) return
-  const y = el.getBoundingClientRect().top + window.scrollY - 64 // HEADER_H
+  const y = el.getBoundingClientRect().top + window.scrollY - HEADER_H
   window.scrollTo({ top: y, behavior: 'smooth' })
 }
 const canvas = ref<HTMLCanvasElement | null>(null)
@@ -161,6 +162,9 @@ onMounted(async () => {
   let mode: 'intro' | 'resolved' = 'intro'
   let namesShown = false
   let t0 = 0
+  let pausedAt = 0 // момент паузы rAF — чтобы не «съесть» интро реальным временем на паузе
+  let revertTimer: number | undefined // таймер возврата ANRO после сердца
+  let readyTimer: number | undefined // таймер готовности интро (ready/eggReady)
   // Пасхалка-сердце
   let anroPtsStored: { x: number; y: number }[] = []
   let heartPts: { x: number; y: number }[] | null = null
@@ -442,7 +446,7 @@ onMounted(async () => {
     playing.value = true // прячем цифры крестиков и подпись «AI Creator»
     eggReady.value = false
     morphTo(heartPts, true, 150) // усиленный выброс = «всплеск-искры»
-    window.setTimeout(() => {
+    revertTimer = window.setTimeout(() => {
       heartMode = false
       playing.value = false
       morphTo(anroPtsStored, false, 70)
@@ -607,17 +611,24 @@ onMounted(async () => {
   // Запуск/пауза rAF-цикла. start() защищён от двойного планирования кадра.
   function start() {
     if (running) return
+    // Сдвигаем t0 на длительность паузы, иначе интро «прокрутится» реальным
+    // временем, пока цикл стоял вне вьюпорта, и сборка ANRO будет пропущена.
+    if (pausedAt) {
+      t0 += performance.now() - pausedAt
+      pausedAt = 0
+    }
     running = true
     raf = requestAnimationFrame(frame)
   }
   function stop() {
+    if (running) pausedAt = performance.now()
     running = false
     cancelAnimationFrame(raf)
   }
 
   t0 = performance.now()
   start()
-  window.setTimeout(
+  readyTimer = window.setTimeout(
     () => {
       ready.value = true
       eggReady.value = true
@@ -677,6 +688,7 @@ onMounted(async () => {
       const wasResolved = mode === 'resolved'
       fit()
       build()
+      window.clearTimeout(revertTimer) // отменяем висящий возврат сердца
       heartMode = false
       playing.value = false
       for (let i = 0; i < 4; i++) {
@@ -735,6 +747,8 @@ onMounted(async () => {
     document.removeEventListener('visibilitychange', onVisibility)
     io.disconnect()
     window.clearTimeout(rt)
+    window.clearTimeout(revertTimer)
+    window.clearTimeout(readyTimer)
   }
 })
 

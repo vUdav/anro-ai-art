@@ -3,10 +3,11 @@
 
 backend:
   name: github
-  repo: OWNER/anro-ai-art # ← замените OWNER на ваш GitHub-логин/организацию
+  repo: vUdav/anro-ai-art
   branch: main
-  # OAuth-брокер: Cloudflare Worker sveltia-cms-auth (см. CONTENT_GUIDE.md).
-  # Раскомментируйте и укажите адрес вашего воркера:
+  # Авторизация: Sveltia CMS использует свой встроенный OAuth для GitHub —
+  # отдельный брокер (Cloudflare Worker) НЕ обязателен. Задавайте base_url
+  # только если поднимаете собственный sveltia-cms-auth (см. CONTENT_GUIDE.md):
   # base_url: https://anro-cms-auth.<subdomain>.workers.dev
 
 # Куда CMS кладёт загруженные файлы в репозитории и как путь выглядит на сайте
@@ -94,8 +95,6 @@ collections:
         format: json
         i18n: true
         fields:
-          - { name: portrait, label: "Портрет (cut-out с прозрачным фоном)", widget: image, i18n: false }
-          - { name: halos, label: "Плавающие портреты вокруг", widget: list, field: { name: image, label: "Изображение", widget: image }, i18n: false }
           - { name: name, label: "Имя / бренд", widget: string, i18n: true }
           - { name: role, label: "Роль", widget: string, i18n: true }
           - { name: headline, label: "Заголовок (2 предложения = 2 строки)", widget: string, i18n: true }

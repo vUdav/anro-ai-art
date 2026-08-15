@@ -67,6 +67,7 @@ let tex: WebGLTexture | null = null
 let raf = 0
 let running = false
 let texReady = false
+let firstDrawn = false // canvas показываем только после первой отрисовки текстуры
 let disposed = false
 
 let uProgress = 0
@@ -386,7 +387,15 @@ function frame(now: number) {
   gl.uniform1f(uni.uTime!, (now - startTime) / 1000)
   gl.clearColor(0, 0, 0, 0)
   gl.clear(gl.COLOR_BUFFER_BIT)
-  if (texReady) gl.drawArrays(gl.TRIANGLES, 0, 3)
+  if (texReady) {
+    gl.drawArrays(gl.TRIANGLES, 0, 3)
+    // Перекрываем fallback-<img> только когда портрет реально нарисован —
+    // иначе на загрузке виден пробел (img уже скрыт, canvas ещё пуст)
+    if (!firstDrawn) {
+      firstDrawn = true
+      active.value = true
+    }
+  }
 
   const nc = neurons.value
   if (nc) drawNeurons(nc.clientWidth, nc.clientHeight, (now - startTime) / 1000)
@@ -421,7 +430,7 @@ onMounted(() => {
   if (!initGL()) return
   const nc = neurons.value
   if (nc) nctx = nc.getContext('2d')
-  active.value = true
+  // active выставится в frame() после первой отрисовки текстуры (без пробела)
 
   const el = rootEl.value!
   el.addEventListener('pointermove', onMove)

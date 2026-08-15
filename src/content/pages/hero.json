@@ -1,11 +1,4 @@
 {
-  "portrait": "/media/portrait.svg",
-  "halos": [
-    "/media/works/photoshoot-01.svg",
-    "/media/works/illustration-01.svg",
-    "/media/works/neon-cover-01.svg",
-    "/media/works/reel-01.svg"
-  ],
   "ru": {
     "name": "Anro",
     "role": "AI Creator",
