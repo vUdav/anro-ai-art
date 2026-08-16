@@ -1,16 +1,6 @@
-import type { AppLocale } from '../i18n'
-
-export type WorkCategory =
-  | 'covers'
-  | 'mockups'
-  | 'photoshoots'
-  | 'sketches'
-  | 'ads'
-  | 'illustrations'
-
 export type MediaType = 'image' | 'video'
 
-/** Переводимые поля одной локали */
+/** Переводимые поля одной локали работы */
 export interface LocalizedText {
   title: string
   alt?: string
@@ -20,9 +10,11 @@ export interface LocalizedText {
 
 /** Работа в том виде, в каком она лежит в JSON (пишет CMS) */
 export interface WorkRaw {
-  slug: string
+  /** slug выводится из имени файла — в JSON может отсутствовать */
+  slug?: string
   type: MediaType
-  category: WorkCategory
+  /** ключ категории из коллекции «Категории» */
+  category: string
   media: string
   poster?: string
   /** внешний URL видео (если не хранится в репозитории) */
@@ -38,7 +30,7 @@ export interface WorkRaw {
 export interface Work {
   slug: string
   type: MediaType
-  category: WorkCategory
+  category: string
   media: string
   poster: string
   externalUrl: string
@@ -50,22 +42,19 @@ export interface Work {
   tags: string[]
 }
 
-export interface ServiceRaw {
-  slug: string
-  icon?: string
-  order?: number
-  ru: { title: string; description: string; items?: string[] }
-  en: { title: string; description: string; items?: string[] }
-  be: { title: string; description: string; items?: string[] }
-}
-
+/** Услуга, нормализованная под текущую локаль (страница из двух блоков) */
 export interface Service {
+  icon: MediaType
   slug: string
-  icon: string
-  order: number
   title: string
   description: string
   items: string[]
 }
 
-export type Locale = AppLocale
+/** Категория работ (справочник); ключ = имя файла */
+export interface CategoryRaw {
+  order?: number
+  ru: { name: string }
+  en: { name: string }
+  be: { name: string }
+}

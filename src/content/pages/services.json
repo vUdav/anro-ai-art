@@ -1,0 +1,74 @@
+{
+  "ru": {
+    "image": {
+      "title": "Image Creating",
+      "description": "Создание изображений под задачу: от концепта до финального кадра.",
+      "items": [
+        "Обложки и постеры",
+        "Мокапы и реклама",
+        "Нейро-фотосессии",
+        "Эскизы тату",
+        "Иллюстрации и открытки"
+      ]
+    },
+    "video": {
+      "title": "Video Creating",
+      "description": "Оживляю визуал: анимация, атмосферные ролики и видеопоздравления.",
+      "items": [
+        "Анимация изображений",
+        "Атмосферные видеоролики",
+        "Рекламный видеоконтент",
+        "Видеопоздравления",
+        "Монтаж и цветокоррекция"
+      ]
+    }
+  },
+  "en": {
+    "image": {
+      "title": "Image Creating",
+      "description": "Images crafted for your goal — from concept to the final frame.",
+      "items": [
+        "Covers & posters",
+        "Mockups & ads",
+        "AI photoshoots",
+        "Tattoo sketches",
+        "Illustrations & cards"
+      ]
+    },
+    "video": {
+      "title": "Video Creating",
+      "description": "Bringing visuals to life: animation, atmospheric reels and video greetings.",
+      "items": [
+        "Image animation",
+        "Atmospheric reels",
+        "Ad video content",
+        "Video greetings",
+        "Editing & color grading"
+      ]
+    }
+  },
+  "be": {
+    "image": {
+      "title": "Image Creating",
+      "description": "Стварэнне выяў пад задачу: ад канцэпту да фінальнага кадра.",
+      "items": [
+        "Вокладкі і постары",
+        "Мокапы і рэклама",
+        "Нейра-фотасесіі",
+        "Эскізы татуіровак",
+        "Ілюстрацыі і паштоўкі"
+      ]
+    },
+    "video": {
+      "title": "Video Creating",
+      "description": "Ажыўляю візуал: анімацыя, атмасферныя ролікі і відэавіншаванні.",
+      "items": [
+        "Анімацыя выяў",
+        "Атмасферныя ролікі",
+        "Рэкламны відэакантэнт",
+        "Відэавіншаванні",
+        "Мантаж і колеракарэкцыя"
+      ]
+    }
+  }
+}

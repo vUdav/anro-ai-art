@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useServices } from '../../composables/useContent'
+import { useServices } from '../../composables/usePages'
 import { useMotionPreset } from '../../composables/useMotionPreset'
 import DiffusionGlyph from './DiffusionGlyph.vue'
 import OrderCta from './OrderCta.vue'

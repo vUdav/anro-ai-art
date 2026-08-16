@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useHero } from '../composables/usePages'
+import { useSeoContent } from '../composables/usePages'
 import { useSeo } from '../composables/useSeo'
 import DiffusionHero from '../components/hero/DiffusionHero.vue'
 import AboutSection from '../components/about/AboutSection.vue'
@@ -8,11 +8,14 @@ import WorksSection from '../components/works/WorksSection.vue'
 import ServicesSection from '../components/services/ServicesSection.vue'
 import ContactsSection from '../components/contacts/ContactsSection.vue'
 
-const hero = useHero()
+const seo = useSeoContent()
 
 useSeo({
-  title: computed(() => `${hero.value.name} — ${hero.value.role}`),
-  description: computed(() => hero.value.subheadline),
+  title: computed(() => seo.value.title),
+  description: computed(() => seo.value.description),
+  keywords: computed(() => seo.value.keywords),
+  ogImage: computed(() => seo.value.ogImage),
+  imageAlt: computed(() => seo.value.imageAlt),
 })
 </script>
 

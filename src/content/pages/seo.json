@@ -1,0 +1,50 @@
+{
+  "ru": {
+    "title": "Anro — AI Creator",
+    "description": "AI-креатор Anro: изображения и видео с помощью нейросетей — обложки, мокапы, нейро-фотосессии, анимация и реклама.",
+    "keywords": [
+      "AI-креатор",
+      "нейросети",
+      "генерация изображений",
+      "AI видео",
+      "обложки",
+      "нейро-фотосессия",
+      "Midjourney",
+      "Anro"
+    ],
+    "ogImage": "/media/og-ru.jpg",
+    "imageAlt": "Anro — AI Creator"
+  },
+  "en": {
+    "title": "Anro — AI Creator",
+    "description": "AI creator Anro: images and videos crafted with neural networks — covers, mockups, AI photoshoots, animation and ads.",
+    "keywords": [
+      "AI creator",
+      "neural networks",
+      "AI image generation",
+      "AI video",
+      "covers",
+      "AI photoshoot",
+      "Midjourney",
+      "Anro"
+    ],
+    "ogImage": "/media/og-en.jpg",
+    "imageAlt": "Anro — AI Creator"
+  },
+  "be": {
+    "title": "Anro — AI Creator",
+    "description": "AI-крэатар Anro: выявы і відэа з дапамогай нейрасетак — вокладкі, мокапы, нейра-фотасесіі, анімацыя і рэклама.",
+    "keywords": [
+      "AI-крэатар",
+      "нейрасеткі",
+      "генерацыя выяў",
+      "AI відэа",
+      "вокладкі",
+      "нейра-фотасесія",
+      "Midjourney",
+      "Anro"
+    ],
+    "ogImage": "/media/og-be.jpg",
+    "imageAlt": "Anro — AI Creator"
+  }
+}

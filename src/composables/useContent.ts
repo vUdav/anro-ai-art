@@ -1,42 +1,45 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { AppLocale } from '../i18n'
-import type { Work, WorkRaw, Service, ServiceRaw } from '../types/content'
+import type { Work, WorkRaw, CategoryRaw } from '../types/content'
 
 // Контент импортируется на этапе сборки — коммит из CMS триггерит пересборку.
 const workModules = import.meta.glob<WorkRaw>('../content/works/*.json', { eager: true, import: 'default' })
-const serviceModules = import.meta.glob<ServiceRaw>('../content/services/*.json', { eager: true, import: 'default' })
+const categoryModules = import.meta.glob<CategoryRaw>('../content/categories/*.json', { eager: true, import: 'default' })
 
-const worksRaw = Object.values(workModules)
-const servicesRaw = Object.values(serviceModules)
+const slugFromPath = (path: string) => path.split('/').pop()!.replace(/\.json$/, '')
 
+// slug работы = имя файла (CMS генерирует его из названия, отдельного поля нет)
+const worksRaw: WorkRaw[] = Object.entries(workModules).map(([path, w]) => ({
+  ...w,
+  slug: slugFromPath(path),
+}))
+
+// ключ категории = имя файла (CMS генерирует его из названия)
+const categoryEntries = Object.entries(categoryModules).map(([path, data]) => ({
+  slug: slugFromPath(path),
+  data,
+}))
+
+// Общие (непереводимые) поля сайт читает с корня записи. Но Sveltia при
+// i18n:false/duplicate перемещает/дублирует их в языки — читаем с фолбэком
+// «корень → ru», чтобы контент не ломался при редактировании через CMS.
 function normalizeWork(w: WorkRaw, locale: AppLocale): Work {
   const l = w[locale] ?? w.ru
+  const fb = w.ru as unknown as Partial<WorkRaw>
   return {
-    slug: w.slug,
-    type: w.type,
-    category: w.category,
-    media: w.media,
-    poster: w.poster ?? '',
-    externalUrl: w.externalUrl ?? '',
-    featured: w.featured ?? false,
-    order: w.order ?? 0,
+    slug: w.slug ?? fb.slug ?? '',
+    type: w.type ?? fb.type ?? 'image',
+    category: w.category ?? fb.category ?? '',
+    media: w.media ?? fb.media ?? '',
+    poster: w.poster ?? fb.poster ?? '',
+    externalUrl: w.externalUrl ?? fb.externalUrl ?? '',
+    featured: w.featured ?? fb.featured ?? false,
+    order: w.order ?? fb.order ?? 0,
     title: l.title,
     alt: l.alt || l.title,
     description: l.description ?? '',
     tags: l.tags ?? [],
-  }
-}
-
-function normalizeService(s: ServiceRaw, locale: AppLocale): Service {
-  const l = s[locale] ?? s.ru
-  return {
-    slug: s.slug,
-    icon: s.icon ?? '',
-    order: s.order ?? 0,
-    title: l.title,
-    description: l.description,
-    items: l.items ?? [],
   }
 }
 
@@ -50,10 +53,15 @@ export function useWorks() {
   return { works }
 }
 
-export function useServices() {
+/** Карта «ключ категории (имя файла) → локализованное название» для языка. */
+export function useCategories() {
   const { locale } = useI18n()
-  const services = computed(() =>
-    servicesRaw.map((s) => normalizeService(s, locale.value as AppLocale)).sort(byOrder),
-  )
-  return { services }
+  return computed<Record<string, string>>(() => {
+    const map: Record<string, string> = {}
+    for (const { slug, data } of categoryEntries) {
+      const l = (data[locale.value as AppLocale] ?? data.ru) as { name?: string } | undefined
+      map[slug] = l?.name ?? slug
+    }
+    return map
+  })
 }

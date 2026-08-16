@@ -2,12 +2,14 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useScrollLock } from '@vueuse/core'
+import { useCategories } from '../../composables/useContent'
 import type { Work } from '../../types/content'
 
 const props = defineProps<{ work: Work }>()
 const emit = defineEmits<{ close: [] }>()
 
-const { t, te } = useI18n()
+const { t } = useI18n()
+const categories = useCategories()
 
 const closeBtn = ref<HTMLButtonElement | null>(null)
 const videoEl = ref<HTMLVideoElement | null>(null)
@@ -39,11 +41,8 @@ const videoSrc = computed(() => {
 })
 const imageSrc = computed(() => props.work.poster || props.work.media)
 
-// Локализованная категория работы для надзаголовка (если есть перевод)
-const categoryLabel = computed(() => {
-  const k = `categories.${props.work.category}`
-  return te(k) ? t(k) : ''
-})
+// Локализованная категория работы для надзаголовка (из справочника категорий)
+const categoryLabel = computed(() => categories.value[props.work.category] ?? '')
 
 const bodyLock = useScrollLock(typeof document !== 'undefined' ? document.body : null)
 let playTimer = 0

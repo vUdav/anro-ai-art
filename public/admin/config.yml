@@ -5,9 +5,9 @@ backend:
   name: github
   repo: vUdav/anro-ai-art
   branch: main
-  # Авторизация: Sveltia CMS использует свой встроенный OAuth для GitHub —
-  # отдельный брокер (Cloudflare Worker) НЕ обязателен. Задавайте base_url
-  # только если поднимаете собственный sveltia-cms-auth (см. CONTENT_GUIDE.md):
+  # Авторизация через GitHub: нужен OAuth-брокер (напр. sveltia-cms-auth на
+  # Cloudflare Workers) с base_url ниже, ЛИБО вход по персональному токену
+  # («Sign in with Token») без брокера. См. CONTENT_GUIDE.md.
   # base_url: https://anro-cms-auth.<subdomain>.workers.dev
 
 # Куда CMS кладёт загруженные файлы в репозитории и как путь выглядит на сайте
@@ -28,31 +28,31 @@ collections:
     folder: "src/content/works"
     create: true
     delete: true
-    slug: "{{fields.slug}}"
+    # slug генерируется автоматически из названия — отдельного поля нет
+    identifier_field: title
+    slug: "{{title}}"
     extension: json
     format: json
     i18n: true
-    summary: "{{fields.slug}} · {{fields.category}}"
+    # В списке работ: превью (постер видео → иначе файл-изображение) + название
+    summary: "{{title}}"
+    thumbnail: [poster, media]
     fields:
-      - { name: slug, label: "ID (латиницей, напр. neon-cover-02)", widget: string, i18n: false }
-      - { name: type, label: "Тип", widget: select, options: [image, video], default: image, i18n: false }
+      - { name: type, label: "Тип", widget: select, options: [image, video], default: image, i18n: duplicate }
+      # Категория выбирается из коллекции «Категории» (управляется отдельно)
       - name: category
         label: "Категория"
-        widget: select
-        i18n: false
-        default: covers
-        options:
-          - { label: "Обложки", value: covers }
-          - { label: "Мокапы", value: mockups }
-          - { label: "Фотосессии", value: photoshoots }
-          - { label: "Эскизы", value: sketches }
-          - { label: "Реклама", value: ads }
-          - { label: "Иллюстрации", value: illustrations }
-      - { name: media, label: "Файл (изображение или видео)", widget: file, i18n: false }
-      - { name: poster, label: "Постер для видео (изображение)", widget: image, required: false, i18n: false }
-      - { name: externalUrl, label: "Внешняя ссылка на видео (необязательно)", widget: string, required: false, i18n: false }
-      - { name: featured, label: "Избранное", widget: boolean, default: false, i18n: false }
-      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        search_fields: [name, "{{slug}}"]
+        display_fields: [name]
+        i18n: duplicate
+      - { name: media, label: "Файл (изображение или видео)", widget: file, i18n: duplicate }
+      - { name: poster, label: "Постер для видео (изображение)", widget: image, required: false, i18n: duplicate }
+      - { name: externalUrl, label: "Внешняя ссылка на видео (необязательно)", widget: string, required: false, i18n: duplicate }
+      - { name: featured, label: "Избранное", widget: boolean, default: false, i18n: duplicate }
+      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: duplicate }
       - { name: title, label: "Название", widget: string, i18n: true }
       - { name: alt, label: "Alt-текст (для доступности)", widget: string, i18n: true }
       - { name: description, label: "Описание", widget: text, required: false, i18n: true }
@@ -63,25 +63,23 @@ collections:
         i18n: true
         field: { name: tag, label: "Тег", widget: string }
 
-  # ─── Услуги ───
-  - name: services
-    label: "Услуги"
-    label_singular: "Услуга"
-    folder: "src/content/services"
+  # ─── Категории работ (справочник) ───
+  - name: categories
+    label: "Категории работ"
+    label_singular: "Категория работ"
+    folder: "src/content/categories"
     create: true
     delete: true
-    slug: "{{fields.slug}}"
+    # slug генерируется автоматически из названия (как у работ), поля key нет
+    identifier_field: name
+    slug: "{{name}}"
     extension: json
     format: json
     i18n: true
-    summary: "{{fields.slug}}"
+    summary: "{{name}}"
     fields:
-      - { name: slug, label: "ID (латиницей)", widget: string, i18n: false }
-      - { name: icon, label: "Иконка", widget: select, options: [image, video], default: image, i18n: false }
-      - { name: order, label: "Порядок сортировки", widget: number, default: 0, value_type: int, i18n: false }
-      - { name: title, label: "Название", widget: string, i18n: true }
-      - { name: description, label: "Описание", widget: text, i18n: true }
-      - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+      - { name: name, label: "Название", widget: string, i18n: true }
+      - { name: order, label: "Порядок", widget: number, default: 0, value_type: int, required: false, i18n: duplicate }
 
   # ─── Тексты разделов (синглтоны) ───
   - name: pages
@@ -97,9 +95,6 @@ collections:
         fields:
           - { name: name, label: "Имя / бренд", widget: string, i18n: true }
           - { name: role, label: "Роль", widget: string, i18n: true }
-          - { name: headline, label: "Заголовок (2 предложения = 2 строки)", widget: string, i18n: true }
-          - { name: subheadline, label: "Подзаголовок", widget: text, i18n: true }
-          - { name: cta, label: "Текст кнопки", widget: string, i18n: true }
 
       - name: about
         label: "Обо мне"
@@ -107,11 +102,37 @@ collections:
         format: json
         i18n: true
         fields:
-          - { name: photo, label: "Фото", widget: image, i18n: false }
+          # duplicate: одно общее фото на все языки — редактируется в RU,
+          # в EN/BE показывается только для чтения. При i18n:false Sveltia
+          # прячет поле в неосновных языках и роняет его в site-рендере.
+          - { name: photo, label: "Фото", widget: image, i18n: duplicate }
           - { name: fullName, label: "Полное имя (крупный текст)", widget: string, i18n: true }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
           - { name: bio, label: "Биография", widget: text, i18n: true }
           - { name: credentials, label: "Регалии / достижения", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+
+      - name: services
+        label: "Услуги"
+        file: "src/content/pages/services.json"
+        format: json
+        i18n: true
+        fields:
+          - name: image
+            label: "Услуга «Image Creating»"
+            widget: object
+            i18n: true
+            fields:
+              - { name: title, label: "Название", widget: string, i18n: true }
+              - { name: description, label: "Описание", widget: text, i18n: true }
+              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+          - name: video
+            label: "Услуга «Video Creating»"
+            widget: object
+            i18n: true
+            fields:
+              - { name: title, label: "Название", widget: string, i18n: true }
+              - { name: description, label: "Описание", widget: text, i18n: true }
+              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
 
       - name: contacts
         label: "Контакты"
@@ -126,3 +147,20 @@ collections:
           - { name: email, label: "Email (необязательно)", widget: string, required: false, i18n: false }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
           - { name: text, label: "Текст", widget: text, i18n: true }
+
+      - name: seo
+        label: "SEO"
+        file: "src/content/pages/seo.json"
+        format: json
+        i18n: true
+        fields:
+          - { name: title, label: "Заголовок вкладки (title / OG)", widget: string, i18n: true }
+          - { name: description, label: "Описание для поисковиков и соцсетей", widget: text, i18n: true }
+          - name: keywords
+            label: "Ключевые слова"
+            widget: list
+            required: false
+            i18n: true
+            field: { name: keyword, label: "Слово / фраза", widget: string }
+          - { name: ogImage, label: "Картинка для соцсетей (OG, 1200×630)", widget: image, required: false, i18n: true }
+          - { name: imageAlt, label: "Alt для OG-картинки", widget: string, required: false, i18n: true }

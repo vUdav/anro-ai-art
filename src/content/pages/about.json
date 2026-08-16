@@ -11,6 +11,7 @@
     ]
   },
   "en": {
+    "photo": "/media/about-portrait.webp",
     "fullName": "Anastasia Romanova",
     "title": "Hi, I'm Anro",
     "bio": "I'm an AI creator and new-wave artist. I blend directorial thinking, aesthetics and neural networks to make visuals that resonate. I work with brands and people — from atmospheric covers to cinematic video.",
@@ -21,6 +22,7 @@
     ]
   },
   "be": {
+    "photo": "/media/about-portrait.webp",
     "fullName": "Анастасія Раманова",
     "title": "Прывітанне, я Anro",
     "bio": "Я AI-крэатар і мастак новай хвалі. Спалучаю рэжысёрскае мысленне, эстэтыку і нейрасеткі, каб ствараць візуал, які чапляе. Працую з брэндамі і людзьмі: ад атмасферных вокладак да кінематаграфічных відэаролікаў.",
