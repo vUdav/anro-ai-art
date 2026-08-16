@@ -1,20 +1,38 @@
 {
-  "slug": "image-creating",
-  "icon": "image",
-  "order": 1,
   "ru": {
+    "slug": "1",
+    "icon": "image",
+    "order": 0,
     "title": "Image Creating",
     "description": "Создание изображений под задачу: от концепта до финального кадра.",
-    "items": ["Обложки и постеры", "Мокапы и реклама", "Нейро-фотосессии", "Эскизы тату", "Иллюстрации и открытки"]
+    "items": [
+      "Обложки и постеры",
+      "Мокапы и реклама",
+      "Нейро-фотосессии",
+      "Эскизы тату",
+      "Иллюстрации и открытки"
+    ]
   },
   "en": {
     "title": "Image Creating",
     "description": "Images crafted for your goal — from concept to the final frame.",
-    "items": ["Covers & posters", "Mockups & ads", "AI photoshoots", "Tattoo sketches", "Illustrations & cards"]
+    "items": [
+      "Covers & posters",
+      "Mockups & ads",
+      "AI photoshoots",
+      "Tattoo sketches",
+      "Illustrations & cards"
+    ]
   },
   "be": {
     "title": "Image Creating",
     "description": "Стварэнне выяў пад задачу: ад канцэпту да фінальнага кадра.",
-    "items": ["Вокладкі і постары", "Мокапы і рэклама", "Нейра-фотасесіі", "Эскізы татуіровак", "Ілюстрацыі і паштоўкі"]
+    "items": [
+      "Вокладкі і постары",
+      "Мокапы і рэклама",
+      "Нейра-фотасесіі",
+      "Эскізы татуіровак",
+      "Ілюстрацыі і паштоўкі"
+    ]
   }
 }
