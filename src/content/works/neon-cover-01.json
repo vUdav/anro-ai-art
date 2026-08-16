@@ -1,42 +1,52 @@
 {
-  "slug": "neon-cover-01",
-  "type": "video",
-  "category": "covers",
-  "media": "/media/videos/neon-cover-01.mp4",
-  "poster": "/media/works/neon-cover-01-poster.webp",
-  "externalUrl": "",
-  "featured": true,
-  "order": 1,
   "ru": {
-    "title": "Неоновая обложка",
-    "alt": "Обложка альбома в неоновой эстетике",
-    "description": "Обложка для музыкального релиза в тёмной неоновой стилистике. Работа над атмосферой, светом и типографикой — визуал, который считывается с первого взгляда и держит настроение всего альбома. ",
+    "type": "video",
+    "category": "музыкальный-клип",
+    "media": "/media/videos/neon-cover-01.mp4",
+    "poster": "/media/works/neon-cover-01-poster.webp",
+    "externalUrl": "",
+    "featured": true,
+    "order": 0,
+    "title": "Mind Rivers — Ocean Jet",
+    "alt": "Музыкальный клип на композицию Mind Rivers — Ocean Jet",
+    "description": "Музыкальный клип. В работе были использованы реальные референсы танцевальных движений. Персонажи полностью идентичны реальным учатникам группы. Сохранена атмосфера и композиция на протяжении всего видео.",
     "tags": [
-      "Midjourney",
-      "Обложка",
-      "Неон",
+      "Seedance",
+      "Seedream",
       "Музыка"
     ]
   },
   "en": {
-    "title": "Neon Cover",
-    "alt": "Album cover in neon aesthetics",
-    "description": "Cover art for a music release in a dark neon style. A focus on mood, light and typography — a visual that reads instantly and carries the tone of the whole album.",
+    "type": "video",
+    "category": "музыкальный-клип",
+    "media": "/media/videos/neon-cover-01.mp4",
+    "poster": "/media/works/neon-cover-01-poster.webp",
+    "externalUrl": "",
+    "featured": true,
+    "order": 0,
+    "title": "Mind Rivers — Ocean Jet",
+    "alt": "Music video for the song Mind Rivers - Ocean Jet",
+    "description": "Music video. Real references of dance movements were used in the work. The characters are completely identical to the real participants of the group. The atmosphere and composition were preserved throughout the entire video.",
     "tags": [
-      "Midjourney",
-      "Cover",
-      "Neon",
+      "Seedance",
+      "Seedream",
       "Music"
     ]
   },
   "be": {
-    "title": "Неонавая вокладка",
-    "alt": "Вокладка альбома ў неонавай эстэтыцы",
-    "description": "Вокладка для музычнага рэлізу ў цёмнай неонавай стылістыцы. Праца над атмасферай, святлом і тыпаграфікай — візуал, які счытваецца з першага погляду.",
+    "type": "video",
+    "category": "музыкальный-клип",
+    "media": "/media/videos/neon-cover-01.mp4",
+    "poster": "/media/works/neon-cover-01-poster.webp",
+    "externalUrl": "",
+    "featured": true,
+    "order": 0,
+    "title": "Mind Rivers — Ocean Jet",
+    "alt": "Музычны кліп на композіцыю Mind Rivers — Ocean Jet",
+    "description": "Музычны кліп. У рабоце былі выкарыстаны рэальныя рэферэнсы танцавальных рухаў. Персанажы цалкам ідэнтычныя рэальным удзельнікам групы. Захавана атмасфера і композіцыя на працягу ўсяго відэа.",
     "tags": [
-      "Midjourney",
-      "Вокладка",
-      "Неон",
+      "Seedance",
+      "Seedream",
       "Музыка"
     ]
   }
