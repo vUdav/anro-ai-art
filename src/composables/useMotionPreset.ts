@@ -1,11 +1,5 @@
 import { useMediaQuery } from '@vueuse/core'
 
-// Пресеты для v-motion (reveal при появлении в вьюпорте).
-// При prefers-reduced-motion анимации фактически отключаются (см. tokens.css),
-// но мы также отдаём «плоский» пресет, чтобы контент был сразу видим.
-//
-// Единый голос движения — уверенное замедление (denoise «наводится на резкость»),
-// без bounce/elastic. Все пресеты делят одну кривую EASE.
 const EASE = [0.16, 1, 0.3, 1]
 
 export function useMotionPreset() {
@@ -37,9 +31,6 @@ export function useMotionPreset() {
           },
         }
 
-  // Фокусный, on-brand reveal: контент «проявляется из диффузии» —
-  // входит размытым, чуть переувеличенным и смещённым вниз, затем наводится
-  // на резкость. Держим blur только на небольших областях (заголовки секций).
   const diffuse = (delay = 0) =>
     reduced.value
       ? flat

@@ -13,13 +13,10 @@ export const createApp = ViteSSG(
     routes,
     scrollBehavior(to, _from, savedPosition) {
       if (to.hash) {
-        // Первый заход по якорь-ссылке — мгновенный переход, без анимации скролла.
-        // Плавно скроллим только при навигации уже внутри сайта.
         const isInitial = _from.matched.length === 0
         return { el: to.hash, top: 80, behavior: isInitial ? 'auto' : 'smooth' }
       }
       if (savedPosition) return savedPosition
-      // Смена языка (/, /en, /be) не должна прокручивать к началу
       if (to.path !== _from.path && to.hash === '' && _from.name) {
         return false
       }
@@ -31,7 +28,6 @@ export const createApp = ViteSSG(
     app.use(i18n)
     app.use(MotionPlugin)
 
-    // Синхронизируем локаль с префиксом маршрута (/en, /be) и <html lang>
     router.beforeEach((to) => {
       const seg = String(to.path).split('/')[1]
       const locale: AppLocale = (SUPPORTED_LOCALES as readonly string[]).includes(seg)

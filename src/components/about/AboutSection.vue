@@ -9,7 +9,6 @@ const { t } = useI18n()
 const about = useAbout()
 const { fadeUp, diffuse } = useMotionPreset()
 
-// Полное имя в две строки: первое слово / остаток
 const nameLines = computed(() => {
   const full = (about.value.fullName || '').trim()
   const i = full.indexOf(' ')
@@ -46,12 +45,11 @@ const nameLines = computed(() => {
 </template>
 
 <style scoped lang="scss">
-/* ── Брейкпоинты (mobile-first, min-width) ── */
-$bp-sm: 480px; // крупные телефоны
-$bp-md: 768px; // планшеты (портрет)
-$bp-lg: 1024px; // планшеты (ландшафт) / малые ноутбуки → слоевая раскладка
-$bp-xl: 1280px; // десктопы
-$bp-2xl: 1600px; // большие экраны
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1600px;
 
 @mixin up($bp) {
   @media (min-width: $bp) {
@@ -59,7 +57,6 @@ $bp-2xl: 1600px; // большие экраны
   }
 }
 
-/* ── Наследуемые поверхности (BEM-инвариант через @extend) ── */
 %surface {
   border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(255, 255, 255, 0.04);
@@ -73,14 +70,12 @@ $bp-2xl: 1600px; // большие экраны
   -webkit-backdrop-filter: blur(20px) saturate(120%);
 }
 
-/* ── Блок ── */
 .about {
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* верхний паддинг учитывает фиксированную шапку, чтобы eyebrow не уходил под неё */
   padding: 5rem 1.25rem 3.5rem;
-  background: transparent; /* mesh-фон просвечивает и подсвечивает стекло */
+  background: transparent;
 
   @include up($bp-md) {
     padding: 5rem 2rem;
@@ -92,7 +87,6 @@ $bp-2xl: 1600px; // большие экраны
     padding: clamp(6rem, 9vh, 8rem) 4rem;
   }
 
-  /* ── Сцена: mobile = стек, desktop = слои ── */
   &__stage {
     position: relative;
     max-width: var(--maxw);
@@ -110,7 +104,6 @@ $bp-2xl: 1600px; // большие экраны
     }
   }
 
-  /* ── Eyebrow ── */
   &__eyebrow {
     order: 0;
     margin: 0;
@@ -123,7 +116,6 @@ $bp-2xl: 1600px; // большие экраны
     display: inline-block;
   }
 
-  /* ── Гигантское имя ── */
   &__name {
     order: 1;
     display: flex;
@@ -166,7 +158,6 @@ $bp-2xl: 1600px; // большие экраны
     }
   }
 
-  /* ── Свечение за портретом ── */
   &__glow {
     position: absolute;
     z-index: 0;
@@ -194,7 +185,6 @@ $bp-2xl: 1600px; // большие экраны
     }
   }
 
-  /* ── Портрет ── */
   &__portrait {
     order: 2;
     position: relative;
@@ -231,7 +221,6 @@ $bp-2xl: 1600px; // большие экраны
     }
   }
 
-  /* ── Стеклянная карточка ── */
   &__card {
     @extend %glass;
     order: 3;
@@ -260,7 +249,6 @@ $bp-2xl: 1600px; // большие экраны
     }
   }
 
-  /* ── Элементы карточки ── */
   &__title {
     margin: 0 0 1rem;
     font-family: var(--font-display);

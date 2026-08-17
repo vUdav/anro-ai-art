@@ -9,7 +9,6 @@ const { t } = useI18n()
 const contacts = useContacts()
 const { fadeUp } = useMotionPreset()
 
-// Ссылка кнопки: отдельное CMS-поле orderLink, фолбэк на общий telegram
 const link = computed(() => contacts.value.orderLink || contacts.value.telegram)
 </script>
 
@@ -43,8 +42,6 @@ const link = computed(() => contacts.value.orderLink || contacts.value.telegram)
     box-shadow: 0 32px 90px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 
-    // Энерго-кольцо: conic-градиент вращается вокруг рамки. Палиндром (cyan…cyan)
-    // + замкнутый круг → абсолютно бесшовно; угол крутит @property --order-angle.
     &::before {
       content: '';
       position: absolute;
@@ -72,7 +69,6 @@ const link = computed(() => contacts.value.orderLink || contacts.value.telegram)
       pointer-events: none;
     }
 
-    // Мягкое неон-свечение из-за верхней кромки (earned light, не заливка)
     &::after {
       content: '';
       position: absolute;
@@ -94,7 +90,6 @@ const link = computed(() => contacts.value.orderLink || contacts.value.telegram)
       pointer-events: none;
     }
 
-    // Наведение на панель — энергия «разгорается»
     &:hover::before {
       filter: brightness(1.3) saturate(1.15);
     }
@@ -147,7 +142,6 @@ const link = computed(() => contacts.value.orderLink || contacts.value.telegram)
   }
 }
 
-// Типизированное свойство для плавного вращения conic-угла
 @property --order-angle {
   syntax: '<angle>';
   inherits: false;

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// Кнопка «Заказать»: градиентный бордер + мягкая заливка + свечение за курсором.
-// Позиция свечения передаётся в CSS через --mx/--my (px от левого/верхнего края).
-// Если задан href — рендерится как <a> (внешняя ссылка), иначе как <button>.
 withDefaults(
   defineProps<{
     href?: string
@@ -16,7 +13,6 @@ function onMove(e: MouseEvent) {
   el.style.setProperty('--mx', `${e.clientX - r.left}px`)
   el.style.setProperty('--my', `${e.clientY - r.top}px`)
 }
-// Позицию при уходе не сбрасываем — иначе свечение «прыгает» в центр во время затухания.
 </script>
 
 <template>
@@ -64,8 +60,6 @@ function onMove(e: MouseEvent) {
   isolation: isolate;
   transition: box-shadow 0.35s var(--ease-out);
 
-  // Крупный вариант — для блока «Заказать»: неон-заливка свайпом при наведении.
-  // Яркость сдержанная — светлый текст остаётся читаемым (earned-light).
   &--lg {
     padding: 0.9rem 2.1rem;
     font-size: 1.05rem;
@@ -78,7 +72,6 @@ function onMove(e: MouseEvent) {
     }
   }
 
-  // Градиентное кольцо-бордер (маска показывает только рамку)
   &::before {
     content: '';
     position: absolute;
@@ -104,7 +97,6 @@ function onMove(e: MouseEvent) {
     pointer-events: none;
   }
 
-  // Мягкая градиентная заливка при наведении
   &::after {
     content: '';
     position: absolute;
@@ -116,7 +108,6 @@ function onMove(e: MouseEvent) {
     transition: opacity 0.35s var(--ease-out);
   }
 
-  // Свечение, следующее за курсором
   &__glow {
     position: absolute;
     inset: 0;
@@ -154,16 +145,12 @@ function onMove(e: MouseEvent) {
   }
 }
 
-// Заливка крупной кнопки при наведении/фокусе — заезжает и держится сдержанной
-// (перебивает базовый hover-tint по порядку источника)
 .order-btn--lg:hover::after,
 .order-btn--lg:focus-visible::after {
   opacity: 0.3;
   transform: translateX(0);
 }
 
-// На тач-экранах курсора нет: свечение «залипало» бы в последней точке тапа —
-// убираем его совсем (рамка и заливка остаются как тап-фидбек).
 @media (hover: none), (pointer: coarse) {
   .order-btn__glow {
     display: none;

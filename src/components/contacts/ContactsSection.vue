@@ -12,7 +12,6 @@ const { fadeUp } = useMotionPreset()
 
 const year = new Date().getFullYear()
 
-// Ссылки-контакты: личный Telegram, Telegram-канал, Instagram (пустые пропускаем)
 const links = computed(() =>
   [
     {
@@ -129,7 +128,7 @@ $bp-xl: 1280px;
 .contacts {
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.09);
-  background: transparent; /* mesh-фон просвечивает */
+  background: transparent;
   padding: clamp(2.25rem, 4vw, 3.25rem) 1.25rem clamp(1.75rem, 3vw, 2.25rem);
 
   @include up($bp-md) {
@@ -147,7 +146,6 @@ $bp-xl: 1280px;
     margin-inline: auto;
   }
 
-  /* Верхний ряд: бренд слева, ссылки справа (desktop); стек (mobile) */
   &__top {
     display: flex;
     flex-direction: column;
@@ -182,7 +180,6 @@ $bp-xl: 1280px;
     color: var(--text-300);
   }
 
-  /* Подписанные ссылки — колонкой */
   &__links {
     display: flex;
     flex-direction: column;
@@ -204,7 +201,6 @@ $bp-xl: 1280px;
     text-decoration: none;
     transition: color 0.25s var(--ease-out);
 
-    // Комфортный тач-таргет на сенсорных устройствах
     @media (pointer: coarse) {
       min-height: 44px;
     }
@@ -231,7 +227,6 @@ $bp-xl: 1280px;
     text-underline-offset: 3px;
   }
 
-  /* Нижняя строка — копирайт */
   &__bottom {
     margin-top: clamp(1.75rem, 3vw, 2.5rem);
     padding-top: 1.25rem;

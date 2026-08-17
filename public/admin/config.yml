@@ -1,45 +1,33 @@
-# Конфигурация Sveltia CMS (совместима с Decap CMS)
-# Документация: https://github.com/sveltia/sveltia-cms
 
 backend:
   name: github
   repo: vUdav/anro-ai-art
   branch: main
-  # Авторизация через GitHub: нужен OAuth-брокер (напр. sveltia-cms-auth на
-  # Cloudflare Workers) с base_url ниже, ЛИБО вход по персональному токену
-  # («Sign in with Token») без брокера. См. CONTENT_GUIDE.md.
-  # base_url: https://anro-cms-auth.<subdomain>.workers.dev
 
-# Куда CMS кладёт загруженные файлы в репозитории и как путь выглядит на сайте
 media_folder: "public/media"
 public_folder: "/media"
 
-# Три языка в одном файле: вкладки RU / EN / BE в форме редактирования
 i18n:
   structure: single_file
   locales: [ru, en, be]
   default_locale: ru
 
 collections:
-  # ─── Работы (портфолио) ───
   - name: works
     label: "Работы"
     label_singular: "Работа"
     folder: "src/content/works"
     create: true
     delete: true
-    # slug генерируется автоматически из названия — отдельного поля нет
     identifier_field: title
     slug: "{{title}}"
     extension: json
     format: json
     i18n: true
-    # В списке работ: превью (постер видео → иначе файл-изображение) + название
     summary: "{{title}}"
     thumbnail: [poster, media]
     fields:
       - { name: type, label: "Тип", widget: select, options: [image, video], default: image, i18n: duplicate }
-      # Категория выбирается из коллекции «Категории» (управляется отдельно)
       - name: category
         label: "Категория"
         widget: relation
@@ -63,14 +51,12 @@ collections:
         i18n: true
         field: { name: tag, label: "Тег", widget: string }
 
-  # ─── Категории работ (справочник) ───
   - name: categories
     label: "Категории работ"
     label_singular: "Категория работ"
     folder: "src/content/categories"
     create: true
     delete: true
-    # slug генерируется автоматически из названия (как у работ), поля key нет
     identifier_field: name
     slug: "{{name}}"
     extension: json
@@ -81,7 +67,6 @@ collections:
       - { name: name, label: "Название", widget: string, i18n: true }
       - { name: order, label: "Порядок", widget: number, default: 0, value_type: int, required: false, i18n: duplicate }
 
-  # ─── Тексты разделов (синглтоны) ───
   - name: pages
     label: "Тексты разделов"
     editor: { preview: false }
@@ -102,9 +87,6 @@ collections:
         format: json
         i18n: true
         fields:
-          # duplicate: одно общее фото на все языки — редактируется в RU,
-          # в EN/BE показывается только для чтения. При i18n:false Sveltia
-          # прячет поле в неосновных языках и роняет его в site-рендере.
           - { name: photo, label: "Фото", widget: image, i18n: duplicate }
           - { name: fullName, label: "Полное имя (крупный текст)", widget: string, i18n: true }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
@@ -147,20 +129,3 @@ collections:
           - { name: email, label: "Email (необязательно)", widget: string, required: false, i18n: false }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
           - { name: text, label: "Текст", widget: text, i18n: true }
-
-      - name: seo
-        label: "SEO"
-        file: "src/content/pages/seo.json"
-        format: json
-        i18n: true
-        fields:
-          - { name: title, label: "Заголовок вкладки (title / OG)", widget: string, i18n: true }
-          - { name: description, label: "Описание для поисковиков и соцсетей", widget: text, i18n: true }
-          - name: keywords
-            label: "Ключевые слова"
-            widget: list
-            required: false
-            i18n: true
-            field: { name: keyword, label: "Слово / фраза", widget: string }
-          - { name: ogImage, label: "Картинка для соцсетей (OG, 1200×630)", widget: image, required: false, i18n: true }
-          - { name: imageAlt, label: "Alt для OG-картинки", widget: string, required: false, i18n: true }

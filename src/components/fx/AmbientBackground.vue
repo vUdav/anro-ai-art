@@ -1,8 +1,4 @@
 <script setup lang="ts">
-// Глобальный фон лендинга: тёмный mesh-градиент из мягких неон-зон, который
-// медленно морфится. Смысл — дать стеклянным панелям (backdrop-blur) цветную
-// подложку, чтобы frosted-стекло читалось и светилось. Фикс-слой за контентом.
-// Логики нет — только CSS; движение глушится при prefers-reduced-motion.
 </script>
 
 <template>
@@ -19,7 +15,6 @@
   background: var(--bg-900);
 }
 
-/* Два слоя мягких неон-зон, дрейфуют в противоход → морфящийся mesh */
 .ambient::before,
 .ambient::after {
   content: '';
@@ -33,7 +28,6 @@
     radial-gradient(40% 40% at 82% 20%, rgba(34, 211, 238, 0.12), transparent 70%),
     radial-gradient(45% 45% at 62% 86%, rgba(77, 124, 255, 0.12), transparent 72%);
   filter: blur(42px);
-  /* Дрейф + медленная пульсация яркости — разные периоды → «живой» несинхронный mesh */
   animation:
     ambient-a 42s ease-in-out infinite alternate,
     ambient-pulse-a 17s ease-in-out infinite alternate;
@@ -49,7 +43,6 @@
     ambient-pulse-b 23s ease-in-out infinite alternate;
 }
 
-/* Изогнутая траектория (waypoint на 50%) — движение не по прямой, читается живее */
 @keyframes ambient-a {
   0% {
     transform: translate3d(-4%, -3%, 0) scale(1.05);
@@ -74,7 +67,6 @@
   }
 }
 
-/* Пульсация — мягкое «набухание» свечения; период не кратен дрейфу */
 @keyframes ambient-pulse-a {
   from {
     opacity: 0.7;
@@ -93,7 +85,6 @@
   }
 }
 
-/* Мобильные: лёгче размытие ради перфа */
 @media (max-width: 768px) {
   .ambient::before {
     filter: blur(30px);

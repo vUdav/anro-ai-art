@@ -4,15 +4,14 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 const props = defineProps<{ src: string; alt?: string }>()
 
 const rootEl = ref<HTMLElement | null>(null)
-const canvas = ref<HTMLCanvasElement | null>(null) // WebGL — голограмма-скан портрета
-const neurons = ref<HTMLCanvasElement | null>(null) // 2D — сеть нейронов (только на hover)
+const canvas = ref<HTMLCanvasElement | null>(null)
+const neurons = ref<HTMLCanvasElement | null>(null)
 const active = ref(false)
 
 const reduced =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// ── Шейдеры (GLSL ES 1.00, WebGL1) ──
 const VERT = `
 attribute vec2 aPos;
 varying vec2 vUv;
@@ -67,7 +66,7 @@ let tex: WebGLTexture | null = null
 let raf = 0
 let running = false
 let texReady = false
-let firstDrawn = false // canvas показываем только после первой отрисовки текстуры
+let firstDrawn = false
 let disposed = false
 
 let uProgress = 0
@@ -78,12 +77,11 @@ let dpr = 1
 const uni: Record<string, WebGLUniformLocation | null> = {}
 let io: IntersectionObserver | null = null
 
-// ── Сеть нейронов (2D, одноцветная, видна только на hover) ──
 let nctx: CanvasRenderingContext2D | null = null
 type Node = { x: number; y: number; phx: number; phy: number; sx: number; sy: number; am: number }
 const nodes: Node[] = []
 const edges: Array<[number, number]> = []
-const COLOR: [number, number, number] = [34, 211, 238] // единый неон-cyan
+const COLOR: [number, number, number] = [34, 211, 238]
 const mouse = { px: -1, py: -1, a: 0, aTarget: 0 }
 
 function mulberry32(seed: number) {
@@ -96,7 +94,6 @@ function mulberry32(seed: number) {
   }
 }
 
-// Триангуляция Делоне (Bowyer–Watson) → планарная сетка треугольников без пересечений
 function triangulate(pts: Node[]): number[][] {
   const n = pts.length
   if (n < 3) return []
@@ -165,8 +162,6 @@ function triangulate(pts: Node[]): number[][] {
   return tris.filter((t) => t[0] < n && t[1] < n && t[2] < n)
 }
 
-// Узлы — регулярной сеткой по силуэту (там, где фото непрозрачно),
-// каждый раз с новым случайным seed → уникальный меш
 function buildNodesFromImage(img: HTMLImageElement) {
   nodes.length = 0
   edges.length = 0
@@ -194,7 +189,6 @@ function buildNodesFromImage(img: HTMLImageElement) {
   const cell = 1 / G
   for (let gy = 0; gy < G; gy++) {
     for (let gx = 0; gx < G; gx++) {
-      // небольшой джиттер → однородная сетка без больших дыр, но каждый раз уникальная
       const nx = (gx + 0.5) * cell + (rnd() - 0.5) * cell * 0.35
       const ny = (gy + 0.5) * cell + (rnd() - 0.5) * cell * 0.35
       if (nx < 0 || nx > 1 || ny < 0 || ny > 1) continue
@@ -212,8 +206,6 @@ function buildNodesFromImage(img: HTMLImageElement) {
     }
   }
 
-  // Треугольная сетка Делоне: рёбра не пересекаются; длинные рёбра через
-  // провалы силуэта отсекаем, чтобы не тянуть линии сквозь пустоту
   const maxLen = cell * 1.9
   const seen = new Set<string>()
   for (const t of triangulate(nodes)) {
@@ -235,13 +227,12 @@ function drawNeurons(w: number, h: number, time: number) {
   mouse.a += (mouse.aTarget - mouse.a) * 0.08
   nctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   nctx.clearRect(0, 0, w, h)
-  if (mouse.a < 0.01) return // без наведения нейронов не видно
+  if (mouse.a < 0.01) return
 
   const R = Math.min(w, h) * 0.32
   const [cr, cg, cb] = COLOR
-  const AMP = 0.0035 // меньше диапазон дрейфа
+  const AMP = 0.0035
 
-  // «живые» позиции узлов — лёгкий дрейф во времени
   const px: number[] = []
   const py: number[] = []
   for (let i = 0; i < nodes.length; i++) {
@@ -250,7 +241,6 @@ function drawNeurons(w: number, h: number, time: number) {
     py[i] = (nd.y + Math.cos(time * nd.sy + nd.phy) * AMP * nd.am) * h
   }
 
-  // связи
   nctx.lineCap = 'round'
   for (const [ai, bi] of edges) {
     const ax = px[ai],
@@ -269,7 +259,6 @@ function drawNeurons(w: number, h: number, time: number) {
     nctx.stroke()
   }
 
-  // узлы — мягкие/размытые (радиальный градиент)
   for (let i = 0; i < nodes.length; i++) {
     const x = px[i],
       y = py[i]
@@ -389,8 +378,6 @@ function frame(now: number) {
   gl.clear(gl.COLOR_BUFFER_BIT)
   if (texReady) {
     gl.drawArrays(gl.TRIANGLES, 0, 3)
-    // Перекрываем fallback-<img> только когда портрет реально нарисован —
-    // иначе на загрузке виден пробел (img уже скрыт, canvas ещё пуст)
     if (!firstDrawn) {
       firstDrawn = true
       active.value = true
@@ -430,7 +417,6 @@ onMounted(() => {
   if (!initGL()) return
   const nc = neurons.value
   if (nc) nctx = nc.getContext('2d')
-  // active выставится в frame() после первой отрисовки текстуры (без пробела)
 
   const el = rootEl.value!
   el.addEventListener('pointermove', onMove)

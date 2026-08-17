@@ -17,8 +17,6 @@ const panel = ref<HTMLElement | null>(null)
 const mediaEl = ref<HTMLElement | null>(null)
 let prevFocus: HTMLElement | null = null
 
-// Высота панели = высота медиа (текст скроллится внутри), чтобы вокруг
-// горизонтального медиа не было пустых полос сверху/снизу
 const panelH = ref<string | undefined>(undefined)
 function measure() {
   const h = mediaEl.value?.getBoundingClientRect().height ?? 0
@@ -29,8 +27,6 @@ const reduce =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-// При поддержке View Transitions вход/выход анимирует сам морф (родитель),
-// поэтому CSS-появление нужно только как фолбэк
 const vtSupported = typeof document !== 'undefined' && 'startViewTransition' in document
 const animateIn = !reduce && !vtSupported
 
@@ -41,14 +37,13 @@ const videoSrc = computed(() => {
 })
 const imageSrc = computed(() => props.work.poster || props.work.media)
 
-// Локализованная категория работы для надзаголовка (из справочника категорий)
 const categoryLabel = computed(() => categories.value[props.work.category] ?? '')
 
 const bodyLock = useScrollLock(typeof document !== 'undefined' ? document.body : null)
 let playTimer = 0
 
 function close() {
-  emit('close') // морф/размонтирование делает родитель
+  emit('close')
 }
 
 function onKey(e: KeyboardEvent) {
@@ -87,8 +82,6 @@ onMounted(() => {
   requestAnimationFrame(measure)
   closeBtn.value?.focus()
 
-  // Видео стартует с задержкой: сперва виден постер (совпадает с превью),
-  // морф завершается, и только потом запускается воспроизведение
   if (videoSrc.value) {
     playTimer = window.setTimeout(
       () => videoEl.value?.play?.().catch(() => {}),
@@ -138,7 +131,6 @@ onBeforeUnmount(() => {
           </svg>
         </button>
 
-        <!-- Медиа: общий view-transition-name → морф из карточки -->
         <div ref="mediaEl" class="wm__media">
           <video
             v-if="videoSrc"
@@ -215,15 +207,13 @@ $bp-lg: 1024px;
 
     @include up($bp-lg) {
       flex-direction: row;
-      width: auto; // ширина панели = медиа + текст, по контенту
+      width: auto;
       max-width: min(1280px, 95vw);
-      // высота панели = высоте медиа → нет пустых полос вокруг горизонтального медиа
       height: var(--panel-h, auto);
       max-height: 88vh;
     }
   }
 
-  /* Появление — только фолбэк (без View Transitions) */
   &--in {
     .wm__overlay {
       animation: wmOverlay 0.3s var(--ease-out) both;
@@ -258,7 +248,6 @@ $bp-lg: 1024px;
     }
   }
 
-  /* Медиа — целиком (contain), несёт общий view-transition-name */
   &__media {
     position: relative;
     flex: none;
@@ -270,7 +259,7 @@ $bp-lg: 1024px;
 
     @include up($bp-lg) {
       flex: 0 1 auto;
-      width: auto; // коробка = размер медиа (лимиты — на самом медиа)
+      width: auto;
       align-self: center;
     }
   }
@@ -278,7 +267,6 @@ $bp-lg: 1024px;
   &__img,
   &__video {
     display: block;
-    // размер по собственным пропорциям медиа → бокс = медиа, без пустых полей
     width: auto;
     height: auto;
     max-width: 100%;
@@ -287,8 +275,8 @@ $bp-lg: 1024px;
     margin-inline: auto;
 
     @include up($bp-lg) {
-      max-width: min(64vw, 860px); // горизонтальные крупные, не сжаты в узкую колонку
-      max-height: 86vh; // вертикальные высокие
+      max-width: min(64vw, 860px);
+      max-height: 86vh;
     }
   }
 
@@ -304,7 +292,6 @@ $bp-lg: 1024px;
     }
   }
 
-  /* Надзаголовок-категория (фирменный gradient-eyebrow) */
   &__eyebrow {
     margin: 0 0 0.85rem;
     font-family: var(--font-display);
@@ -327,7 +314,6 @@ $bp-lg: 1024px;
     text-wrap: balance;
   }
 
-  /* Тонкая линия-разделитель с неон-акцентом слева */
   &__rule {
     display: block;
     height: 1px;
@@ -402,7 +388,6 @@ $bp-lg: 1024px;
 }
 </style>
 
-<!-- Глобально: тайминг морфа медиа карточка↔модалка (псевдоэлементы VT — на уровне документа) -->
 <style>
 ::view-transition-group(work-media) {
   animation-duration: 0.45s;

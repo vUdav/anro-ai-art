@@ -20,8 +20,6 @@ export function useAbout() {
   const { locale } = useI18n()
   return computed(() => {
     const l = aboutRaw[locale.value as AppLocale] ?? aboutRaw.ru
-    // Фото — общее для всех языков. Sveltia (i18n:duplicate) дублирует его в
-    // каждый язык; на всякий случай фолбэк на RU, чтобы портрет не пропадал.
     return { ...l, photo: l.photo ?? aboutRaw.ru.photo }
   })
 }
@@ -50,8 +48,6 @@ export function useContacts() {
   const { locale } = useI18n()
   return computed(() => {
     const l = contactsRaw[locale.value as AppLocale] ?? contactsRaw.ru
-    // Ссылки — общие (i18n:false), сайт читает их с корня. Sveltia после правки
-    // через CMS может переместить их в ru — читаем с фолбэком «корень → ru».
     const fb = contactsRaw.ru as unknown as Record<string, string | undefined>
     const root = contactsRaw as unknown as Record<string, string | undefined>
     const pick = (k: string) => root[k] ?? fb[k]

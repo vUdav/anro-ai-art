@@ -10,7 +10,6 @@ const { t } = useI18n()
 const { services } = useServices()
 const { fadeUp, diffuse } = useMotionPreset()
 
-// Ховер карточки запускает неон-скан-линию в диффузионном поле
 interface FieldApi {
   onEnter: () => void
   onLeave: () => void
@@ -78,7 +77,6 @@ function onLeave(i: number) {
 </template>
 
 <style scoped lang="scss">
-/* ── Брейкпоинты (mobile-first, min-width) ── */
 $bp-sm: 480px;
 $bp-md: 768px;
 $bp-lg: 1024px;
@@ -90,7 +88,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* ── Наследуемые поверхности ── */
 %surface {
   border: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(255, 255, 255, 0.04);
@@ -109,7 +106,7 @@ $bp-xl: 1280px;
   width: 100%;
   overflow: hidden;
   padding: 3.5rem 1.25rem;
-  background: transparent; /* mesh-фон просвечивает и подсвечивает стекло */
+  background: transparent;
 
   @include up($bp-md) {
     padding: 5rem 2rem;
@@ -126,7 +123,6 @@ $bp-xl: 1280px;
     margin-inline: auto;
   }
 
-  /* ── Шапка блока ── */
   &__head {
     margin-bottom: clamp(2rem, 5vw, 3.25rem);
   }
@@ -151,7 +147,6 @@ $bp-xl: 1280px;
     color: var(--text-100);
   }
 
-  /* ── Сетка карточек ── */
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -174,7 +169,6 @@ $bp-xl: 1280px;
       border-color 0.4s var(--ease-out),
       box-shadow 0.4s var(--ease-out);
 
-    /* Неон-бордер по ховеру (Hairline → Neon) */
     &::before {
       content: '';
       position: absolute;
@@ -204,7 +198,6 @@ $bp-xl: 1280px;
     }
   }
 
-  /* Контент поверх диффузионного поля */
   &__content {
     position: relative;
     z-index: 1;
@@ -213,7 +206,6 @@ $bp-xl: 1280px;
     padding: clamp(1.5rem, 3vw, 2.25rem);
   }
 
-  /* Резерв верхней зоны, где поле собирает глиф */
   &__glyphspace {
     height: clamp(140px, 40vw, 180px);
   }
@@ -254,7 +246,6 @@ $bp-xl: 1280px;
     transition: color 0.4s var(--ease-out);
   }
 
-  /* Пульс пунктов в такт скан-фронту — каскад сверху вниз по --k */
   &__card:hover &__item {
     animation: svc-pulse 0.62s var(--ease-out) both;
     animation-delay: calc(var(--k) * 90ms);

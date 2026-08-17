@@ -10,26 +10,20 @@ const { t } = useI18n()
 const { works } = useWorks()
 const { fadeUp, diffuse, reduced } = useMotionPreset()
 
-// Доминанта = первая избранная работа, иначе первая по порядку
 const featured = computed<Work | null>(
   () => works.value.find((w) => w.featured) ?? works.value[0] ?? null,
 )
-// Остальные — в галерею (до 9, чтобы масонри заполнялось ровно 3×3)
 const rest = computed<Work[]>(() => works.value.filter((w) => w !== featured.value).slice(0, 9))
 
-// Превью: постер (для видео) или само изображение
 function thumb(w: Work) {
   return w.poster || w.media
 }
-// Вариант пропорции плитки — ломает ровную сетку (масонри)
 const ratios = ['is-a', 'is-b', 'is-c', 'is-b']
 function ratioFor(j: number) {
   return ratios[j % ratios.length]
 }
 
 const active = ref<Work | null>(null)
-// Морф карточка ↔ модалка через View Transitions: общее имя носит медиа
-// той работы, что сейчас «перетекает» (в остальное время — undefined)
 const morph = ref<string | null>(null)
 
 function supportsVT() {
@@ -41,12 +35,12 @@ function open(w: Work) {
     active.value = w
     return
   }
-  morph.value = w.slug // помечаем медиа кликнутой карточки
+  morph.value = w.slug
   nextTick(() => {
     ;(document as unknown as { startViewTransition: (cb: () => unknown) => void }).startViewTransition(
       () => {
         active.value = w
-        morph.value = null // в новом кадре общее имя несёт только модалка
+        morph.value = null
         return nextTick()
       },
     )
@@ -63,13 +57,12 @@ function closeModal() {
     document as unknown as { startViewTransition: (cb: () => unknown) => { finished: Promise<void> } }
   ).startViewTransition(() => {
     active.value = null
-    morph.value = slug // имя возвращается карточке → обратный морф
+    morph.value = slug
     return nextTick()
   })
   t.finished.finally(() => (morph.value = null))
 }
 
-// ── Denoise-проявление: плитки «резко проявляются из шума» при входе в кадр ──
 const root = ref<HTMLElement | null>(null)
 let io: IntersectionObserver | null = null
 
@@ -111,7 +104,6 @@ onBeforeUnmount(() => io?.disconnect())
 
       <p v-if="!works.length" class="works__empty">{{ t('portfolio.empty') }}</p>
 
-      <!-- Доминанта: кинематографичная ведущая работа -->
       <button
         v-if="featured"
         class="tile lead"
@@ -137,7 +129,6 @@ onBeforeUnmount(() => io?.disconnect())
         </span>
       </button>
 
-      <!-- Denoise-галерея: смещённая масонри-сетка -->
       <div class="masonry">
         <button
           v-for="(w, j) in rest"
@@ -171,7 +162,6 @@ onBeforeUnmount(() => io?.disconnect())
 </template>
 
 <style scoped lang="scss">
-/* ── Брейкпоинты (mobile-first, min-width) ── */
 $bp-sm: 480px;
 $bp-md: 768px;
 $bp-lg: 1024px;
@@ -188,7 +178,7 @@ $bp-xl: 1280px;
   width: 100%;
   overflow: hidden;
   padding: 3.5rem 1.25rem;
-  background: transparent; /* mesh-фон просвечивает и подсвечивает стекло */
+  background: transparent;
 
   @include up($bp-md) {
     padding: 5rem 2rem;
@@ -236,7 +226,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* ── Плитка (общий приём: денойз + неон-кромка на ховере) ── */
 .tile {
   position: relative;
   display: block;
@@ -257,8 +246,6 @@ $bp-xl: 1280px;
     position: absolute;
     inset: 0;
     z-index: 0;
-    /* стартовое «зашумлённое» состояние — уходит при проявлении.
-       Стаггер-задержка живёт ЗДЕСЬ, на контейнере, и касается только денойза */
     filter: blur(14px) saturate(0.45) brightness(0.68);
     transform: scale(1.12);
     transition:
@@ -271,20 +258,17 @@ $bp-xl: 1280px;
       height: 100%;
       object-fit: cover;
       display: block;
-      /* ховер-зум — быстрый и без стаггер-задержки, одинаково на всех карточках */
       transition:
         transform 0.4s var(--ease-out),
         filter 0.4s var(--ease-out);
     }
   }
 
-  /* денойз при попадании в кадр */
   &.is-in &__media {
     filter: none;
     transform: scale(1);
   }
 
-  /* неон-кромка (маска показывает только рамку) */
   &::after {
     content: '';
     position: absolute;
@@ -317,7 +301,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* Значок видео */
 .badge {
   position: absolute;
   top: 12px;
@@ -337,7 +320,6 @@ $bp-xl: 1280px;
   -webkit-backdrop-filter: blur(6px);
 }
 
-/* Чипы-теги */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -357,7 +339,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* ── Доминанта ── */
 .lead {
   aspect-ratio: 16 / 12;
   margin-bottom: clamp(0.85rem, 1.6vw, 1.5rem);
@@ -366,7 +347,6 @@ $bp-xl: 1280px;
     aspect-ratio: 16 / 8;
   }
 
-  /* нижний скрим, чтобы подпись читалась поверх медиа */
   &::before {
     content: '';
     position: absolute;
@@ -397,7 +377,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* ── Масонри-галерея ── */
 .masonry {
   columns: 2;
   column-gap: clamp(0.85rem, 1.6vw, 1.5rem);
@@ -413,7 +392,6 @@ $bp-xl: 1280px;
   }
 }
 
-/* пропорции плиток — ломаный ритм */
 .tile.is-a {
   aspect-ratio: 4 / 5;
 }
@@ -424,7 +402,6 @@ $bp-xl: 1280px;
   aspect-ratio: 1 / 1;
 }
 
-/* подпись плитки — проявляется на ховере/фокусе */
 .tile__cap {
   position: absolute;
   z-index: 2;

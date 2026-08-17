@@ -1,33 +1,27 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 
-// Диффузионное поле карточки услуги: глиф (кадр для image, ▶ для video)
-// собирается из шума в верхней зоне, вокруг — приглушённое поле-«шум». Частицы
-// тихо «дышат» как слово в hero (дрейф + редкие искры). При наведении по полю
-// проходит неон-скан-линия (циклично), и частицы на её фронте реагируют —
-// вспыхивают и слегка расступаются рябью. Курсорного расталкивания нет.
 const props = defineProps<{ kind: 'image' | 'video' }>()
 
 const rootEl = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 interface P {
-  tx: number // цель
+  tx: number
   ty: number
-  ox: number // смещение (затухает к 0)
+  ox: number
   oy: number
   seed: number
-  ci: number // индекс базового цвета в LUT
+  ci: number
   alpha: number
   size: number
 }
 
 let raf = 0
 let cleanup: (() => void) | null = null
-let scanStart = 0 // 0 — нет скана; -1 — начать на след. кадре; >0 — timestamp
+let scanStart = 0
 
 defineExpose({
-  // Скан проигрывается один раз при наведении (не в момент активного скана)
   onEnter() {
     if (scanStart === 0) scanStart = -1
   },
@@ -60,14 +54,13 @@ onMounted(() => {
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const isMobile = window.innerWidth < 768
-  const GLYPH_BUDGET = isMobile ? 620 : 1050 // плотнее глиф — меньше «дыр»
+  const GLYPH_BUDGET = isMobile ? 620 : 1050
   const AMBIENT = isMobile ? 54 : 84
   const DECAY = 0.9
   const BLOOM = isMobile ? 3 : 5
   const SCAN_MS = 900
-  const BAND = 46 // ширина зоны реакции у скан-фронта
+  const BAND = 46
 
-  // LUT градиента — базовые цвета частиц (без аллокаций в кадре)
   const LUT: string[] = []
   for (let i = 0; i < 24; i++) LUT.push(colorFor(i / 23, 0.85))
 
@@ -104,7 +97,6 @@ onMounted(() => {
     o.closePath()
   }
 
-  // Силуэт глифа (белым по прозрачному) для сэмпла точек
   function drawGlyph(o: CanvasRenderingContext2D, s: number, ox: number, oy: number) {
     o.fillStyle = '#fff'
     o.strokeStyle = '#fff'
@@ -148,7 +140,6 @@ onMounted(() => {
     drawGlyph(o, s, gx, gy)
     const data = o.getImageData(0, 0, W, H).data
     const pts: { x: number; y: number }[] = []
-    // плотный сэмпл (шаг 1) — больше точек, чётче форма
     for (let y = 0; y < H; y += 1) {
       for (let x = 0; x < W; x += 1) {
         if (data[(y * W + x) * 4 + 3] > 128) pts.push({ x, y })
@@ -180,8 +171,6 @@ onMounted(() => {
         size: 1.7,
       })
     }
-    // Фоновое поле-шум: в покое НЕВИДИМО (alpha 0), вспыхивает только
-    // когда по нему проходит скан-линия
     for (let i = 0; i < AMBIENT; i++) {
       const hx = Math.random() * W
       const hy = Math.random() * H
@@ -198,7 +187,6 @@ onMounted(() => {
     }
   }
 
-  // Сборка из шума: лёгкий выброс, затем стягивание к целям
   function startResolve() {
     mode = 'resolved'
     for (const p of particles) {
@@ -231,7 +219,6 @@ onMounted(() => {
     bctx.clearRect(0, 0, W, H)
     bctx.globalCompositeOperation = 'lighter'
 
-    // Скан-фронт: циклично, пока карточка под курсором
     let scanY = -1
     let scanA = 0
     if (scanStart === -1) scanStart = now
@@ -251,7 +238,6 @@ onMounted(() => {
         p.oy *= DECAY
       }
 
-      // Редкие «искры» — частица срывается и возвращается (как в hero)
       if (started && Math.random() < 0.0004) {
         p.ox += (Math.random() - 0.5) * 40
         p.oy += (Math.random() - 0.5) * 40
@@ -259,7 +245,6 @@ onMounted(() => {
 
       const y0 = p.ty + p.oy
 
-      // Реакция на скан-линию: вспышка + рябь (частицы расступаются от фронта)
       let aBoost = 0
       let szBoost = 0
       if (scanY >= 0) {
@@ -274,7 +259,6 @@ onMounted(() => {
       const x = p.tx + p.ox + Math.sin(time * 0.7 + p.seed) * 1.5
       const y = p.ty + p.oy + Math.cos(time * 0.6 + p.seed * 1.2) * 1.5
 
-      // Фоновые частицы (alpha 0) видны только на фронте скана
       const a = p.alpha + aBoost
       if (a > 0.02) {
         bctx.fillStyle = aBoost > 0 ? colorFor(p.tx / W, Math.min(1, a)) : LUT[p.ci]
@@ -283,7 +267,6 @@ onMounted(() => {
       }
     }
 
-    // Видимая скан-линия: мягкая полоса + неон-градиент (bloom добавит свечение)
     if (scanY >= 0) {
       bctx.fillStyle = `rgba(120,180,255,${0.05 * scanA})`
       bctx.fillRect(0, scanY - 13, W, 26)

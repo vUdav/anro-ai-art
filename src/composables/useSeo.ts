@@ -4,14 +4,12 @@ import { useI18n } from 'vue-i18n'
 import { SUPPORTED_LOCALES, DEFAULT_LOCALE, type AppLocale } from '../i18n'
 
 const SITE_URL = 'https://anroai.art'
-// OG-территории для og:locale (OpenGraph ждёт language_TERRITORY, не голый код)
 const OG_TERRITORY: Record<AppLocale, string> = { ru: 'ru_RU', en: 'en_US', be: 'be_BY' }
 
 function pathForLocale(locale: AppLocale): string {
   return locale === DEFAULT_LOCALE ? '/' : `/${locale}`
 }
 
-// Абсолютный URL для og:image: путь из CMS ('/media/og-ru.jpg') → полный адрес
 function absoluteUrl(src: string): string {
   if (/^https?:\/\//i.test(src)) return src
   return `${SITE_URL}${src.startsWith('/') ? '' : '/'}${src}`
@@ -31,7 +29,6 @@ export function useSeo(options: SeoOptions) {
   const title = computed(() => unref(options.title))
   const description = computed(() => unref(options.description))
   const canonical = computed(() => `${SITE_URL}${pathForLocale(locale.value as AppLocale)}`)
-  // Превью на языке ссылки: путь из CMS, иначе дефолт /media/og-<locale>.jpg (1200×630)
   const ogImage = computed(() => {
     const custom = unref(options.ogImage)
     return absoluteUrl(custom && custom.trim() ? custom : `/media/og-${locale.value}.jpg`)
@@ -49,7 +46,6 @@ export function useSeo(options: SeoOptions) {
     htmlAttrs: { lang: computed(() => locale.value) },
     meta: [
       { name: 'description', content: description },
-      // Ключевые слова редактируются в разделе SEO (пусто → тег не выводим)
       ...(keywords.value ? [{ name: 'keywords', content: keywords }] : []),
       { property: 'og:type', content: 'website' },
       { property: 'og:site_name', content: 'Anro — AI Creator' },

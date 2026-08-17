@@ -10,8 +10,6 @@ const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
-// Пункты навигации по блокам лендинга. Пока существует только «about» —
-// остальные показываем неактивными до появления соответствующих блоков.
 const items: { key: string; id: string; enabled: boolean }[] = [
   { key: 'about', id: 'about', enabled: true },
   { key: 'portfolio', id: 'works', enabled: true },
@@ -22,15 +20,13 @@ const items: { key: string; id: string; enabled: boolean }[] = [
 const locales = SUPPORTED_LOCALES
 const names = LOCALE_NAMES
 
-// ── Появление меню из блюра при подходе ко второму блоку ──
-const progress = ref(0) // 0 — скрыто (на hero), 1 — полностью видимо (на «Обо мне» и ниже)
-const open = ref(false) // мобильное меню
+const progress = ref(0)
+const open = ref(false)
 
 const navStyle = computed(() => {
   const blur = (1 - progress.value) * 10
   return {
     opacity: progress.value,
-    // В покое (blur≈0) убираем filter вовсе — иначе он создаёт группу и ломает backdrop-filter подложки
     filter: blur < 0.1 ? 'none' : `blur(${blur}px)`,
     pointerEvents: progress.value > 0.5 ? 'auto' : ('none' as 'auto' | 'none'),
   }
@@ -44,10 +40,6 @@ function measure() {
     return
   }
   const top = about.getBoundingClientRect().top
-  // Меню проявляется у верхней кромки «Обо мне» — чтобы не перекрывать hero.
-  // Полная видимость наступает, когда верх блока доходит до нижней кромки шапки
-  // (HEADER_H) — ровно туда его паркует клик по пункту меню, поэтому после
-  // навигации меню всегда чёткое, а не полу-заблюренное.
   const end = HEADER_H
   const start = HEADER_H + 160
   const p = (start - top) / (start - end)
@@ -69,18 +61,15 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onScroll)
 })
 
-// ── Навигация по якорям с учётом высоты шапки ──
 function scrollToId(id: string) {
   const el = document.getElementById(id)
   if (!el) return
   const y = el.getBoundingClientRect().top + window.scrollY - HEADER_H
   window.scrollTo({ top: y, behavior: 'smooth' })
-  // Отражаем секцию в адресной строке (без нативного прыжка — скролл делаем плавно)
   window.history.replaceState(null, '', `#${id}`)
   open.value = false
 }
 
-// ── Переключение языка с сохранением якоря ──
 function switchLocale(loc: AppLocale) {
   const base = loc === 'ru' ? '/' : `/${loc}`
   router.push({ path: base, hash: route.hash || '' })
@@ -91,7 +80,6 @@ function onOrder() {
   scrollToId('order')
 }
 
-// ── Плавное раскрытие/скрытие мобильной панели (Web Animations API) ──
 const PANEL_MS = 420
 const PANEL_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const prefersReduced =
@@ -104,7 +92,7 @@ function animatePanel(el: HTMLElement, opening: boolean, done: () => void) {
   }
   const inner = el.querySelector('.nav__panel-inner') as HTMLElement | null
   el.style.overflow = 'hidden'
-  el.style.height = '0px' // фиксируем старт, чтобы не мигнуло полной высотой
+  el.style.height = '0px'
   const full = el.scrollHeight
   const from = opening ? 0 : full
   const to = opening ? full : 0
@@ -140,7 +128,6 @@ function onPanelLeave(el: Element, done: () => void) {
 <template>
   <header class="nav" :style="navStyle">
     <div class="nav__inner" :style="{ height: HEADER_H + 'px' }">
-      <!-- Бургер (мобильные, слева) -->
       <button
         class="nav__burger"
         :class="{ 'is-open': open }"
@@ -152,7 +139,6 @@ function onPanelLeave(el: Element, done: () => void) {
         <span></span><span></span><span></span>
       </button>
 
-      <!-- Навигация (десктоп) -->
       <nav class="nav__links">
         <template v-for="it in items" :key="it.key">
           <a
@@ -186,7 +172,6 @@ function onPanelLeave(el: Element, done: () => void) {
       </div>
     </div>
 
-    <!-- Выпадающая панель (мобильные) -->
     <transition :css="false" @enter="onPanelEnter" @leave="onPanelLeave">
       <div v-show="open" class="nav__panel">
         <div class="nav__panel-inner">
@@ -227,7 +212,7 @@ function onPanelLeave(el: Element, done: () => void) {
 </template>
 
 <style scoped lang="scss">
-$bp-nav: 860px; // ниже — бургер, выше — полная навигация
+$bp-nav: 860px;
 
 @mixin up($bp) {
   @media (min-width: $bp) {
@@ -251,13 +236,11 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    /* высота задаётся инлайн из HEADER_H (единый источник правды) */
     max-width: var(--maxw);
     margin-inline: auto;
     padding-inline: clamp(1.25rem, 5vw, 4rem);
   }
 
-  /* ── Ссылки ── */
   &__links {
     display: none;
     align-items: center;
@@ -300,7 +283,6 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     }
   }
 
-  /* ── Переключатель языков ── */
   &__lang {
     display: none;
     align-items: center;
@@ -330,8 +312,6 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     border-radius: 8px;
     transition: color 0.25s var(--ease-out);
 
-    // Тач-таргет ≥ 44px на сенсорных устройствах (WCAG 2.5.8);
-    // на десктопе с мышью остаётся компактный вид.
     @media (pointer: coarse) {
       min-height: 44px;
     }
@@ -345,7 +325,6 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     }
   }
 
-  /* ── Бургер ── */
   &__burger {
     display: inline-flex;
     flex-direction: column;
@@ -383,7 +362,6 @@ $bp-nav: 860px; // ниже — бургер, выше — полная нави
     }
   }
 
-  /* ── Мобильная панель (высота анимируется через JS/WAAPI) ── */
   &__panel {
     overflow: hidden;
 

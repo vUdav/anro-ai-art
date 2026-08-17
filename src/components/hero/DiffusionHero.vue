@@ -7,7 +7,6 @@ import { HEADER_H } from '../../constants/layout'
 const { t } = useI18n()
 const hero = useHero()
 
-// Клик по шеврону — плавный скролл к первому блоку «Обо мне» (с учётом шапки)
 function scrollToAbout() {
   const el = document.getElementById('about')
   if (!el) return
@@ -16,18 +15,17 @@ function scrollToAbout() {
 }
 const canvas = ref<HTMLCanvasElement | null>(null)
 const ready = ref(false)
-const shown = ref(false) // мягкое появление всего экрана (opacity 0 → 1)
+const shown = ref(false)
 
-// ── Пасхалка «1369» ──
-const EGG_CODE = [1, 3, 6, 9] // TL, TR, BL, BR
+const EGG_CODE = [1, 3, 6, 9]
 const counts = reactive([0, 0, 0, 0])
-const spins = reactive([0, 0, 0, 0]) // накопленный поворот крестика (полные обороты)
-const glow = reactive([0, 0, 0, 0]) // свечение по близости курсора (0..1)
-const eggReady = ref(false) // ввод доступен только когда собрано ANRO
-const isTouchDevice = ref(false) // на тач-экранах пасхалку не показываем
-const playing = ref(false) // сердце проигрывается → прячем цифры и подпись
-let heartFn: (() => void) | null = null // назначается внутри onMounted
-let idleTimer: number | undefined // сброс пароля при бездействии
+const spins = reactive([0, 0, 0, 0])
+const glow = reactive([0, 0, 0, 0])
+const eggReady = ref(false)
+const isTouchDevice = ref(false)
+const playing = ref(false)
+let heartFn: (() => void) | null = null
+let idleTimer: number | undefined
 
 function resetEgg() {
   for (let i = 0; i < 4; i++) {
@@ -42,9 +40,9 @@ function onCross(i: number) {
   spins[i] += 360
   window.clearTimeout(idleTimer)
   if (EGG_CODE.every((v, k) => counts[k] === v)) {
-    heartFn?.() // разгадано — сброс сделает таймлайн сердца
+    heartFn?.()
   } else {
-    idleTimer = window.setTimeout(resetEgg, 10000) // 10 с бездействия → сброс
+    idleTimer = window.setTimeout(resetEgg, 10000)
   }
 }
 
@@ -68,14 +66,14 @@ const NET_NAMES = [
 ]
 
 interface Particle {
-  tx: number // цель (буква ANRO)
+  tx: number
   ty: number
-  ix: number // intro-позиция
+  ix: number
   iy: number
-  ox: number // смещение от цели (затухает к 0 при сборке)
+  ox: number
   oy: number
   seed: number
-  col: string // текущий цвет (меняется при морфинге в сердце)
+  col: string
   colAnro: string
   colHeart: string
   colDim: string
@@ -83,7 +81,7 @@ interface Particle {
 }
 
 let raf = 0
-let running = false // активен ли rAF-цикл (пауза вне вьюпорта / при document.hidden)
+let running = false
 let cleanup: (() => void) | null = null
 
 function colorFor(t: number, alpha = 0.9): string {
@@ -103,7 +101,6 @@ function colorFor(t: number, alpha = 0.9): string {
   )},${Math.round(a[2] + (b[2] - a[2]) * f)},${alpha})`
 }
 
-// Тёплая розово-красная гамма для сердца
 function heartColorFor(t: number, alpha = 0.92): string {
   const stops = [
     [255, 60, 90],
@@ -133,23 +130,20 @@ onMounted(async () => {
   const STEP = isMobile ? 5 : 4
   const word = (hero.value.name || 'Anro').toUpperCase()
 
-  const INTRO_DELAY = 1500 // мс: показываем шум + названия нейросетей
-  const INTRO_DELAY_NONAMES = 700 // мс: короткая пауза, когда названий нет
-  const DECAY = 0.949 // затухание смещения к цели (без пружины/отскока) — сборка вдвое медленнее
-  // Волна-рябь по клику (сила зависит от размера экрана; на тач-устройствах скромнее)
+  const INTRO_DELAY = 1500
+  const INTRO_DELAY_NONAMES = 700
+  const DECAY = 0.949
   const isTouch =
     window.matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints || 0) > 0
-  isTouchDevice.value = isTouch // пасхалка недоступна на тач-экранах
-  const WAVE_SPEED = 950 // px/с — скорость расхождения кольца
-  // На тач-устройствах ограничиваем «эффективную ширину», чтобы волна не росла слишком сильно
+  isTouchDevice.value = isTouch
+  const WAVE_SPEED = 950
   const scaleW = isTouch ? Math.min(window.innerWidth, 480) : window.innerWidth
   const WAVE_SCALE = Math.min(1, scaleW / 1200)
-  const WAVE_BAND = 90 * (0.6 + 0.4 * WAVE_SCALE) // ширина гребня волны
-  const WAVE_PUSH = 11 * WAVE_SCALE // сила отклонения частиц на гребне
+  const WAVE_BAND = 90 * (0.6 + 0.4 * WAVE_SCALE)
+  const WAVE_PUSH = 11 * WAVE_SCALE
 
-  const BLOOM = isMobile ? 5 : 9 // радиус свечения (px)
+  const BLOOM = isMobile ? 5 : 9
 
-  // Offscreen-буфер: частицы рисуем в него, а на экран — с bloom (размытая копия)
   const buf = document.createElement('canvas')
   const bctx = buf.getContext('2d')!
 
@@ -162,25 +156,23 @@ onMounted(async () => {
   let mode: 'intro' | 'resolved' = 'intro'
   let namesShown = false
   let t0 = 0
-  let pausedAt = 0 // момент паузы rAF — чтобы не «съесть» интро реальным временем на паузе
-  let revertTimer: number | undefined // таймер возврата ANRO после сердца
-  let readyTimer: number | undefined // таймер готовности интро (ready/eggReady)
-  // Пасхалка-сердце
+  let pausedAt = 0
+  let revertTimer: number | undefined
+  let readyTimer: number | undefined
   let anroPtsStored: { x: number; y: number }[] = []
   let heartPts: { x: number; y: number }[] | null = null
   let heartMode = false
   const heartCenter = { x: 0, y: 0 }
   const mouse = { x: -9999, y: -9999, active: false }
   const waves: { x: number; y: number; t: number; c: [number, number, number] }[] = []
-  // Неоновая палитра колец — каждый клик берёт следующий цвет по циклу
   const WAVE_COLORS: [number, number, number][] = [
-    [120, 220, 255], // cyan
-    [77, 124, 255], // blue
-    [139, 92, 246], // violet
-    [236, 72, 153], // pink
+    [120, 220, 255],
+    [77, 124, 255],
+    [139, 92, 246],
+    [236, 72, 153],
   ]
   let waveColorIdx = 0
-  let touchMode = false // на тач-экранах hover-отталкивание отключаем
+  let touchMode = false
 
   function fit() {
     W = cv!.clientWidth
@@ -192,11 +184,10 @@ onMounted(async () => {
     cv!.height = Math.floor(H * dpr)
     buf.width = cv!.width
     buf.height = cv!.height
-    ctx!.setTransform(1, 0, 0, 1, 0, 0) // экран — только композитинг буфера
-    bctx.setTransform(dpr, 0, 0, dpr, 0, 0) // в буфер рисуем в CSS-координатах
+    ctx!.setTransform(1, 0, 0, 1, 0, 0)
+    bctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
 
-  // Композит буфера на экран: резкий слой + размытый (bloom)
   function composite() {
     ctx!.setTransform(1, 0, 0, 1, 0, 0)
     ctx!.globalCompositeOperation = 'source-over'
@@ -216,7 +207,6 @@ onMounted(async () => {
     }
   }
 
-  // Точки из текста ANRO (крупно, по центру)
   function anroTargets(): { x: number; y: number }[] {
     const off = document.createElement('canvas')
     off.width = W
@@ -244,7 +234,6 @@ onMounted(async () => {
     return pts.slice(0, MAXP)
   }
 
-  // Названия нейросетей — по сетке (без наложений), крупно и плотно
   function nameTargets(): { x: number; y: number }[] {
     const off = document.createElement('canvas')
     off.width = W
@@ -269,7 +258,6 @@ onMounted(async () => {
     for (let i = 0; i < count; i++) {
       const { r, c } = cells[i]
       const name = names[i]
-      // Разброс размеров: часть названий крупные, часть мелкие
       let fs = (isMobile ? 15 : 30) + Math.random() * (isMobile ? 22 : 68)
       o.font = `300 ${fs}px 'Sora', sans-serif`
       const maxW = cellW * 0.86
@@ -298,11 +286,9 @@ onMounted(async () => {
   function build() {
     const anro = anroTargets()
     anroPtsStored = anro
-    heartPts = null // пересоберётся под текущий размер при первом вызове
+    heartPts = null
     const names = nameTargets()
     const N = anro.length
-    // Бюджет частиц под названия. Если частиц меньше, чем нужно для читаемой
-    // отрисовки, — названия не показываем вовсе, оставляем только шум.
     const budget = Math.floor(N * 0.6)
     const need = Math.min(names.length, 2500)
     const showNames = names.length > 0 && budget >= need
@@ -332,7 +318,6 @@ onMounted(async () => {
     }
   }
 
-  // Переход к ANRO: лёгкий «выброс» из центра, затем плавная сборка (затухание смещения)
   function startResolve() {
     mode = 'resolved'
     for (const p of particles) {
@@ -345,7 +330,6 @@ onMounted(async () => {
     }
   }
 
-  // Нормализация набора точек ровно к n (срез/добивка джиттером)
   function toExact(pts: { x: number; y: number }[], n: number) {
     shuffle(pts)
     if (pts.length >= n) return pts.slice(0, n)
@@ -357,10 +341,6 @@ onMounted(async () => {
     return out
   }
 
-  // Цели: сердце + надпись «Кахаю цябе».
-  // Сердце и текст сэмплим РАЗДЕЛЬНО и делим частицы так, чтобы тексту досталась
-  // заметная доля — иначе тонкие штрихи букв остаются рыхлыми и нечитаемыми
-  // (у заливки-сердца площадь в разы больше, и при общем пуле оно «съедает» частицы).
   function buildHeartTargets() {
     const off = document.createElement('canvas')
     off.width = W
@@ -373,7 +353,6 @@ onMounted(async () => {
     heartCenter.x = hx
     heartCenter.y = hy
 
-    // — Сердце (заливка), шаг сэмпла 2 —
     o.fillStyle = '#fff'
     o.beginPath()
     for (let a = 0; a <= Math.PI * 2 + 0.05; a += 0.02) {
@@ -394,7 +373,6 @@ onMounted(async () => {
       }
     }
 
-    // — Текст: жирнее (500) и шаг сэмпла 1 → плотное, читаемое покрытие штрихов —
     o.clearRect(0, 0, W, H)
     o.fillStyle = '#fff'
     o.textAlign = 'center'
@@ -410,16 +388,14 @@ onMounted(async () => {
       }
     }
 
-    // Тексту — гарантированная доля частиц (~32%), остальное сердцу
     const total = particles.length
     const textCount = Math.round(total * 0.32)
     const heartCount = total - textCount
     const out = toExact(heartPtsRaw, heartCount).concat(toExact(textPtsRaw, textCount))
-    shuffle(out) // перемешиваем, чтобы индексы частиц распределялись по обеим группам
+    shuffle(out)
     return out
   }
 
-  // Морфинг всех частиц к новому набору целей (с выбросом из центра, без пружины)
   function morphTo(pts: { x: number; y: number }[], heart: boolean, mag: number) {
     mode = 'resolved'
     for (let i = 0; i < particles.length; i++) {
@@ -443,9 +419,9 @@ onMounted(async () => {
     if (heartMode) return
     if (!heartPts) heartPts = buildHeartTargets()
     heartMode = true
-    playing.value = true // прячем цифры крестиков и подпись «AI Creator»
+    playing.value = true
     eggReady.value = false
-    morphTo(heartPts, true, 150) // усиленный выброс = «всплеск-искры»
+    morphTo(heartPts, true, 150)
     revertTimer = window.setTimeout(() => {
       heartMode = false
       playing.value = false
@@ -459,26 +435,23 @@ onMounted(async () => {
   }
 
   function clearTrail() {
-    // Полная очистка буфера — без «шлейфа» от частиц
     bctx.globalCompositeOperation = 'source-over'
     bctx.clearRect(0, 0, W, H)
     bctx.globalCompositeOperation = 'lighter'
   }
 
   function frame(now: number) {
-    if (!running) return // цикл поставлен на паузу (вне вьюпорта / вкладка скрыта)
+    if (!running) return
     const time = now * 0.001
     clearTrail()
 
     if (mode === 'intro') {
-      // Нет названий — короткая пауза вместо полной
       if (now - t0 >= (namesShown ? INTRO_DELAY : INTRO_DELAY_NONAMES)) {
         startResolve()
       } else {
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i]
           if (p.isName) {
-            // почти без дрожания — чтобы названия читались
             bctx.fillStyle = p.col
             bctx.fillRect(p.ix + Math.sin(time + p.seed) * 0.5, p.iy, 2, 2)
           } else {
@@ -494,9 +467,7 @@ onMounted(async () => {
       }
     }
 
-    // mode === 'resolved' — смещение затухает к нулю (плавная сборка без пружины)
-    // Предрасчёт радиусов волн и их затухания (волна слабеет по мере расхождения)
-    const reach = Math.hypot(W, H) * 0.55 // дистанция, на которой волна гаснет
+    const reach = Math.hypot(W, H) * 0.55
     const waveR = waves.map((w) => ((now - w.t) / 1000) * WAVE_SPEED)
     const waveAtt = waveR.map((r) => Math.max(0, 1 - r / reach))
 
@@ -519,7 +490,6 @@ onMounted(async () => {
         }
       }
 
-      // Волны: частицы на гребне кольца мягко отклоняются наружу
       for (let w = 0; w < waves.length; w++) {
         const dx = x - waves[w].x
         const dy = y - waves[w].y
@@ -533,16 +503,13 @@ onMounted(async () => {
         }
       }
 
-      // Постоянная жизнь: редкие «искры» отрываются и возвращаются (через затухание)
       if (Math.random() < 0.0004) {
         p.ox += (Math.random() - 0.5) * 46
         p.oy += (Math.random() - 0.5) * 46
       }
 
-      // Медленный дрейф — слово «дышит», не выглядит статичным
       let sx = x + Math.sin(time * 0.7 + p.seed) * 1.5
       let sy = y + Math.cos(time * 0.6 + p.seed * 1.2) * 1.5
-      // Пульс сердца
       if (heartMode) {
         const beat = 1 + 0.05 * Math.sin(time * 3.2)
         sx = heartCenter.x + (sx - heartCenter.x) * beat
@@ -552,18 +519,15 @@ onMounted(async () => {
       bctx.fillRect(sx, sy, 1.8, 1.8)
     }
 
-    // Видимое кольцо: неоновый гребень расходится и гаснет (bloom добавляет свечение)
     for (let w = 0; w < waves.length; w++) {
       if (waveAtt[w] <= 0 || waveR[w] < 2) continue
-      const a = waveAtt[w] * waveAtt[w] // мягче гаснет к краю
+      const a = waveAtt[w] * waveAtt[w]
       const [cr, cg, cb] = waves[w].c
-      // мягкий широкий ореол
       bctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${0.07 * a})`
       bctx.lineWidth = 9 * (0.6 + 0.4 * WAVE_SCALE)
       bctx.beginPath()
       bctx.arc(waves[w].x, waves[w].y, waveR[w], 0, Math.PI * 2)
       bctx.stroke()
-      // тонкий яркий контур сверху
       bctx.strokeStyle = `rgba(${cr}, ${cg}, ${cb}, ${0.15 * a})`
       bctx.lineWidth = 2
       bctx.beginPath()
@@ -571,7 +535,6 @@ onMounted(async () => {
       bctx.stroke()
     }
 
-    // Удаляем волны, которые уже погасли
     for (let w = waves.length - 1; w >= 0; w--) {
       if (waveR[w] > reach) waves.splice(w, 1)
     }
@@ -584,11 +547,9 @@ onMounted(async () => {
   try {
     await (document as Document & { fonts?: FontFaceSet }).fonts?.ready
   } catch {
-    /* no-op */
   }
   build()
   heartFn = triggerHeart
-  // Первый кадр отрисован — плавно проявляем весь экран
   requestAnimationFrame(() => {
     shown.value = true
   })
@@ -608,11 +569,8 @@ onMounted(async () => {
     return
   }
 
-  // Запуск/пауза rAF-цикла. start() защищён от двойного планирования кадра.
   function start() {
     if (running) return
-    // Сдвигаем t0 на длительность паузы, иначе интро «прокрутится» реальным
-    // временем, пока цикл стоял вне вьюпорта, и сборка ANRO будет пропущена.
     if (pausedAt) {
       t0 += performance.now() - pausedAt
       pausedAt = 0
@@ -637,7 +595,7 @@ onMounted(async () => {
   )
 
   function onMove(e: MouseEvent) {
-    if (touchMode) return // на тач-устройствах hover не используем
+    if (touchMode) return
     const r = cv!.getBoundingClientRect()
     mouse.x = e.clientX - r.left
     mouse.y = e.clientY - r.top
@@ -646,7 +604,6 @@ onMounted(async () => {
   function onLeave() {
     mouse.active = false
   }
-  // Свечение крестиков-пасхалки при приближении курсора
   function onGlow(e: MouseEvent) {
     const vw = window.innerWidth
     const vh = window.innerHeight
@@ -675,7 +632,7 @@ onMounted(async () => {
   }
   function onTouch(e: TouchEvent) {
     touchMode = true
-    mouse.active = false // убираем возможную «дырку» от синтетического hover
+    mouse.active = false
     const t = e.touches[0]
     if (!t) return
     const r = cv!.getBoundingClientRect()
@@ -688,7 +645,7 @@ onMounted(async () => {
       const wasResolved = mode === 'resolved'
       fit()
       build()
-      window.clearTimeout(revertTimer) // отменяем висящий возврат сердца
+      window.clearTimeout(revertTimer)
       heartMode = false
       playing.value = false
       for (let i = 0; i < 4; i++) {
@@ -713,7 +670,6 @@ onMounted(async () => {
   window.addEventListener('touchstart', onTouch, { passive: true })
   window.addEventListener('resize', onResize)
 
-  // Пауза тяжёлого rAF-цикла, когда hero прокручен прочь или вкладка скрыта.
   let sectionVisible = true
   const heroEl = cv!.closest('.hero')
   const io = new IntersectionObserver(
@@ -769,7 +725,6 @@ onBeforeUnmount(() => {
       <p class="hero__subtitle">{{ hero.role }}</p>
     </div>
 
-    <!-- Шеврон-подсказка «листайте вниз» — у нижней кромки экрана -->
     <button
       class="hero__scroll"
       :class="{ 'is-ready': ready && !playing }"
@@ -793,7 +748,6 @@ onBeforeUnmount(() => {
       </svg>
     </button>
 
-    <!-- Пасхалка: скрытые крестики-пароль по углам (недоступна на тач-экранах) -->
     <button
       v-for="(pos, i) in isTouchDevice ? [] : ['tl', 'tr', 'bl', 'br']"
       :key="pos"
@@ -819,7 +773,6 @@ onBeforeUnmount(() => {
   height: 100svh;
   overflow: hidden;
   background: radial-gradient(60% 60% at 50% 45%, #0b0d1c, #05060f 75%);
-  /* Низ героя растворяется в глобальном mesh-фоне — без резкого шва на стыке с «Обо мне» */
   -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
   mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
   opacity: 0;
@@ -854,8 +807,6 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
-/* Шеврон-подсказка «листайте вниз» — у нижней кромки, но выше mask-растворения
-   низа героя (нижние 10% гаснут), появляется вместе с подписью, того же цвета */
 .hero__scroll {
   position: absolute;
   left: 50%;
@@ -876,7 +827,7 @@ onBeforeUnmount(() => {
   transition:
     opacity 1.2s var(--ease-out),
     color 0.25s var(--ease-out);
-  pointer-events: none; /* до появления не кликается */
+  pointer-events: none;
 }
 
 .hero__scroll.is-ready {
@@ -931,7 +882,6 @@ onBeforeUnmount(() => {
   transform: translateY(0);
 }
 
-/* Пасхалка: крестики по углам */
 .egg {
   position: absolute;
   z-index: 5;

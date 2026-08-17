@@ -1,6 +1,5 @@
 export type MediaType = 'image' | 'video'
 
-/** Переводимые поля одной локали работы */
 export interface LocalizedText {
   title: string
   alt?: string
@@ -8,16 +7,12 @@ export interface LocalizedText {
   tags?: string[]
 }
 
-/** Работа в том виде, в каком она лежит в JSON (пишет CMS) */
 export interface WorkRaw {
-  /** slug выводится из имени файла — в JSON может отсутствовать */
   slug?: string
   type: MediaType
-  /** ключ категории из коллекции «Категории» */
   category: string
   media: string
   poster?: string
-  /** внешний URL видео (если не хранится в репозитории) */
   externalUrl?: string
   featured?: boolean
   order?: number
@@ -26,7 +21,6 @@ export interface WorkRaw {
   be: LocalizedText
 }
 
-/** Работа, нормализованная под текущую локаль */
 export interface Work {
   slug: string
   type: MediaType
@@ -42,7 +36,6 @@ export interface Work {
   tags: string[]
 }
 
-/** Услуга, нормализованная под текущую локаль (страница из двух блоков) */
 export interface Service {
   icon: MediaType
   slug: string
@@ -51,7 +44,6 @@ export interface Service {
   items: string[]
 }
 
-/** Категория работ (справочник); ключ = имя файла */
 export interface CategoryRaw {
   order?: number
   ru: { name: string }
