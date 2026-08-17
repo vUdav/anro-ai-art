@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
 
 backend:
   name: github
@@ -27,7 +28,7 @@ singletons:
         widget: list
         required: false
         i18n: true
-        field: { name: keyword, label: "Слово / фраза", widget: string }
+        field: { name: keyword, label: "Слово / фраза", widget: string, i18n: true }
       - { name: ogImage, label: "Картинка для соцсетей (OG, 1200×630)", widget: image, required: false, i18n: true }
       - { name: imageAlt, label: "Alt для OG-картинки", widget: string, required: false, i18n: true }
 
@@ -69,7 +70,7 @@ collections:
         widget: list
         required: false
         i18n: true
-        field: { name: tag, label: "Тег", widget: string }
+        field: { name: tag, label: "Тег", widget: string, i18n: true }
 
   - name: categories
     label: "Категории работ"
@@ -113,7 +114,7 @@ collections:
           - { name: fullName, label: "Полное имя (крупный текст)", widget: string, i18n: true }
           - { name: title, label: "Заголовок", widget: string, i18n: true }
           - { name: bio, label: "Биография", widget: text, i18n: true }
-          - { name: credentials, label: "Регалии / достижения", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+          - { name: credentials, label: "Регалии / достижения", widget: list, field: { name: item, label: "Пункт", widget: string, i18n: true }, i18n: true }
 
       - name: services
         label: "Услуги"
@@ -128,7 +129,7 @@ collections:
             fields:
               - { name: title, label: "Название", widget: string, i18n: true }
               - { name: description, label: "Описание", widget: text, i18n: true }
-              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string, i18n: true }, i18n: true }
           - name: video
             label: "Услуга «Video Creating»"
             widget: object
@@ -136,7 +137,7 @@ collections:
             fields:
               - { name: title, label: "Название", widget: string, i18n: true }
               - { name: description, label: "Описание", widget: text, i18n: true }
-              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string }, i18n: true }
+              - { name: items, label: "Список пунктов", widget: list, field: { name: item, label: "Пункт", widget: string, i18n: true }, i18n: true }
 
       - name: contacts
         label: "Контакты"

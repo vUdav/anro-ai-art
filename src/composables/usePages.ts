@@ -48,15 +48,15 @@ export function useContacts() {
   const { locale } = useI18n()
   return computed(() => {
     const l = contactsRaw[locale.value as AppLocale] ?? contactsRaw.ru
-    const fb = contactsRaw.ru as unknown as Record<string, string | undefined>
-    const root = contactsRaw as unknown as Record<string, string | undefined>
-    const pick = (k: string) => root[k] ?? fb[k]
+    const ru = contactsRaw.ru as unknown as Record<string, string | undefined>
+    const cur = l as unknown as Record<string, string | undefined>
+    const link = (k: string) => cur[k] ?? ru[k]
     return {
-      telegram: pick('telegram'),
-      channel: pick('channel'),
-      instagram: pick('instagram'),
-      orderLink: pick('orderLink'),
       ...l,
+      telegram: link('telegram'),
+      channel: link('channel'),
+      instagram: link('instagram'),
+      orderLink: link('orderLink'),
     }
   })
 }
