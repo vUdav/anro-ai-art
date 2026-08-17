@@ -55,7 +55,6 @@ export function useContacts() {
       telegram: pick('telegram'),
       channel: pick('channel'),
       instagram: pick('instagram'),
-      email: pick('email'),
       orderLink: pick('orderLink'),
       ...l,
     }
