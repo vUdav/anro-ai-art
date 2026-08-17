@@ -1,13 +1,50 @@
 {
-  "slug": "reel-01",
-  "type": "image",
-  "category": "ads",
-  "media": "/media/works/reel-01.webp",
-  "poster": "",
-  "externalUrl": "",
-  "featured": false,
-  "order": 6,
-  "ru": { "title": "Атмосферный ролик", "alt": "Кадр из атмосферного видеоролика", "description": "Короткий кинематографичный ролик с анимацией и цветокоррекцией. Динамичный монтаж под музыку — формат для reels, анонсов и шоурилов.", "tags": ["Видео", "Runway", "Монтаж", "Kling"] },
-  "en": { "title": "Atmospheric Reel", "alt": "Frame from an atmospheric video reel", "description": "A short cinematic reel with animation and color grading. A dynamic music-driven edit — a format for reels, teasers and showreels.", "tags": ["Video", "Runway", "Editing", "Kling"] },
-  "be": { "title": "Атмасферны ролік", "alt": "Кадр з атмасфернага відэароліка", "description": "Кароткі кінематаграфічны ролік з анімацыяй і колеракарэкцыяй. Дынамічны мантаж пад музыку — фармат для reels, анонсаў і шоурылаў.", "tags": ["Відэа", "Runway", "Мантаж", "Kling"] }
+  "ru": {
+    "type": "image",
+    "category": "мокап",
+    "media": "/media/works/reel-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Карточка товара",
+    "alt": "Карточка товара",
+    "description": "Привлекательная карточка для вашего товара на маркетплейсах",
+    "tags": [
+      "Midjourney",
+      "Luma"
+    ]
+  },
+  "en": {
+    "type": "image",
+    "category": "мокап",
+    "media": "/media/works/reel-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Product Card",
+    "alt": "Product Card",
+    "description": "An attractive card for your product on marketplaces",
+    "tags": [
+      "Midjourney",
+      "Luma"
+    ]
+  },
+  "be": {
+    "type": "image",
+    "category": "мокап",
+    "media": "/media/works/reel-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Карточка тавара",
+    "alt": "Карточка тавара",
+    "description": "Прывабная карточка для вашага тавара на маркетплейсах",
+    "tags": [
+      "Midjourney",
+      "Luma"
+    ]
+  }
 }

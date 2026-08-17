@@ -1,28 +1,53 @@
 {
-  "slug": "brand-key-02",
-  "type": "video",
-  "category": "covers",
-  "media": "/media/videos/brand-key-02.mp4",
-  "poster": "/media/works/brand-key-02-poster.webp",
-  "externalUrl": "",
-  "featured": false,
-  "order": 9,
   "ru": {
-    "title": "Ключевой визуал бренда",
-    "alt": "Ключевой визуал для айдентики бренда",
-    "description": "Ключевой визуал для айдентики бренда: единый стиль, узнаваемый цвет и характер. Собран как система — легко разворачивается на все носители.",
-    "tags": ["Брендинг", "Айдентика", "Key Visual", "Стиль"]
+    "type": "video",
+    "category": "контент",
+    "media": "/media/videos/brand-key-02.mp4",
+    "poster": "/media/works/brand-key-02-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Креатив",
+    "alt": "Креатив для соц-сетей",
+    "description": "Мой маленький сюжет для рилса о том, как уходящий символ 2025 года отдаёт ключ от Нового года новому символу. Ведь Каждый Новый год — это не просто смена календаря. Это священная церемония передачи власти.",
+    "tags": [
+      "Соц. сети",
+      "Midjourney",
+      "Nano Banana"
+    ]
   },
   "en": {
-    "title": "Brand Key Visual",
-    "alt": "Key visual for a brand identity",
-    "description": "A key visual for a brand identity: a single style, recognizable color and character. Built as a system — easy to roll out across every touchpoint.",
-    "tags": ["Branding", "Identity", "Key Visual", "Style"]
+    "type": "video",
+    "category": "контент",
+    "media": "/media/videos/brand-key-02.mp4",
+    "poster": "/media/works/brand-key-02-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Creative",
+    "alt": "Creative for social media",
+    "description": "My little story for a reel about how the outgoing symbol of 2025 hands over the key to the New Year to the new symbol. After all, every New Year is not just a change of calendar. It is a sacred ceremony of power transfer.",
+    "tags": [
+      "Social media",
+      "Midjourney",
+      "Nano Banana"
+    ]
   },
   "be": {
-    "title": "Ключавы візуал брэнда",
-    "alt": "Ключавы візуал для айдэнтыкі брэнда",
-    "description": "Ключавы візуал для айдэнтыкі брэнда: адзіны стыль, пазнавальны колер і характар. Сабраны як сістэма — лёгка разгортваецца на ўсе носьбіты.",
-    "tags": ["Брэндынг", "Айдэнтыка", "Key Visual", "Стыль"]
+    "type": "video",
+    "category": "контент",
+    "media": "/media/videos/brand-key-02.mp4",
+    "poster": "/media/works/brand-key-02-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Крэатыў",
+    "alt": "Крэатыў для сацыяльных сетак",
+    "description": "Мой маленькі сюжэт для рыліса пра тое, як уходзячы сімвол 2025 года адаёт ключ ад Новага года новаму сімволу. Вядь Кожны Новы год — гэта не проста смена календара. Гэта святая цэрымонія пярэдачы ўлады.",
+    "tags": [
+      "Сацыяльныя сеткі",
+      "Midjourney",
+      "Nano Banana"
+    ]
   }
 }

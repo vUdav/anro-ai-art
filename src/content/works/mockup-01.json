@@ -1,13 +1,47 @@
 {
-  "slug": "mockup-01",
-  "type": "image",
-  "category": "mockups",
-  "media": "/media/works/mockup-01.webp",
-  "poster": "",
-  "externalUrl": "",
-  "featured": false,
-  "order": 2,
-  "ru": { "title": "Мокап продукта", "alt": "Рекламный мокап продукта", "description": "Презентационный мокап для бренда: продукт помещён в атмосферную сцену с аккуратным светом и материалами. Готовый визуал для маркетплейса и соцсетей.", "tags": ["Мокап", "Брендинг", "3D", "Продукт"] },
-  "en": { "title": "Product Mockup", "alt": "Product advertising mockup", "description": "A presentation mockup for a brand: the product placed into an atmospheric scene with careful lighting and materials. Ready-to-use visual for marketplaces and social media.", "tags": ["Mockup", "Branding", "3D", "Product"] },
-  "be": { "title": "Мокап прадукту", "alt": "Рэкламны мокап прадукту", "description": "Прэзентацыйны мокап для брэнда: прадукт у атмасфернай сцэне з акуратным святлом і матэрыяламі. Гатовы візуал для маркетплэйсаў і сацсетак.", "tags": ["Мокап", "Брэндынг", "3D", "Прадукт"] }
+  "ru": {
+    "type": "image",
+    "category": "контент",
+    "media": "/media/works/mockup-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Эстетика мифологии",
+    "alt": "Эстетика мифологии",
+    "description": "Медуза Горгона — одна из самых известных фигур древнегреческой мифологии.",
+    "tags": [
+      "Midjourney"
+    ]
+  },
+  "en": {
+    "type": "image",
+    "category": "контент",
+    "media": "/media/works/mockup-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Aesthetics of Mythology",
+    "alt": "Aesthetics of Mythology",
+    "description": "Medusa Gorgon is one of the most famous figures in ancient Greek mythology.",
+    "tags": [
+      "Midjourney"
+    ]
+  },
+  "be": {
+    "type": "image",
+    "category": "контент",
+    "media": "/media/works/mockup-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Эстэтыка міталогіі",
+    "alt": "Эстэтыка міталогіі",
+    "description": "Медуза Горгона — адна з найбольш вядомых фігур древнегрэцкай міталогіі.",
+    "tags": [
+      "Midjourney"
+    ]
+  }
 }

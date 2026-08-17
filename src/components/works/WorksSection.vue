@@ -3,17 +3,19 @@ import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useWorks } from '../../composables/useContent'
 import { useMotionPreset } from '../../composables/useMotionPreset'
+import { useCategories } from '../../composables/useContent'
 import type { Work } from '../../types/content'
 import WorkModal from './WorkModal.vue'
 
 const { t } = useI18n()
 const { works } = useWorks()
 const { fadeUp, diffuse, reduced } = useMotionPreset()
+const categories = useCategories()
 
 const featured = computed<Work | null>(
   () => works.value.find((w) => w.featured) ?? works.value[0] ?? null,
 )
-const rest = computed<Work[]>(() => works.value.filter((w) => w !== featured.value).slice(0, 9))
+const rest = computed<Work[]>(() => works.value.filter((w) => w !== featured.value))
 
 function thumb(w: Work) {
   return w.poster || w.media
@@ -151,7 +153,7 @@ onBeforeUnmount(() => io?.disconnect())
           </span>
           <span class="tile__cap">
             <span class="tile__name">{{ w.title }}</span>
-            <span v-if="w.tags.length" class="tile__tag">{{ w.tags[0] }}</span>
+            <span class="tile__tag">{{ categories[w.category] ?? '' }}</span>
           </span>
         </button>
       </div>

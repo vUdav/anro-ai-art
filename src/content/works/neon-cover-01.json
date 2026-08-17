@@ -1,15 +1,15 @@
 {
   "ru": {
+    "order": 0,
     "type": "video",
     "category": "музыкальный-клип",
     "media": "/media/videos/neon-cover-01.mp4",
     "poster": "/media/works/neon-cover-01-poster.webp",
     "externalUrl": "",
     "featured": true,
-    "order": 0,
-    "title": "Mind Rivers — Ocean Jet",
+    "title": "Музыкальный клип",
     "alt": "Музыкальный клип на композицию Mind Rivers — Ocean Jet",
-    "description": "Музыкальный клип. В работе были использованы реальные референсы танцевальных движений. Персонажи полностью идентичны реальным учатникам группы. Сохранена атмосфера и композиция на протяжении всего видео.",
+    "description": "Mind Rivers — Ocean Jet. В работе были использованы реальные референсы танцевальных движений. Персонажи полностью идентичны реальным учатникам группы. Сохранена атмосфера и композиция на протяжении всего видео.",
     "tags": [
       "Seedance",
       "Seedream",
@@ -17,16 +17,16 @@
     ]
   },
   "en": {
+    "order": 0,
     "type": "video",
     "category": "музыкальный-клип",
     "media": "/media/videos/neon-cover-01.mp4",
     "poster": "/media/works/neon-cover-01-poster.webp",
     "externalUrl": "",
     "featured": true,
-    "order": 0,
-    "title": "Mind Rivers — Ocean Jet",
+    "title": "Music video",
     "alt": "Music video for the song Mind Rivers - Ocean Jet",
-    "description": "Music video. Real references of dance movements were used in the work. The characters are completely identical to the real participants of the group. The atmosphere and composition were preserved throughout the entire video.",
+    "description": "Mind Rivers — Ocean Jet. Real references of dance movements were used in the work. The characters are completely identical to the real participants of the group. The atmosphere and composition were preserved throughout the entire video.",
     "tags": [
       "Seedance",
       "Seedream",
@@ -34,16 +34,16 @@
     ]
   },
   "be": {
+    "order": 0,
     "type": "video",
     "category": "музыкальный-клип",
     "media": "/media/videos/neon-cover-01.mp4",
     "poster": "/media/works/neon-cover-01-poster.webp",
     "externalUrl": "",
     "featured": true,
-    "order": 0,
-    "title": "Mind Rivers — Ocean Jet",
+    "title": "Музычны кліп",
     "alt": "Музычны кліп на композіцыю Mind Rivers — Ocean Jet",
-    "description": "Музычны кліп. У рабоце былі выкарыстаны рэальныя рэферэнсы танцавальных рухаў. Персанажы цалкам ідэнтычныя рэальным удзельнікам групы. Захавана атмасфера і композіцыя на працягу ўсяго відэа.",
+    "description": "Mind Rivers — Ocean Jet. У рабоце былі выкарыстаны рэальныя рэферэнсы танцавальных рухаў. Персанажы цалкам ідэнтычныя рэальным удзельнікам групы. Захавана атмасфера і композіцыя на працягу ўсяго відэа.",
     "tags": [
       "Seedance",
       "Seedream",

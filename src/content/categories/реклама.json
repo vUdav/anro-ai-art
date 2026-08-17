@@ -1,0 +1,14 @@
+{
+  "ru": {
+    "name": "Реклама",
+    "order": 0
+  },
+  "en": {
+    "name": "Advertisement",
+    "order": 0
+  },
+  "be": {
+    "name": "Реклама",
+    "order": 0
+  }
+}

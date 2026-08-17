@@ -1,13 +1,47 @@
 {
-  "slug": "photoshoot-01",
-  "type": "image",
-  "category": "photoshoots",
-  "media": "/media/works/photoshoot-01.webp",
-  "poster": "",
-  "externalUrl": "",
-  "featured": false,
-  "order": 3,
-  "ru": { "title": "Нейро-фотосессия", "alt": "Портрет из нейро-фотосессии", "description": "Стилизованный портрет, созданный нейросетью: продуманный образ, свет и колорит без реальной съёмки. Серия кадров в едином стиле для личного бренда.", "tags": ["Портрет", "Фотосессия", "Стиль", "Nano Banana"] },
-  "en": { "title": "AI Photoshoot", "alt": "Portrait from an AI photoshoot", "description": "A stylized portrait generated with a neural network: a considered look, light and color without a real shoot. A series of frames in a single style for a personal brand.", "tags": ["Portrait", "Photoshoot", "Style", "Nano Banana"] },
-  "be": { "title": "Нейра-фотасесія", "alt": "Партрэт з нейра-фотасесіі", "description": "Стылізаваны партрэт, створаны нейрасеткай: прадуманы вобраз, святло і колер без рэальнай здымкі. Серыя кадраў у адзіным стылі для асабістага брэнда.", "tags": ["Партрэт", "Фотасесія", "Стыль", "Nano Banana"] }
+  "ru": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/works/photoshoot-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Невидимый манекен",
+    "alt": "Невидимый манекен",
+    "description": "Это адаптация для e-commerce: та же идея \"одежда без человека\", но уже в формате карточки.",
+    "tags": [
+      "Nano Banana"
+    ]
+  },
+  "en": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/works/photoshoot-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Invisible Mannequin",
+    "alt": "Invisible Mannequin",
+    "description": "This is an e-commerce adaptation: the same idea of \"clothing without a person\", but already in card format.",
+    "tags": [
+      "Nano Banana"
+    ]
+  },
+  "be": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/works/photoshoot-01.webp",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Невідзімы манекен",
+    "alt": "Невідзімы манекен",
+    "description": "Гэта адаптацыя для e-commerce: тая ж ідэя \"адзежа без чалавека\", але ўжо ў фармаце карткі.",
+    "tags": [
+      "Nano Banana"
+    ]
+  }
 }

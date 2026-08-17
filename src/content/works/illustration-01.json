@@ -1,13 +1,41 @@
 {
-  "slug": "illustration-01",
-  "type": "video",
-  "category": "illustrations",
-  "media": "/media/videos/illustration-01.mp4",
-  "poster": "/media/works/illustration-01-poster.webp",
-  "externalUrl": "",
-  "featured": false,
-  "order": 4,
-  "ru": { "title": "Иллюстрация", "alt": "Атмосферная иллюстрация", "description": "Художественная иллюстрация с мистической атмосферой: глубина, туман и мягкое свечение. Подходит для обложек, постеров и редакционных материалов.", "tags": ["Иллюстрация", "Фэнтези", "Атмосфера", "Арт"] },
-  "en": { "title": "Illustration", "alt": "Atmospheric illustration", "description": "An artistic illustration with a mystical mood: depth, haze and a soft glow. Great for covers, posters and editorial pieces.", "tags": ["Illustration", "Fantasy", "Mood", "Art"] },
-  "be": { "title": "Ілюстрацыя", "alt": "Атмасферная ілюстрацыя", "description": "Мастацкая ілюстрацыя з містычнай атмасферай: глыбіня, туман і мяккае ззянне. Пасуе для вокладак, постараў і рэдакцыйных матэрыялаў.", "tags": ["Ілюстрацыя", "Фэнтэзі", "Атмасфера", "Арт"] }
+  "ru": {
+    "type": "video",
+    "category": "реклама",
+    "media": "/media/videos/illustration-01.mp4",
+    "poster": "/media/works/illustration-01-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Продвижение бренда",
+    "alt": "Продвижение бренда",
+    "description": "Стильная короткая анимация в духе разворота журнала с вещью бренда, где вещь “парит” над ландшафтом.",
+    "tags": []
+  },
+  "en": {
+    "type": "video",
+    "category": "реклама",
+    "media": "/media/videos/illustration-01.mp4",
+    "poster": "/media/works/illustration-01-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Brand Promotion",
+    "alt": "Brand Promotion",
+    "description": "A stylish short animation in the spirit of a magazine spread with a branded item, where the item 'floats' above the landscape.",
+    "tags": []
+  },
+  "be": {
+    "type": "video",
+    "category": "реклама",
+    "media": "/media/videos/illustration-01.mp4",
+    "poster": "/media/works/illustration-01-poster.webp",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Прасоўванне бренда",
+    "alt": "Прасоўванне бренда",
+    "description": "Стыльная кароткая анімацыя ў духе разварота журнала з рэччу бренда, дзе рэч \"паруе\" над ландшафтам.",
+    "tags": []
+  }
 }

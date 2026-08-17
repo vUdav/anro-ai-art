@@ -1,0 +1,14 @@
+{
+  "ru": {
+    "name": "Фотосессия",
+    "order": 0
+  },
+  "en": {
+    "name": "Photo shoot",
+    "order": 0
+  },
+  "be": {
+    "name": "Фотасесія",
+    "order": 0
+  }
+}

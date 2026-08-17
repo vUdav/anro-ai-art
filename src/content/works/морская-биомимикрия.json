@@ -1,0 +1,47 @@
+{
+  "ru": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/photo_2026-08-17 12.29.08.jpeg",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Морская биомимикрия",
+    "alt": "Морская биомимикрия",
+    "description": "Дизайнерская одежда в эстетике Iris van Herpen.\n\nЯ разработала промпт, который превращает выбранный природный материал в полноценный кутюрный образ и оформляет результат как страницу дизайнерского лукбука.",
+    "tags": [
+      "Sora"
+    ]
+  },
+  "en": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/photo_2026-08-17 12.29.08.jpeg",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Marine Biomimicry",
+    "alt": "Marine Biomimicry",
+    "description": "Designer clothing in the aesthetics of Iris van Herpen.\n\nI developed a prompt that transforms a selected natural material into a full-fledged couture look and presents the result as a page from a designer lookbook.",
+    "tags": [
+      "Sora"
+    ]
+  },
+  "be": {
+    "type": "image",
+    "category": "мода",
+    "media": "/media/photo_2026-08-17 12.29.08.jpeg",
+    "poster": "",
+    "externalUrl": "",
+    "featured": false,
+    "order": 0,
+    "title": "Марская біёмімікрыя",
+    "alt": "Марская біёмімікрыя",
+    "description": "Дызайнерская адзежда ў эстэтыцы Iris van Herpen.\n\nЯ распрацавала промпт, які пераўтварае выбраны прыродны матэрыял у поўнацэнны кутурны вобраз і афармляе вынік як старонку дызайнерскага лукбука.",
+    "tags": [
+      "Sora"
+    ]
+  }
+}
