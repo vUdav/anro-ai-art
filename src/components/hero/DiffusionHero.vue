@@ -46,24 +46,6 @@ function onCross(i: number) {
   }
 }
 
-const NET_NAMES = [
-  'Midjourney',
-  'Sora',
-  'CharGPT',
-  'Kling',
-  'Runway',
-  'Seedream',
-  'Seedance',
-  'Nano Banana',
-  'WAN',
-  'Luma',
-  'Veo',
-  'Ideogram',
-  'Grok',
-  'Elevenlabs',
-  'Suno',
-  'Magnific',
-]
 
 interface Particle {
   tx: number
@@ -251,7 +233,7 @@ onMounted(async () => {
     const cells: { r: number; c: number }[] = []
     for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) cells.push({ r, c })
     shuffle(cells)
-    const names = [...NET_NAMES]
+    const names = [...(hero.value.nets ?? [])]
     shuffle(names)
     const count = Math.min(cells.length, isMobile ? 6 : 9, names.length)
 

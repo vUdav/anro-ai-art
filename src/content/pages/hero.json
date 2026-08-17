@@ -1,14 +1,17 @@
 {
   "ru": {
     "name": "Anro",
-    "role": "AI Creator"
+    "role": "AI Creator",
+    "nets": ["Midjourney", "Sora", "ChatGPT", "Kling", "Runway", "Seedream", "Seedance", "Nano Banana", "WAN", "Luma", "Veo", "Ideogram", "Grok", "Elevenlabs", "Suno", "Magnific"]
   },
   "en": {
     "name": "Anro",
-    "role": "AI Creator"
+    "role": "AI Creator",
+    "nets": ["Midjourney", "Sora", "ChatGPT", "Kling", "Runway", "Seedream", "Seedance", "Nano Banana", "WAN", "Luma", "Veo", "Ideogram", "Grok", "Elevenlabs", "Suno", "Magnific"]
   },
   "be": {
     "name": "Anro",
-    "role": "AI Creator"
+    "role": "AI Creator",
+    "nets": ["Midjourney", "Sora", "ChatGPT", "Kling", "Runway", "Seedream", "Seedance", "Nano Banana", "WAN", "Luma", "Veo", "Ideogram", "Grok", "Elevenlabs", "Suno", "Magnific"]
   }
 }

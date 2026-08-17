@@ -103,6 +103,12 @@ collections:
         fields:
           - { name: name, label: "Имя / бренд", widget: string, i18n: true }
           - { name: role, label: "Роль", widget: string, i18n: true }
+          - name: nets
+            label: "Нейросети (складываются из частиц на первом экране)"
+            widget: list
+            required: true
+            i18n: duplicate
+            field: { name: net, label: "Нейросеть", widget: string, i18n: duplicate }
 
       - name: about
         label: "Обо мне"

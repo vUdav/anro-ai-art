@@ -12,7 +12,7 @@ export function useHero() {
   const { locale } = useI18n()
   return computed(() => {
     const l = heroRaw[locale.value as AppLocale] ?? heroRaw.ru
-    return { ...l }
+    return { ...l, nets: l.nets ?? heroRaw.ru.nets ?? [] }
   })
 }
 
