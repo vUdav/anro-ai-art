@@ -6,7 +6,7 @@ import heroRaw from '../content/pages/hero.json'
 import aboutRaw from '../content/pages/about.json'
 import contactsRaw from '../content/pages/contacts.json'
 import servicesRaw from '../content/pages/services.json'
-import seoRaw from '../content/pages/seo.json'
+import seoRaw from '../content/singletons/settings.json'
 
 export function useHero() {
   const { locale } = useI18n()
