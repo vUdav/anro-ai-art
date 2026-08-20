@@ -109,6 +109,16 @@ const links = computed(() =>
 
       <div class="contacts__bottom">
         <p class="contacts__copy">© {{ year }} {{ about.fullName }} · {{ t('footer.rights') }}</p>
+        <p class="contacts__credit">
+          Created by
+          <a
+            class="contacts__credit-link"
+            href="https://vudav.ru"
+            target="_blank"
+            rel="noopener noreferrer"
+            >vUdav</a
+          >
+        </p>
       </div>
     </div>
   </footer>
@@ -228,21 +238,49 @@ $bp-xl: 1280px;
   }
 
   &__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     margin-top: clamp(1.75rem, 3vw, 2.5rem);
     padding-top: 1.25rem;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+    @include up($bp-md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
   }
 
-  &__copy {
+  &__copy,
+  &__credit {
     margin: 0;
     font-size: 0.82rem;
     color: var(--text-300);
+  }
+
+  &__credit-link {
+    color: var(--text-200);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    transition:
+      color 0.25s var(--ease-out),
+      border-color 0.25s var(--ease-out);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--neon-cyan);
+      border-bottom-color: currentColor;
+      outline: none;
+    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .contacts__link,
-  .contacts__ico {
+  .contacts__ico,
+  .contacts__credit-link {
     transition: none;
   }
 }
