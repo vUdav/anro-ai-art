@@ -113,7 +113,7 @@ const links = computed(() =>
           Created by
           <a
             class="contacts__credit-link"
-            href="https://vudav.ru"
+            href="https://vudav.dev"
             target="_blank"
             rel="noopener noreferrer"
             >vUdav</a
