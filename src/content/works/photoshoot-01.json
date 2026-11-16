@@ -2,14 +2,14 @@
   "ru": {
     "type": "image",
     "category": "мода",
-    "media": "/media/works/photoshoot-01.webp",
+    "media": "/media/cf1af3e07b26cee630ca24e79e969b2f_c0585865-954a-42ad-96e7-db572a5bf7de.png",
     "poster": "",
     "externalUrl": "",
     "featured": false,
     "order": 0,
     "title": "Невидимый манекен",
-    "alt": "Невидимый манекен",
-    "description": "Это адаптация для e-commerce: та же идея \"одежда без человека\", но уже в формате карточки.",
+    "alt": "Реклама товара",
+    "description": "",
     "tags": [
       "Nano Banana"
     ]
@@ -17,7 +17,7 @@
   "en": {
     "type": "image",
     "category": "мода",
-    "media": "/media/works/photoshoot-01.webp",
+    "media": "/media/cf1af3e07b26cee630ca24e79e969b2f_c0585865-954a-42ad-96e7-db572a5bf7de.png",
     "poster": "",
     "externalUrl": "",
     "featured": false,
@@ -32,7 +32,7 @@
   "be": {
     "type": "image",
     "category": "мода",
-    "media": "/media/works/photoshoot-01.webp",
+    "media": "/media/cf1af3e07b26cee630ca24e79e969b2f_c0585865-954a-42ad-96e7-db572a5bf7de.png",
     "poster": "",
     "externalUrl": "",
     "featured": false,
